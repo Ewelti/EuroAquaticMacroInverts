@@ -1,9 +1,9 @@
 # EuroAquaticMacroInverts
 This repository contains code relating to a study of changes over time of European freshwater macroinvertebrates by Haase et al. 
 
-The file "AquaticMacroInvert_metadata.xls" contains information on Data providers, site characteristics, the number of sites from each country, the taxa list for all sites, and the functional trait coverage. Two additional tabs provide metadata information for the two csv files "All_indices_benthicMacroInverst_AllYears.csv" (tab: metadata_siteyearsheet) and "All_siteLevel_and_glmOutput.csv" (tab: metadata_sitesheet).
+The file "AquaticMacroInvert_metadata.xls" contains information on Data providers, site characteristics, the number of sites from each country, the taxa list for all sites, and the functional trait coverage. Two additional tabs provide metadata information for the two csv files "All_indices_benthicMacroInverts_AllYears.csv" (tab: metadata_siteyearsheet) and "All_siteLevel_and_glmOutput.csv" (tab: metadata_sitesheet).
 
-The file "All_indices_benthicMacroInverst_AllYears.csv" contains data for each site and year on taxonomic diversity metrics, functional diversity metrics, and environmental drivers which are time series (climate, landuse, and nitrogen inputs).
+The file "All_indices_benthicMacroInverts_AllYears.csv" contains data for each site and year on taxonomic diversity metrics, functional diversity metrics, and environmental drivers which are time series (climate, landuse, and nitrogen inputs).
 
 The file "All_siteLevel_and_glmOutput.csv" contains data for each site on slopes of functional and taxonomic diversity indices and environmental drivers.
 
