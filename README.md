@@ -9,6 +9,9 @@ The file "All_siteLevel_and_glmOutput.csv" contains data for each site on slopes
 
 The R code "gls_BiodiversityMetrics" was used to calculate slopes of all biodiversity metrics for each site.
 
+The script "Stan_example_codes.R" contains some useful code to run model in Stan
+
+
 Ongoing issues:
 
 --Values of FRic (Functional Richness) and Rao's Q are currently being recaluculated using standardized values within each site.
