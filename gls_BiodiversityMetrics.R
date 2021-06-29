@@ -1,11 +1,11 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/aquatic_data")
+#setwd("C:/Users/ewelti/Desktop/aquatic_data")
 
 # load libraries
 library(nlme)
 
 # attach data
-DATA1_list <- read.csv("All_indices_benthicMacroInverts.csv", header=T) # change file name according to the time series to be analyzed
+DATA1_list <- read.csv("raw-data/All_indices_benthicMacroInverts.csv", header=T) # change file name according to the time series to be analyzed
 attach(DATA1_list)
 head(DATA1_list)
 turnover<-as.numeric(turnover) # make numeric
