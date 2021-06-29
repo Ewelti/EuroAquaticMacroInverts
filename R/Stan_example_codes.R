@@ -22,7 +22,7 @@ fit1 <- brm(Response ~ Year + (1|Year), autocor = cor_ar(~Year, p = 1),data = my
 
 #combine trends in mixed model
 
-prior1 <- prior(normal(0,10), class = b) +
+prior1 <- prior(normal(0,5), class = b) +
   prior(cauchy(0,2), class = sd)
 
 fit1 <- brm(trend|weights(w) ~ 1 + (1|StudyID),data = mydata, family = gaussian(), prior = prior1)
