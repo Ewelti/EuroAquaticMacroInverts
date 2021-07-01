@@ -16,10 +16,10 @@ turnover<-as.numeric(turnover) # make numeric
 options(scipen = 999)
 #################################################################
 #spp_richness trend
-hist((spp_richness))
+hist(spp_richness)
 
 #subset data for loop
-df<-data.frame(site_id, year.1,spp_richness)
+df<-data.frame(site_id,year_wMissing,spp_richness)
 x <- c("site", "yr", "sr")
     colnames(df) <- x
 head(df)
@@ -58,7 +58,7 @@ hist(log10(simpsonsD))
 hist((simpsonsD))
 
 #subset data for loop
-df<-data.frame(site_id, year.1, simpsonsD)
+df<-data.frame(site_id, year_wMissing, simpsonsD)
 x <- c("site", "yr", "si")
     colnames(df) <- x
 head(df)
@@ -131,7 +131,7 @@ head(si_df)
 hist((shannonsH))
 
 #subset data for loop
-df<-data.frame(site_id, year.1, shannonsH)
+df<-data.frame(site_id, year_wMissing, shannonsH)
 x <- c("site", "yr", "sh")
     colnames(df) <- x
 head(df)
@@ -155,7 +155,7 @@ head(sh_df)
 hist((evennessJ))
 
 #subset data for loop
-df<-data.frame(site_id, year.1, evennessJ)
+df<-data.frame(site_id, year_wMissing, evennessJ)
 x <- c("site", "yr", "ev")
     colnames(df) <- x
 head(df)
@@ -179,7 +179,7 @@ head(ev_df)
 hist(log10(abundance))
 
 #subset data for loop
-df<-data.frame(site_id, year.1, log10(abundance))
+df<-data.frame(site_id, year_wMissing, log10(abundance))
 x <- c("site", "yr", "abun")
     colnames(df) <- x
 head(df)
@@ -237,7 +237,7 @@ nrow(ab_df)
 hist(turnover)
 
 #subset data for loop
-df<-data.frame(site_id, year.1, turnover)
+df<-data.frame(site_id, year_wMissing, turnover)
 x <- c("site", "yr", "to")
     colnames(df) <- x
 head(df)
@@ -271,7 +271,7 @@ nrow(to_df)
 hist(F_to)
 
 #subset data for loop
-df<-data.frame(site_id, year.1, F_to)
+df<-data.frame(site_id, year_wMissing, F_to)
 x <- c("site", "yr", "F_to")
     colnames(df) <- x
 head(df)
@@ -320,18 +320,15 @@ xn <- c("F_to_site", "F_to_Est", "F_to_SE", "F_to_p")
 nrow(F_to_df)
 ##############################################
 #FRic
-hist(FRic)
-FR<-(FRic/78543.77) #divide by maximum value to scale
+hist(log10(FRicNotScaled))
 
 #subset data for loop
-df<-data.frame(site_id, year.1, (FRic/78543.77))
-df<-data.frame(site_id, year.1, FRic)
+df<-data.frame(site_id, year_wMissing, log10(FRicNotScaled))
 x <- c("site", "yr", "FR")
     colnames(df) <- x
 head(df)
 
-df2 <- df[which(df$site!=103000103),] # for scaled
-##df2 <- df[which(df$site!=100000094),] # for not scaled
+df2 <- df[which(df$site!=103000696& df$site!=109000424),]
 
 trends <- NULL
 for(i in unique(df2$site)){
@@ -342,13 +339,19 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
-df103000103 <- df[which(df$site==103000103),]
-g1<-gls(FR ~ yr,na.action=na.omit, data = df103000103)
-trend.103000103 <- summary(gls(FR ~ yr,na.action=na.omit, data = df103000103))$tTable[2, c(1,2,4)]
+df103000696 <- df[which(df$site==103000696),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df103000696)
+trend.103000696 <- summary(gls(FR ~ yr,na.action=na.omit, data = df103000696))$tTable[2, c(1,2,4)]
 acf(residuals(g1,type="p")) # no temporal autocorrelation
-df103000103  <- data.frame(site = 103000103, t(trend.103000103))
+df103000696  <- data.frame(site = 103000696, t(trend.103000696))
 
-tot_t<-rbind(trends, df103000103)
+df109000424 <- df[which(df$site==109000424),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df109000424)
+trend.109000424 <- summary(gls(FR ~ yr,na.action=na.omit, data = df109000424))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) # no temporal autocorrelation
+df109000424  <- data.frame(site = 109000424, t(trend.109000424))
+
+tot_t<-rbind(trends, df103000696, df109000424)
 FRic_df <- tot_t[order(tot_t$site),] 
 
 xn <- c("FRic_site", "FRic_Est", "FRic_SE", "FRic_p")
@@ -360,7 +363,7 @@ nrow(FRic_df)
 hist(FEve)
 
 #subset data for loop
-df<-data.frame(site_id, year.1, FEve)
+df<-data.frame(site_id, year_wMissing, FEve)
 x <- c("site", "yr", "FEve")
     colnames(df) <- x
 head(df)
@@ -400,7 +403,7 @@ nrow(FEve_df)
 hist(FDiv)
 
 #subset data for loop
-df<-data.frame(site_id, year.1, FDiv)
+df<-data.frame(site_id, year_wMissing, FDiv)
 x <- c("site", "yr", "FDiv")
     colnames(df) <- x
 head(df)
@@ -424,7 +427,7 @@ nrow(FDiv_df)
 hist(FDis)
 
 #subset data for loop
-df<-data.frame(site_id, year.1, FDis)
+df<-data.frame(site_id, year_wMissing, FDis)
 x <- c("site", "yr", "FDis")
     colnames(df) <- x
 head(df)
@@ -464,7 +467,7 @@ nrow(FDis_df)
 hist(RaoQ)
 
 #subset data for loop
-df<-data.frame(site_id, year.1, RaoQ)
+df<-data.frame(site_id, year_wMissing, RaoQ)
 x <- c("site", "yr", "RaoQ")
     colnames(df) <- x
 head(df)
@@ -513,4 +516,357 @@ head(new_df)
 
 ##
 write.csv(new_df,"glmOutput.csv")
+##
+################################################################
+###########################################################
+###################################################
+##############################################
+
+#####ALIENS
+# attach data
+DATA3 <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears_alienSub.csv", header=T) # change file name according to the time series to be analyzed
+DATA4 <- DATA3[!is.na(DATA3$site_id_wMissing),]
+attach(DATA4)
+head(DATA4)
+
+##abundProportion_alienSpp
+#subset data for loop
+df<-data.frame(DATA4$site_id_wMissing, DATA4$year_wMissing, DATA4$abundProportion_alienSpp)
+x <- c("site", "yr", "PropAlienAbun")
+colnames(df) <- x
+head(df)
+
+unique(DATA4$site_id_wMissing)
+
+df2 <- df[which(df$site!=108000067& df$site!=109000313& df$site!=117000042& df$site!=121000190),]
+
+trends <- NULL
+for(i in unique(df2$site)){
+  sub <- df2[df2$site == i, ]
+  trend.i <- summary(gls(PropAlienAbun ~ yr,correlation = corAR1(form = ~ yr),na.action=na.omit, data = sub))$tTable[2, c(1,2,4)]
+  trend.i <- data.frame(site = i, 
+                        t(trend.i))
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+} ; rm(i)
+
+df108000067 <- df[which(df$site==108000067),]
+g1<-gls(PropAlienAbun ~ yr,na.action=na.omit, data = df108000067)
+trend.108000067 <- summary(gls(PropAlienAbun ~ yr,na.action=na.omit, data = df108000067))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #temporal autocorrelation :/
+df108000067 <- data.frame(site = 108000067, Value = "NA", Std.Error = "NA", p.value = "NA")
+
+df109000313 <- df[which(df$site==109000313),]
+g1<-gls(PropAlienAbun ~ yr,na.action=na.omit, data = df109000313)
+trend.109000313 <- summary(gls(PropAlienAbun ~ yr,na.action=na.omit, data = df109000313))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) # no temporal autocorrelation
+df109000313 <- data.frame(site = 109000313, t(trend.109000313))
+
+df117000042 <- df[which(df$site==117000042),]
+g1<-gls(PropAlienAbun ~ yr,na.action=na.omit, data = df117000042)
+trend.117000042 <- summary(gls(PropAlienAbun ~ yr,na.action=na.omit, data = df117000042))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #temporal autocorrelation :/
+df117000042 <- data.frame(site = 117000042, Value = "NA", Std.Error = "NA", p.value = "NA")
+
+df121000190 <- df[which(df$site==121000190),]
+g1<-gls(PropAlienAbun ~ yr,na.action=na.omit, data = df121000190)
+trend.121000190 <- summary(gls(PropAlienAbun ~ yr,na.action=na.omit, data = df121000190))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) # no temporal autocorrelation
+df121000190 <- data.frame(site = 121000190, t(trend.121000190))
+
+tot_t<-rbind(trends, df108000067, df109000313, df117000042, df121000190)
+
+AlienAbunProp_df <- tot_t[order(tot_t$site),] 
+xn <- c("AlienAbunProp_site", "AlienAbunProp_Est", "AlienAbunProp_SE", "AlienAbunProp_p")
+colnames(AlienAbunProp_df) <- xn
+nrow(AlienAbunProp_df)
+
+##
+write.csv(AlienAbunProp_df,"AlienAbunProp_slopes.csv")
+##
+
+##############################################
+
+##SppRichProportion_alienSpp
+#subset data for loop
+df<-data.frame(DATA4$site_id_wMissing, DATA4$year_wMissing, DATA4$SppRichProportion_alienSpp)
+x <- c("site", "yr", "PropAlienSppRich")
+colnames(df) <- x
+head(df)
+
+unique(DATA4$site_id_wMissing)
+
+df2 <- df[which(df$site!=103000632),]
+
+trends <- NULL
+for(i in unique(df2$site)){
+  sub <- df2[df2$site == i, ]
+  trend.i <- summary(gls(PropAlienSppRich ~ yr,correlation = corAR1(form = ~ yr),na.action=na.omit, data = sub))$tTable[2, c(1,2,4)]
+  trend.i <- data.frame(site = i, 
+                        t(trend.i))
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+} ; rm(i)
+
+df103000632 <- df[which(df$site==103000632),]
+g1<-gls(PropAlienSppRich ~ yr,na.action=na.omit, data = df103000632)
+trend.103000632 <- summary(gls(PropAlienSppRich ~ yr,na.action=na.omit, data = df103000632))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #temporal autocorrelation :/
+df103000632 <- data.frame(site = 103000632, Value = "NA", Std.Error = "NA", p.value = "NA")
+
+tot_t<-rbind(trends, df103000632)
+
+AlienSppRichProp_df <- tot_t[order(tot_t$site),] 
+xn <- c("AlienAbunProp_site", "AlienSppRichProp_Est", "AlienSppRichProp_SE", "AlienSppRichProp_p")
+colnames(AlienAbunProp_df) <- xn
+nrow(AlienSppRichProp_df)
+
+##
+write.csv(AlienSppRichProp_df,"AlienSppRichProp_slopes.csv")
+##
+
+##############################################
+##############################################
+
+##abund_alienSpp
+#subset data for loop
+hist(abund_alienSpp)
+
+df<-data.frame(DATA4$site_id_wMissing, DATA4$year_wMissing, log10(DATA4$abund_alienSpp+1))
+x <- c("site", "yr", "AlienAbun")
+colnames(df) <- x
+head(df)
+
+unique(DATA4$site_id_wMissing)
+
+#df2 <- df[which(df$site!=108000057& df$site!=108000149& df$site!=109000401),] #withoutlog
+df2 <- df[which(df$site!=107000057& df$site!=107000234& df$site!=109000169),]
+
+trends <- NULL
+for(i in unique(df2$site)){
+  sub <- df2[df2$site == i, ]
+  trend.i <- summary(gls(AlienAbun ~ yr,correlation = corAR1(form = ~ yr),na.action=na.omit, data = sub))$tTable[2, c(1,2,4)]
+  trend.i <- data.frame(site = i, 
+                        t(trend.i))
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+} ; rm(i)
+
+df107000057 <- df[which(df$site==107000057),]
+g1<-gls(AlienAbun ~ yr,na.action=na.omit, data = df107000057)
+trend.107000057 <- summary(gls(AlienAbun ~ yr,na.action=na.omit, data = df107000057))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #no temporal autocorrelation
+df107000057 <- data.frame(site = 107000057, t(trend.107000057))
+
+df107000234 <- df[which(df$site==107000234),]
+g1<-gls(AlienAbun ~ yr,na.action=na.omit, data = df107000234)
+trend.107000234 <- summary(gls(AlienAbun ~ yr,na.action=na.omit, data = df107000234))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #no temporal autocorrelation
+df107000234 <- data.frame(site = 107000234, t(trend.107000234))
+
+df109000169 <- df[which(df$site==109000169),]
+g1<-gls(AlienAbun ~ yr,na.action=na.omit, data = df109000169)
+trend.109000169 <- summary(gls(AlienAbun ~ yr,na.action=na.omit, data = df109000169))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #no temporal autocorrelation
+df109000169 <- data.frame(site = 109000169, t(trend.109000169))
+
+
+tot_t<-rbind(trends, df107000057, df107000234, df109000169)
+
+AlienAbun_df <- tot_t[order(tot_t$site),] 
+xn <- c("AlienAbun_site", "AlienAbun_Est", "AlienAbun_SE", "AlienAbun_p")
+colnames(AlienAbun_df) <- xn
+nrow(AlienAbun_df)
+
+##
+write.csv(AlienAbun_df,"AlienAbun_slopes.csv")
+##
+
+##############################################
+##############################################
+
+##SppRich_alienSpp
+#subset data for loop
+hist(SppRich_alienSpp)
+
+df<-data.frame(DATA4$site_id_wMissing, DATA4$year_wMissing, DATA4$SppRich_alienSpp)
+x <- c("site", "yr", "AlienSppRich")
+colnames(df) <- x
+head(df)
+
+unique(DATA4$site_id_wMissing)
+
+df2 <- df[which(df$site!=105000006& df$site!=105000012& df$site!=107000057& df$site!=107000126& 
+                  df$site!=107000228& df$site!=108000057& df$site!=109000079& df$site!=109000080& df$site!=109000143&
+                  df$site!=109000163& df$site!=109000190& df$site!=109000343& df$site!=109000374& df$site!=109000375&
+                  df$site!=114000090),]
+
+trends <- NULL
+for(i in unique(df2$site)){
+  sub <- df2[df2$site == i, ]
+  trend.i <- summary(gls(AlienSppRich ~ yr,correlation = corAR1(form = ~ yr),na.action=na.omit, data = sub))$tTable[2, c(1,2,4)]
+  trend.i <- data.frame(site = i, 
+                        t(trend.i))
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+} ; rm(i)
+
+df105000006 <- df[which(df$site==105000006),]
+df105000006
+df105000006 <- data.frame(site = 105000006, Value = "0", Std.Error = "0", p.value = "NA")
+
+df105000012 <- df[which(df$site==105000012),]
+df105000012
+df105000012 <- data.frame(site = 105000012, Value = "0", Std.Error = "0", p.value = "NA")
+
+df107000057 <- df[which(df$site==107000057),]
+g1<-gls(AlienSppRich ~ yr,na.action=na.omit, data = df107000057)
+trend.107000057 <- summary(gls(AlienSppRich ~ yr,na.action=na.omit, data = df107000057))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #no temporal autocorrelation
+df107000057 <- data.frame(site = 107000057, t(trend.107000057))
+
+df107000126 <- df[which(df$site==107000126),]
+g1<-gls(AlienSppRich ~ yr,na.action=na.omit, data = df107000126)
+trend.107000126 <- summary(gls(AlienSppRich ~ yr,na.action=na.omit, data = df107000126))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #temporal autocorrelation :/
+df107000126 <- data.frame(site = 107000126, Value = "NA", Std.Error = "NA", p.value = "NA")
+
+df107000228 <- df[which(df$site==107000228),]
+g1<-gls(AlienSppRich ~ yr,na.action=na.omit, data = df107000228)
+trend.107000228 <- summary(gls(AlienSppRich ~ yr,na.action=na.omit, data = df107000228))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #no temporal autocorrelation
+df107000228 <- data.frame(site = 107000228, t(trend.107000228))
+
+df108000057 <- df[which(df$site==108000057),]
+g1<-gls(AlienSppRich ~ yr,na.action=na.omit, data = df108000057)
+trend.108000057 <- summary(gls(AlienSppRich ~ yr,na.action=na.omit, data = df108000057))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #no temporal autocorrelation
+df108000057 <- data.frame(site = 108000057, t(trend.108000057))
+
+df109000079 <- df[which(df$site==109000079),]
+g1<-gls(AlienSppRich ~ yr,na.action=na.omit, data = df109000079)
+trend.109000079 <- summary(gls(AlienSppRich ~ yr,na.action=na.omit, data = df109000079))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #no temporal autocorrelation
+df109000079 <- data.frame(site = 109000079, t(trend.109000079))
+
+df109000080 <- df[which(df$site==109000080),]
+df109000080
+df109000080 <- data.frame(site = 109000080, Value = "0", Std.Error = "0", p.value = "NA")
+
+df109000143 <- df[which(df$site==109000143),]
+df109000143
+df109000143 <- data.frame(site = 109000143, Value = "0", Std.Error = "0", p.value = "NA")
+
+df109000163 <- df[which(df$site==109000163),]
+df109000163
+df109000163 <- data.frame(site = 109000163, Value = "0", Std.Error = "0", p.value = "NA")
+
+df109000190 <- df[which(df$site==109000190),]
+df109000190
+df109000190 <- data.frame(site = 109000190, Value = "0", Std.Error = "0", p.value = "NA")
+
+df109000343 <- df[which(df$site==109000343),]
+df109000343
+df109000343 <- data.frame(site = 109000343, Value = "0", Std.Error = "0", p.value = "NA")
+
+df109000374 <- df[which(df$site==109000374),]
+df109000374
+df109000374 <- data.frame(site = 109000374, Value = "0", Std.Error = "0", p.value = "NA")
+
+df109000375 <- df[which(df$site==109000375),]
+df109000375
+df109000375 <- data.frame(site = 109000375, Value = "0", Std.Error = "0", p.value = "NA")
+
+df114000090 <- df[which(df$site==114000090),]
+df114000090
+df114000090 <- data.frame(site = 114000090, Value = "0", Std.Error = "0", p.value = "NA")
+
+tot_t<-rbind(trends, df105000006, df105000012, df107000057, df107000126, df107000228, 
+             df108000057, df109000079, df109000080, df109000143, df109000163, 
+             df109000190, df109000343, df109000374, df109000375, df114000090)
+
+AlienSppRich_df <- tot_t[order(tot_t$site),] 
+xn <- c("AlienSppRich_site", "AlienSppRich_Est", "AlienSppRich_SE", "AlienSppRich_p")
+colnames(AlienSppRich_df) <- xn
+nrow(AlienSppRich_df)
+
+##
+write.csv(AlienSppRich_df,"AlienSppRich_slopes.csv")
+##
+
+##############################################
+##############################################
+
+##abund_nativeSpp
+#subset data for loop
+hist(abund_nativeSpp)
+
+df<-data.frame(DATA4$site_id_wMissing, DATA4$year_wMissing, log10(DATA4$abund_nativeSpp+1))
+x <- c("site", "yr", "nativeAbun")
+colnames(df) <- x
+head(df)
+
+unique(DATA4$site_id_wMissing)
+
+df2 <- df[which(df$site!=109000037& df$site!=117000041),]
+
+trends <- NULL
+for(i in unique(df2$site)){
+  sub <- df2[df2$site == i, ]
+  trend.i <- summary(gls(nativeAbun ~ yr,correlation = corAR1(form = ~ yr),na.action=na.omit, data = sub))$tTable[2, c(1,2,4)]
+  trend.i <- data.frame(site = i, 
+                        t(trend.i))
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+} ; rm(i)
+
+df109000037 <- df[which(df$site==109000037),]
+g1<-gls(nativeAbun ~ yr,na.action=na.omit, data = df109000037)
+trend.109000037 <- summary(gls(nativeAbun ~ yr,na.action=na.omit, data = df109000037))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #temporal autocorrelation :/
+df109000037 <- data.frame(site = 109000037, Value = "NA", Std.Error = "NA", p.value = "NA")
+
+df117000041 <- df[which(df$site==117000041),]
+g1<-gls(nativeAbun ~ yr,na.action=na.omit, data = df117000041)
+trend.117000041 <- summary(gls(nativeAbun ~ yr,na.action=na.omit, data = df117000041))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) #no temporal autocorrelation
+df117000041 <- data.frame(site = 117000041, t(trend.117000041))
+
+
+tot_t<-rbind(trends, df109000037, df117000041)
+
+nativeAbun_df <- tot_t[order(tot_t$site),] 
+xn <- c("nativeAbun_site", "nativeAbun_Est", "nativeAbun_SE", "nativeAbun_p")
+colnames(nativeAbun_df) <- xn
+nrow(nativeAbun_df)
+
+##
+write.csv(nativeAbun_df,"nativeAbun_slopes.csv")
+##
+
+##############################################
+##############################################
+
+##SppRich_nativeSpp
+#subset data for loop
+hist(SppRich_nativeSpp)
+
+df<-data.frame(DATA4$site_id_wMissing, DATA4$year_wMissing, DATA4$SppRich_nativeSpp)
+x <- c("site", "yr", "nativeSppRich")
+colnames(df) <- x
+head(df)
+
+unique(DATA4$site_id_wMissing)
+
+trends <- NULL
+for(i in unique(df$site)){
+  sub <- df[df$site == i, ]
+  trend.i <- summary(gls(nativeSppRich ~ yr,correlation = corAR1(form = ~ yr),na.action=na.omit, data = sub))$tTable[2, c(1,2,4)]
+  trend.i <- data.frame(site = i, 
+                        t(trend.i))
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+} ; rm(i)
+
+nativeSppRich_df <- trends[order(trends$site),] 
+xn <- c("nativeSppRich_site", "nativeSppRich_Est", "nativeSppRich_SE", "nativeSppRich_p")
+colnames(nativeSppRich_df) <- xn
+nrow(nativeSppRich_df)
+
+##
+write.csv(nativeSppRich_df,"nativeSppRich_slopes.csv")
 ##
