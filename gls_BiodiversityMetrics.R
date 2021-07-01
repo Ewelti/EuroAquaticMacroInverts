@@ -5,9 +5,10 @@
 library(nlme)
 
 # attach data
-DATA1_list <- read.csv("raw-data/All_indices_benthicMacroInverts.csv", header=T) # change file name according to the time series to be analyzed
-attach(DATA1_list)
-head(DATA1_list)
+DATA1_list <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
+DATA2 <- DATA1_list[!is.na(DATA1_list$site_id_wMissing),]
+attach(DATA2)
+head(DATA2)
 turnover<-as.numeric(turnover) # make numeric
 
 ####################################
