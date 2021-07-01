@@ -63,10 +63,12 @@ x <- c("site", "yr", "si")
     colnames(df) <- x
 head(df)
 
+#remove problem sites
 df2 <- df[which(df$site!=100000270& df$site!=103000631&
 df$site!=103000632 & df$site!=105000004& df$site!=105000005& 
 df$site!=109000011& df$site!=121000189),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -76,7 +78,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
-
+#check temporal autocorrelation in problem sites
 df100000270 <- df[which(df$site==100000270),]
 g1<-gls(si ~ yr,na.action=na.omit, data = df100000270)
 trend.100000270 <- summary(gls(si ~ yr,na.action=na.omit, data = df100000270))$tTable[2, c(1,2,4)]
@@ -119,9 +121,11 @@ trend.121000189 <- summary(gls(si ~ yr,na.action=na.omit, data = df121000189))$t
 acf(residuals(g1,type="p")) # no temporal autocorrelation
 df121000189  <- data.frame(site = 121000189, t(trend.121000189))
 
+#bind trend results
 tot_t<-rbind(trends, df100000270,df103000631, df103000632, df105000004, df105000005, df109000011, df121000189)
 si_df <- tot_t[order(tot_t$site),] 
 
+#rename gls output
 xn <- c("SimpD_site", "SimpD_Est", "SimpD_SE", "SimpD_p")
     colnames(si_df) <- xn
 head(si_df)
@@ -136,6 +140,7 @@ x <- c("site", "yr", "sh")
     colnames(df) <- x
 head(df)
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df$site)){
   sub <- df[df$site == i, ]
@@ -145,6 +150,7 @@ for(i in unique(df$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#rename gls output
 sh_df <- trends[order(trends$site),] 
 xn <- c("ShanH_site", "ShanH_Est", "ShanH_SE", "ShanD_p")
     colnames(sh_df) <- xn
@@ -160,6 +166,7 @@ x <- c("site", "yr", "ev")
     colnames(df) <- x
 head(df)
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df$site)){
   sub <- df[df$site == i, ]
@@ -169,6 +176,7 @@ for(i in unique(df$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#rename gls output
 ev_df <- trends[order(trends$site),] 
 xn <- c("EvenJ_site", "EvenJ_Est", "EvenJ_SE", "EvenJ_p")
     colnames(ev_df) <- xn
@@ -184,9 +192,11 @@ x <- c("site", "yr", "abun")
     colnames(df) <- x
 head(df)
 
+#remove problem sites
 df2 <- df[which(df$site!=108000043& df$site!=108000044& 
 df$site!=108000057& df$site!=109000270& df$site!=121000206),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -196,6 +206,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df108000043 <- df[which(df$site==108000043),]
 g1<-gls(abun ~ yr,na.action=na.omit, data = df108000043)
 trend.108000043 <- summary(gls(abun ~ yr,na.action=na.omit, data = df108000043))$tTable[2, c(1,2,4)]
@@ -226,9 +237,11 @@ trend.121000206 <- summary(gls(abun ~ yr,na.action=na.omit, data = df121000206))
 acf(residuals(g1,type="p")) # no temporal autocorrelation
 df121000206  <- data.frame(site = 121000206, t(trend.121000206))
 
+#bind trend results
 tot_t<-rbind(trends, df108000043,df108000044, df108000057, df109000270, df121000206)
 ab_df <- tot_t[order(tot_t$site),] 
 
+#rename gls output
 xn <- c("Adun_site", "Adun_Est", "Adun_SE", "Adun_p")
     colnames(ab_df) <- xn
 nrow(ab_df)
@@ -242,8 +255,10 @@ x <- c("site", "yr", "to")
     colnames(df) <- x
 head(df)
 
+#remove problem site
 df2 <- df[which(df$site!=121000013),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -253,15 +268,18 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df121000013 <- df[which(df$site==121000013),]
 g1<-gls(to ~ yr,na.action=na.omit, data = df121000013)
 trend.121000013 <- summary(gls(to ~ yr,na.action=na.omit, data = df121000013))$tTable[2, c(1,2,4)]
 acf(residuals(g1,type="p")) # no temporal autocorrelation
 df121000013  <- data.frame(site = 121000013, t(trend.121000013))
 
+#bind trend results
 tot_t<-rbind(trends, df121000013)
 to_df <- tot_t[order(tot_t$site),] 
 
+#rename gls output
 xn <- c("TurnO_site", "TurnO_Est", "TurnO_SE", "TurnO_p")
     colnames(to_df) <- xn
 nrow(to_df)
@@ -276,9 +294,11 @@ x <- c("site", "yr", "F_to")
     colnames(df) <- x
 head(df)
 
+#remove problem sites
 df2 <- df[which(df$site!=103000552& df$site!=104000141& 
 df$site!=104000142& df$site!=108000153),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -288,10 +308,10 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df103000552 <- df[which(df$site==103000552),]
 g1<-gls(F_to ~ yr,na.action=na.omit, data = df103000552)
-#trend.103000552 <- summary(gls(F_to ~ yr,na.action=na.omit, data = df103000552))$tTable[2, c(1,2,4)]
-#acf(residuals(g1,type="p")) # no temporal autocorrelation
+df103000552 #all values of F_to are the same
 df103000552 <- data.frame(site = 103000552, Value = 0, Std.Error = "NA", p.value = "NA")
 
 df104000141 <- df[which(df$site==104000141),]
@@ -312,9 +332,11 @@ trend.108000153 <- summary(gls(F_to ~ yr,na.action=na.omit, data = df108000153))
 acf(residuals(g1,type="p")) # no temporal autocorrelation
 df108000153  <- data.frame(site = 108000153, t(trend.108000153))
 
+#bind trend results
 tot_t<-rbind(trends, df103000552,df104000141, df104000142, df108000153)
 F_to_df <- tot_t[order(tot_t$site),] 
 
+#rename gls output
 xn <- c("F_to_site", "F_to_Est", "F_to_SE", "F_to_p")
     colnames(F_to_df) <- xn
 nrow(F_to_df)
@@ -328,8 +350,10 @@ x <- c("site", "yr", "FR")
     colnames(df) <- x
 head(df)
 
+#remove problem sites
 df2 <- df[which(df$site!=103000696& df$site!=109000424),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -339,6 +363,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df103000696 <- df[which(df$site==103000696),]
 g1<-gls(FR ~ yr,na.action=na.omit, data = df103000696)
 trend.103000696 <- summary(gls(FR ~ yr,na.action=na.omit, data = df103000696))$tTable[2, c(1,2,4)]
@@ -351,9 +376,11 @@ trend.109000424 <- summary(gls(FR ~ yr,na.action=na.omit, data = df109000424))$t
 acf(residuals(g1,type="p")) # no temporal autocorrelation
 df109000424  <- data.frame(site = 109000424, t(trend.109000424))
 
+#bind trend results
 tot_t<-rbind(trends, df103000696, df109000424)
 FRic_df <- tot_t[order(tot_t$site),] 
 
+#rename gls output
 xn <- c("FRic_site", "FRic_Est", "FRic_SE", "FRic_p")
     colnames(FRic_df) <- xn
 nrow(FRic_df)
@@ -368,8 +395,10 @@ x <- c("site", "yr", "FEve")
     colnames(df) <- x
 head(df)
 
+#remove problem site
 df2 <- df[which(df$site!=103000056& df$site!=114000047),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -379,6 +408,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df103000056 <- df[which(df$site==103000056),]
 g1<-gls(FEve ~ yr,na.action=na.omit, data = df103000056)
 trend.103000056 <- summary(gls(FEve ~ yr,na.action=na.omit, data = df103000056))$tTable[2, c(1,2,4)]
@@ -391,9 +421,11 @@ trend.114000047 <- summary(gls(FEve ~ yr,na.action=na.omit, data = df114000047))
 acf(residuals(g1,type="p")) # no temporal autocorrelation
 df114000047  <- data.frame(site = 114000047, t(trend.114000047))
 
+#bind trend results
 tot_t<-rbind(trends, df103000056,df114000047)
 FEve_df <- tot_t[order(tot_t$site),] 
 
+#rename gls output
 xn <- c("FEve_site", "FEve_Est", "FEve_SE", "FEve_p")
     colnames(FEve_df) <- xn
 nrow(FEve_df)
@@ -408,6 +440,7 @@ x <- c("site", "yr", "FDiv")
     colnames(df) <- x
 head(df)
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df$site)){
   sub <- df[df$site == i, ]
@@ -417,6 +450,7 @@ for(i in unique(df$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#order sites and rename gls output
 FDiv_df <- trends[order(trends$site),] 
 xn <- c("FDiv_site", "FDiv_Est", "FDiv_SE", "FDiv_p")
     colnames(FDiv_df) <- xn
@@ -432,8 +466,10 @@ x <- c("site", "yr", "FDis")
     colnames(df) <- x
 head(df)
 
+#remove problem sites
 df2 <- df[which(df$site!=100000167& df$site!=108000024),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -443,6 +479,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df100000167 <- df[which(df$site==100000167),]
 g1<-gls(FDis ~ yr,na.action=na.omit, data = df100000167)
 trend.100000167 <- summary(gls(FDis ~ yr,na.action=na.omit, data = df100000167))$tTable[2, c(1,2,4)]
@@ -455,9 +492,11 @@ trend.108000024 <- summary(gls(FDis ~ yr,na.action=na.omit, data = df108000024))
 acf(residuals(g1,type="p")) # no temporal autocorrelation
 df108000024  <- data.frame(site = 108000024, t(trend.108000024))
 
+#bind trend results
 tot_t<-rbind(trends, df100000167,df108000024)
 FDis_df <- tot_t[order(tot_t$site),] 
 
+#rename gls output
 xn <- c("FDis_site", "FDis_Est", "FDis_SE", "FDis_p")
     colnames(FDis_df) <- xn
 nrow(FDis_df)
@@ -472,6 +511,7 @@ x <- c("site", "yr", "RaoQ")
     colnames(df) <- x
 head(df)
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df$site)){
   sub <- df[df$site == i, ]
@@ -486,16 +526,18 @@ xn <- c("RaoQ_site", "RaoQ_Est", "RaoQ_SE", "RaoQ_p")
     colnames(RaoQ_df) <- xn
 nrow(RaoQ_df)
 ##############################################
-
+#bind results
 glm.output<- cbind(sr_df, si_df,sh_df,ev_df,ab_df,to_df,F_to_df,FRic_df,FEve_df,FDiv_df,RaoQ_df)
 head(glm.output)
 
+#make numeric
 glm.output$Adun_site<-as.numeric(glm.output$Adun_site)
 glm.output$ShanH_site<-as.numeric(glm.output$ShanH_site)
 glm.output$EvenJ_site<-as.numeric(glm.output$EvenJ_site)
 glm.output$FDiv_site<-as.numeric(glm.output$FDiv_site)
 glm.output$RaoQ_site<-as.numeric(glm.output$RaoQ_site)
 
+#check if sites are in the same order
 identical(glm.output$SppRich_site,glm.output$SimpD_site)
 identical(glm.output$SppRich_site,glm.output$ShanH_site)
 identical(glm.output$SppRich_site,glm.output$EvenJ_site)
@@ -507,14 +549,16 @@ identical(glm.output$SppRich_site,glm.output$FEve_site)
 identical(glm.output$SppRich_site,glm.output$FDiv_site)
 identical(glm.output$SppRich_site,glm.output$RaoQ_site)
 
+#remove site codes so there are not some many duplicate rows
 library(dplyr)
 new_df<-select(glm.output, -c("SimpD_site","ShanH_site","EvenJ_site","Adun_site",
 "TurnO_site","F_to_site","FRic_site","FEve_site","FDiv_site","RaoQ_site"))
 
+#rename the remaining site code column
 names(new_df)[names(new_df) == 'SppRich_site'] <- 'site'
 head(new_df)
 
-##
+##write all glm outputs to a csv
 write.csv(new_df,"glmOutput.csv")
 ##
 ################################################################
@@ -524,6 +568,9 @@ write.csv(new_df,"glmOutput.csv")
 
 #####ALIENS
 # attach data
+#this data is the same as raw-data/All_indices_benthicMacroInverts_AllYears.csv
+#accept that the sites IDed to family level are removed because non-native species are not able to be be determined at family level
+#and sites with all no non-native species are removed because these make singular models
 DATA3 <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears_alienSub.csv", header=T) # change file name according to the time series to be analyzed
 DATA4 <- DATA3[!is.na(DATA3$site_id_wMissing),]
 attach(DATA4)
@@ -536,10 +583,13 @@ x <- c("site", "yr", "PropAlienAbun")
 colnames(df) <- x
 head(df)
 
+#check site names
 unique(DATA4$site_id_wMissing)
 
+#remove problem sites
 df2 <- df[which(df$site!=108000067& df$site!=109000313& df$site!=117000042& df$site!=121000190),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -549,6 +599,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df108000067 <- df[which(df$site==108000067),]
 g1<-gls(PropAlienAbun ~ yr,na.action=na.omit, data = df108000067)
 trend.108000067 <- summary(gls(PropAlienAbun ~ yr,na.action=na.omit, data = df108000067))$tTable[2, c(1,2,4)]
@@ -573,8 +624,10 @@ trend.121000190 <- summary(gls(PropAlienAbun ~ yr,na.action=na.omit, data = df12
 acf(residuals(g1,type="p")) # no temporal autocorrelation
 df121000190 <- data.frame(site = 121000190, t(trend.121000190))
 
+#bind trend results
 tot_t<-rbind(trends, df108000067, df109000313, df117000042, df121000190)
 
+#order sites and rename gls output
 AlienAbunProp_df <- tot_t[order(tot_t$site),] 
 xn <- c("AlienAbunProp_site", "AlienAbunProp_Est", "AlienAbunProp_SE", "AlienAbunProp_p")
 colnames(AlienAbunProp_df) <- xn
@@ -595,8 +648,10 @@ head(df)
 
 unique(DATA4$site_id_wMissing)
 
+#remove problem site
 df2 <- df[which(df$site!=103000632),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -606,14 +661,17 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df103000632 <- df[which(df$site==103000632),]
 g1<-gls(PropAlienSppRich ~ yr,na.action=na.omit, data = df103000632)
 trend.103000632 <- summary(gls(PropAlienSppRich ~ yr,na.action=na.omit, data = df103000632))$tTable[2, c(1,2,4)]
 acf(residuals(g1,type="p")) #temporal autocorrelation :/
 df103000632 <- data.frame(site = 103000632, Value = "NA", Std.Error = "NA", p.value = "NA")
 
+#bind trend results
 tot_t<-rbind(trends, df103000632)
 
+#order sites and rename gls output
 AlienSppRichProp_df <- tot_t[order(tot_t$site),] 
 xn <- c("AlienAbunProp_site", "AlienSppRichProp_Est", "AlienSppRichProp_SE", "AlienSppRichProp_p")
 colnames(AlienAbunProp_df) <- xn
@@ -625,7 +683,6 @@ write.csv(AlienSppRichProp_df,"AlienSppRichProp_slopes.csv")
 
 ##############################################
 ##############################################
-
 ##abund_alienSpp
 #subset data for loop
 hist(abund_alienSpp)
@@ -637,9 +694,11 @@ head(df)
 
 unique(DATA4$site_id_wMissing)
 
+#remove problem sites
 #df2 <- df[which(df$site!=108000057& df$site!=108000149& df$site!=109000401),] #withoutlog
 df2 <- df[which(df$site!=107000057& df$site!=107000234& df$site!=109000169),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -649,6 +708,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df107000057 <- df[which(df$site==107000057),]
 g1<-gls(AlienAbun ~ yr,na.action=na.omit, data = df107000057)
 trend.107000057 <- summary(gls(AlienAbun ~ yr,na.action=na.omit, data = df107000057))$tTable[2, c(1,2,4)]
@@ -667,9 +727,10 @@ trend.109000169 <- summary(gls(AlienAbun ~ yr,na.action=na.omit, data = df109000
 acf(residuals(g1,type="p")) #no temporal autocorrelation
 df109000169 <- data.frame(site = 109000169, t(trend.109000169))
 
-
+#bind trend results
 tot_t<-rbind(trends, df107000057, df107000234, df109000169)
 
+#order sites and rename gls output
 AlienAbun_df <- tot_t[order(tot_t$site),] 
 xn <- c("AlienAbun_site", "AlienAbun_Est", "AlienAbun_SE", "AlienAbun_p")
 colnames(AlienAbun_df) <- xn
@@ -693,11 +754,13 @@ head(df)
 
 unique(DATA4$site_id_wMissing)
 
+#remove problem sites
 df2 <- df[which(df$site!=105000006& df$site!=105000012& df$site!=107000057& df$site!=107000126& 
                   df$site!=107000228& df$site!=108000057& df$site!=109000079& df$site!=109000080& df$site!=109000143&
                   df$site!=109000163& df$site!=109000190& df$site!=109000343& df$site!=109000374& df$site!=109000375&
                   df$site!=114000090),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -707,6 +770,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df105000006 <- df[which(df$site==105000006),]
 df105000006
 df105000006 <- data.frame(site = 105000006, Value = "0", Std.Error = "0", p.value = "NA")
@@ -777,10 +841,12 @@ df114000090 <- df[which(df$site==114000090),]
 df114000090
 df114000090 <- data.frame(site = 114000090, Value = "0", Std.Error = "0", p.value = "NA")
 
+#bind trend results
 tot_t<-rbind(trends, df105000006, df105000012, df107000057, df107000126, df107000228, 
              df108000057, df109000079, df109000080, df109000143, df109000163, 
              df109000190, df109000343, df109000374, df109000375, df114000090)
 
+#order sites and rename gls output
 AlienSppRich_df <- tot_t[order(tot_t$site),] 
 xn <- c("AlienSppRich_site", "AlienSppRich_Est", "AlienSppRich_SE", "AlienSppRich_p")
 colnames(AlienSppRich_df) <- xn
@@ -804,8 +870,10 @@ head(df)
 
 unique(DATA4$site_id_wMissing)
 
+#remove problem sites
 df2 <- df[which(df$site!=109000037& df$site!=117000041),]
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df2$site)){
   sub <- df2[df2$site == i, ]
@@ -815,6 +883,7 @@ for(i in unique(df2$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#check temporal autocorrelation in problem sites
 df109000037 <- df[which(df$site==109000037),]
 g1<-gls(nativeAbun ~ yr,na.action=na.omit, data = df109000037)
 trend.109000037 <- summary(gls(nativeAbun ~ yr,na.action=na.omit, data = df109000037))$tTable[2, c(1,2,4)]
@@ -827,9 +896,10 @@ trend.117000041 <- summary(gls(nativeAbun ~ yr,na.action=na.omit, data = df11700
 acf(residuals(g1,type="p")) #no temporal autocorrelation
 df117000041 <- data.frame(site = 117000041, t(trend.117000041))
 
-
+#bind trend results
 tot_t<-rbind(trends, df109000037, df117000041)
 
+#order sites and rename gls output
 nativeAbun_df <- tot_t[order(tot_t$site),] 
 xn <- c("nativeAbun_site", "nativeAbun_Est", "nativeAbun_SE", "nativeAbun_p")
 colnames(nativeAbun_df) <- xn
@@ -853,6 +923,7 @@ head(df)
 
 unique(DATA4$site_id_wMissing)
 
+#calculate gls trends
 trends <- NULL
 for(i in unique(df$site)){
   sub <- df[df$site == i, ]
@@ -862,6 +933,7 @@ for(i in unique(df$site)){
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
 } ; rm(i)
 
+#order sites and rename gls output
 nativeSppRich_df <- trends[order(trends$site),] 
 xn <- c("nativeSppRich_site", "nativeSppRich_Est", "nativeSppRich_SE", "nativeSppRich_p")
 colnames(nativeSppRich_df) <- xn
