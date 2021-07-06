@@ -342,16 +342,16 @@ xn <- c("F_to_site", "F_to_Est", "F_to_SE", "F_to_p")
 nrow(F_to_df)
 ##############################################
 #FRic
-hist(log10(FRicNotScaled))
+hist(log10(Fric))
 
 #subset data for loop
-df<-data.frame(site_id, year_wMissing, log10(FRicNotScaled))
+df<-data.frame(site_id, year_wMissing, log10(Fric))
 x <- c("site", "yr", "FR")
     colnames(df) <- x
 head(df)
 
 #remove problem sites
-df2 <- df[which(df$site!=103000696& df$site!=109000424),]
+df2 <- df[which(df$site!=103000552& df$site!=104000142& df$site!=108000153),]
 
 #calculate gls trends
 trends <- NULL
@@ -364,20 +364,24 @@ for(i in unique(df2$site)){
 } ; rm(i)
 
 #check temporal autocorrelation in problem sites
-df103000696 <- df[which(df$site==103000696),]
-g1<-gls(FR ~ yr,na.action=na.omit, data = df103000696)
-trend.103000696 <- summary(gls(FR ~ yr,na.action=na.omit, data = df103000696))$tTable[2, c(1,2,4)]
-acf(residuals(g1,type="p")) # no temporal autocorrelation
-df103000696  <- data.frame(site = 103000696, t(trend.103000696))
+df103000552 <- df[which(df$site==103000552),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df103000552)
+#trend.103000552 <- summary(gls(FR ~ yr,na.action=na.omit, data = df103000552))$tTable[2, c(1,2,4)]
+#acf(residuals(g1,type="p"))
+df103000552 <- data.frame(site = 103000552, Value = 0, Std.Error = "NA", p.value = "NA")
 
-df109000424 <- df[which(df$site==109000424),]
-g1<-gls(FR ~ yr,na.action=na.omit, data = df109000424)
-trend.109000424 <- summary(gls(FR ~ yr,na.action=na.omit, data = df109000424))$tTable[2, c(1,2,4)]
-acf(residuals(g1,type="p")) # no temporal autocorrelation
-df109000424  <- data.frame(site = 109000424, t(trend.109000424))
+df104000142 <- df[which(df$site==104000142),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df104000142)
+df104000142  <- data.frame(site = 104000142, Value = 0, Std.Error = "NA", p.value = "NA")
+
+df108000153 <- df[which(df$site==108000153),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df108000153)
+trend.108000153 <- summary(gls(FR ~ yr,na.action=na.omit, data = df108000153))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) # no temporal autocorrelation :)
+df108000153  <- data.frame(site = 108000153, t(trend.108000153))
 
 #bind trend results
-tot_t<-rbind(trends, df103000696, df109000424)
+tot_t<-rbind(trends, df103000552, df104000142, df108000153)
 FRic_df <- tot_t[order(tot_t$site),] 
 
 #rename gls output
