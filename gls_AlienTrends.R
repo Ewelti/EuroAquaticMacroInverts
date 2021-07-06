@@ -1,12 +1,5 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/aquatic_data")
-
-#####ALIENS
-# attach data
-DATA3 <- read.csv("All_indices_benthicMacroInverts_AllYears_alienSub.csv", header=T) # change file name according to the time series to be analyzed
-DATA4 <- DATA3[!is.na(DATA3$site_id_wMissing),]
-head(DATA4)
-
+#setwd("C:/Users/ewelti/Desktop/aquatic_data")
 
 ###################################################
 ##############################################
