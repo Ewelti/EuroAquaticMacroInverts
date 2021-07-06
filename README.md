@@ -7,13 +7,12 @@ The file "All_indices_benthicMacroInverts_AllYears.csv" contains data for each s
 
 The file "All_siteLevel_and_glmOutput.csv" contains data for each site on slopes of functional and taxonomic diversity indices and environmental drivers.
 
-The R code "gls_BiodiversityMetrics" was used to calculate slopes of all biodiversity metrics for each site.
+The script "gls_BiodiversityMetrics" was used to calculate slopes of all biodiversity metrics for each site.
+The script "gls_AlienTrends" was used to calculate slopes of non-native species abundances and richness for each site.
 
 The script "Stan_example_codes.R" contains some useful code to run model in Stan
 
 
 Ongoing issues:
-
---Values of FRic (Functional Richness) and Rao's Q are currently being recaluculated using standardized values within each site.
 
 --Currently land-use values refer to land-use within microbasins the site is located within. Land-use for the larger upstream area is currently being caluculated and will later be added.
