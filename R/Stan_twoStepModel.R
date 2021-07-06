@@ -9,8 +9,6 @@ d1 <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears.csv", header=T
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 head(allYrs)
 
-slopeData <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
-head(slopeData)
 #### two-stage models ####
 
 #fit trend model to a single time-series
@@ -26,18 +24,21 @@ prior = c(set_prior("normal(0,0.5)", class = "ar"), #I don't know what/if to cha
           set_prior("normal(0,5)", class = "b"))
 
 #including autocorrelation (of the residuals)
-fit1 <- brm(spp_richness ~ year_wMissing, autocor = cor_ar(~year_wMissing, p = 1),data = site100000001, family = poisson())
+fit1 <- brm(spp_richness ~ year_wMissing, autocor = cor_ar(~year_wMissing, p = 1),data = site100000001, family = poisson()) #'cor_brms' objects for 'autocor' is deprecated
+fit1 <- brm(spp_richness ~ year_wMissing + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
 
-#including random effects
-fit1 <- brm(Response ~ Year + (1|Year), autocor = cor_ar(~Year, p = 1),data = mydata, family = poisson())
+#cor_brms#including random effects
+fit1 <- brm(spp_richness ~ year_wMissing + (1|year_wMissing) + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
 
+slopeData <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
+head(slopeData)
 
 #combine trends in mixed model
 
 prior1 <- prior(normal(0,5), class = b) +
   prior(cauchy(0,2), class = sd)
 
-fit1 <- brm(trend|weights(w) ~ 1 + (1|StudyID),data = mydata, family = gaussian(), prior = prior1)
+fit1 <- brm(SppRich_Est|weights(SppRich_SE) ~ 1 + (1|site),data = slopeData, family = gaussian(), prior = prior1)
 
 #where w = 1/sd of the trend estimates
 
