@@ -3,7 +3,7 @@
 #setwd(dir = "C:/Users/Ellen/Desktop/aquatic_data/")
 
 # attach data
-go <- read.csv("All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
+go <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
 attach(go)
 head(go)
 
