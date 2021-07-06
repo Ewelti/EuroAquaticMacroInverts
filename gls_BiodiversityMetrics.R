@@ -351,7 +351,7 @@ x <- c("site", "yr", "FR")
 head(df)
 
 #remove problem sites
-df2 <- df[which(df$site!=103000552& df$site!=104000142& df$site!=108000153),]
+df2 <- df[which(df$site!=100000005& df$site!=100000014& df$site!=100000189& df$site!=103000696),]
 
 #calculate gls trends
 trends <- NULL
@@ -364,24 +364,32 @@ for(i in unique(df2$site)){
 } ; rm(i)
 
 #check temporal autocorrelation in problem sites
-df103000552 <- df[which(df$site==103000552),]
-g1<-gls(FR ~ yr,na.action=na.omit, data = df103000552)
-#trend.103000552 <- summary(gls(FR ~ yr,na.action=na.omit, data = df103000552))$tTable[2, c(1,2,4)]
-#acf(residuals(g1,type="p"))
-df103000552 <- data.frame(site = 103000552, Value = 0, Std.Error = "NA", p.value = "NA")
-
-df104000142 <- df[which(df$site==104000142),]
-g1<-gls(FR ~ yr,na.action=na.omit, data = df104000142)
-df104000142  <- data.frame(site = 104000142, Value = 0, Std.Error = "NA", p.value = "NA")
-
-df108000153 <- df[which(df$site==108000153),]
-g1<-gls(FR ~ yr,na.action=na.omit, data = df108000153)
-trend.108000153 <- summary(gls(FR ~ yr,na.action=na.omit, data = df108000153))$tTable[2, c(1,2,4)]
+df100000005 <- df[which(df$site==100000005),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df100000005)
+trend.100000005 <- summary(gls(FR ~ yr,na.action=na.omit, data = df100000005))$tTable[2, c(1,2,4)]
 acf(residuals(g1,type="p")) # no temporal autocorrelation :)
-df108000153  <- data.frame(site = 108000153, t(trend.108000153))
+df100000005  <- data.frame(site = 100000005, t(trend.100000005))
+
+df100000014 <- df[which(df$site==100000014),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df100000014)
+trend.100000014 <- summary(gls(FR ~ yr,na.action=na.omit, data = df100000014))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) # temporal autocorrelation :/
+df100000014  <- data.frame(site = 100000014, Value = "NA", Std.Error = "NA", p.value = "NA")
+
+df100000189 <- df[which(df$site==100000189),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df100000189)
+trend.100000189 <- summary(gls(FR ~ yr,na.action=na.omit, data = df100000189))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) # no temporal autocorrelation :)
+df100000189  <- data.frame(site = 100000189, t(trend.100000189))
+
+df103000696 <- df[which(df$site==103000696),]
+g1<-gls(FR ~ yr,na.action=na.omit, data = df103000696)
+trend.103000696 <- summary(gls(FR ~ yr,na.action=na.omit, data = df103000696))$tTable[2, c(1,2,4)]
+acf(residuals(g1,type="p")) # no temporal autocorrelation :)
+df103000696  <- data.frame(site = 103000696, t(trend.103000696))
 
 #bind trend results
-tot_t<-rbind(trends, df103000552, df104000142, df108000153)
+tot_t<-rbind(trends, df100000005, df100000014, df100000189, df103000696)
 FRic_df <- tot_t[order(tot_t$site),] 
 
 #rename gls output
