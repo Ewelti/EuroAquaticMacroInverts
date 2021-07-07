@@ -12,6 +12,7 @@ The script "gls_AlienTrends" was used to calculate slopes of non-native species 
 
 The script "Stan_example_codes.R" contains some useful code to run model in Stan
 
+The scripts of density plots and slopes over mean sampling year provide some visualizations of the results of site biodiversity slopes.
 
 Ongoing issues:
 
