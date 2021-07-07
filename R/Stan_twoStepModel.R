@@ -1,13 +1,17 @@
 #install.packages("brms")
-if (!require(devtools)) {
-  install.packages("devtools")
-}
+# if (!require(devtools)) {
+#   install.packages("devtools")
+# }
 library(brms)
 
 #load data
 d1 <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 head(allYrs)
+
+
+#helps model convergence to center variables
+allYrs$cYear <- allYrs$year_wMissing - median(allYrs$year_wMissing)
 
 #### two-stage models ####
 
@@ -24,10 +28,21 @@ prior = c(set_prior("normal(0,0.5)", class = "ar"), #I don't know what/if to cha
           set_prior("normal(0,5)", class = "b"))
 
 #including autocorrelation (of the residuals)
-fit1 <- brm(spp_richness ~ year_wMissing, autocor = cor_ar(~year_wMissing, p = 1),data = site100000001, family = poisson()) #'cor_brms' objects for 'autocor' is deprecated
-fit1 <- brm(spp_richness ~ year_wMissing + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+#fit1 <- brm(spp_richness ~ year_wMissing, autocor = cor_ar(~year_wMissing, p = 1),data = site100000001, family = poisson()) #'cor_brms' objects for 'autocor' is deprecated
 
-#cor_brms#including random effects
+fit1 <- brm(spp_richness ~ year_wMissing + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+summary(fit1)
+
+#including seasonal term??
+unique(site100000001$month)
+
+fit1 <- brm(spp_richness ~ month + year_wMissing + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+summary(fit1)
+
+#might not to consider as a spline term
+
+
+#including year random effects - probably not necessary (recommened by Daskalova et al.)
 fit1 <- brm(spp_richness ~ year_wMissing + (1|year_wMissing) + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
 
 ##load pre-calculated slopes
