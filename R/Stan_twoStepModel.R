@@ -30,6 +30,7 @@ fit1 <- brm(spp_richness ~ year_wMissing + ar(time = year_wMissing, p = 1),data 
 #cor_brms#including random effects
 fit1 <- brm(spp_richness ~ year_wMissing + (1|year_wMissing) + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
 
+##load pre-calculated slopes
 slopeData <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
 head(slopeData)
 
@@ -38,7 +39,9 @@ head(slopeData)
 prior1 <- prior(normal(0,5), class = b) +
   prior(cauchy(0,2), class = sd)
 
-fit1 <- brm(SppRich_Est|weights(SppRich_SE) ~ 1 + (1|site),data = slopeData, family = gaussian(), prior = prior1)
+sr <- slopeData[!is.na(slopeData$SppRich_Est),]
+fit1 <- brm(SppRich_Est|weights(SppRich_SE) ~ 1 + (1|site),data = sr, family = gaussian(), prior = prior1)
+fit1 <- brm(SppRich_Est|se(SppRich_SE, sigma = TRUE) ~ 1 + (1|site),data = sr, family = gaussian(), prior = prior1) #Ellen made this and is unsure about it
 
 #where w = 1/sd of the trend estimates
 
