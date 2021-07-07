@@ -68,4 +68,5 @@ ggplot(DATA2, aes(x=month_numeric, y=spp_richness))+
   geom_point(aes(colour = year))+
   facet_wrap(~country)+
   theme_few()+
+  scale_colour_viridis_c()+
   xlab("month") + ylab("Species richness")
