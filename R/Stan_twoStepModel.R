@@ -3,15 +3,24 @@
 #   install.packages("devtools")
 # }
 library(brms)
+library(lubridate)
 
 #load data
 d1 <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 head(allYrs)
 
-
-#helps model convergence to center variables
+#centre Year - helps model convergence to center variables for the model
 allYrs$cYear <- allYrs$year_wMissing - median(allYrs$year_wMissing)
+summary(allYrs$cYear)
+#or just have as an index starting from 1
+allYrs$iYear <- allYrs$year_wMissing - min(allYrs$year_wMissing)+1
+summary(allYrs$iYear)
+
+#pull out date information (check with Ellen that is right?)
+allYrs$Date <- sapply(as.character(allYrs$sample_id),function(x)strsplit(x,"_")[[1]][2])
+allYrs$Date <- as.Date(allYrs$Date, format="%d.%m.%Y")
+allYrs$day_of_year <- yday(allYrs$Date)
 
 #### two-stage models ####
 
@@ -36,14 +45,28 @@ summary(fit1)
 #including seasonal term??
 unique(site100000001$month)
 
-fit1 <- brm(spp_richness ~ month + year_wMissing + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+fit1 <- brm(spp_richness ~ day_of_year + year_wMissing + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
 summary(fit1)
 
-#might not to consider as a spline term
+#might need to consider month (or day of year) as a spline term though for other datasets
+
+
+# write a function to do this for any given dataset
+fitStanModel <- function(mydata){
+  
+  #write model formula
+  nuMonths = length(unique(mydata$m))
+  myformula <- 
+  
+}
+
+#apply function to an example dataset
 
 
 #including year random effects - probably not necessary (recommened by Daskalova et al.)
-fit1 <- brm(spp_richness ~ year_wMissing + (1|year_wMissing) + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+#maybe check later
+#fit1 <- brm(spp_richness ~ year_wMissing + (1|year_wMissing) + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+
 
 ##load pre-calculated slopes
 slopeData <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
