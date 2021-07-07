@@ -70,7 +70,7 @@ fitStanModel <- function(mydata){
   }
   
   #fit model
-  fit1 <- brm(myformula, data = mydata, family = poisson(), prior = prior1, silent=2)
+  fit1 <- brm(myformula, data = mydata, family = poisson(), prior = prior1, refresh = 0)
   
   #extract model fits
   modelSummary <- fixef(fit1, pars="cYear")
