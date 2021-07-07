@@ -59,13 +59,27 @@ fit1 <- brm(spp_richness ~ s(cday_of_year) + cYear + ar(time = iYear, p = 1),dat
 fitStanModel <- function(mydata){
   
   #write model formula
-  nuMonths = length(unique(mydata$m))
-  myformula <- bf(spp_richness ~ s(cday_of_year) + cYear + ar(time = iYear, p = 1))
+  
+  #if sampling occurs in more than one month include a seasonal term in the model
+  nuMonths = length(unique(mydata$month))
+  
+  if(nuMonths == 1) {
+    myformula <- bf(spp_richness ~ cYear + ar(time = iYear, p = 1))
+  } else{
+    myformula <- bf(spp_richness ~ cday_of_year + cYear + ar(time = iYear, p = 1))
+  }
+  
+  #fit model
+  fit1 <- brm(myformula, data = mydata, family = poisson(), prior = prior1, silent=2)
+  
+  #extract model fits
+  modelSummary <- fixef(fit1, pars="cYear")
+  return(modelSummary)
   
 }
 
 #apply function to an example dataset
-
+fitStanModel(allYrs[which(allYrs$site_id=="100000001"),])
 
 #including year random effects - probably not necessary (recommened by Daskalova et al.)
 #maybe check later
