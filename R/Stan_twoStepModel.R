@@ -92,14 +92,35 @@ head(slopeData)
 
 #combine trends in mixed model
 
-prior1 <- prior(normal(0,5), class = b) +
-  prior(cauchy(0,2), class = sd)
-
+#Species richness dataset
 sr <- slopeData[!is.na(slopeData$SppRich_Est),]
-fit1 <- brm(SppRich_Est|weights(SppRich_SE) ~ 1 + (1|site),data = sr, family = gaussian(), prior = prior1)
-fit1 <- brm(SppRich_Est|se(SppRich_SE, sigma = TRUE) ~ 1 + (1|site),data = sr, family = gaussian(), prior = prior1) #Ellen made this and is unsure about it
-
 #where w = 1/sd of the trend estimates
+
+sr$SppRich_weights <- 1/sr$SppRich_SE
+hist(sr$SppRich_weights)
+
+#look at normality of slopes
+hist(sr$SppRich_Est)
+
+#what random effects?
+#country?
+#site
+table(sr$site)
+#doesnt make sense to include site as a random ID since we only have one value per site
+
+
+#see what the default priors are
+get_prior(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|country),
+          data = sr, family = gaussian())
+#default ones ok  - we might play later with this more
+
+prior2 = c(set_prior("cauchy(0,2)", class = "sd"))#cauchy prior common for sd 
+
+fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|country),
+            data = sr, family = gaussian(), prior = prior2)
+
+summary(fit1)
+plot(fit1)
 
 ### one-stage model #####
 
