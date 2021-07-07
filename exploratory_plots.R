@@ -90,3 +90,5 @@ ggplot(DATA2, aes(x=month_numeric, y=spp_richness))+
   theme_few()+
   scale_colour_viridis_c()+
   xlab("month") + ylab("Species richness")
+
+ggsave("plots/raw_seasonality.png", width=10,height=6)
