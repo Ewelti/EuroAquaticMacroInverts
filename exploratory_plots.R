@@ -40,7 +40,7 @@ ggplot(DATA2, aes(x = year, y = spp_richness))+
 
 ggsave("plots/raw_timeseries.png", width=10,height=6)
 
-#simple linear fits
+#simple linear fits using geom_smooth
 
 ggplot(DATA2, aes(x=year, y=spp_richness, group=factor(site_id)))+
   facet_wrap(~country)+
@@ -56,3 +56,16 @@ ggplot(DATA2, aes(x=year, y=spp_richness))+
   theme_few()+
   geom_smooth(method="lm")+
   xlab("Year") + ylab("Species richness")
+
+
+#### monthly pattern ?? ####
+
+unique(DATA2$month)
+DATA2$month[which(DATA2$month == "6to8")] <- "7"
+DATA2$month_numeric <- as.numeric(DATA2$month)
+
+ggplot(DATA2, aes(x=month_numeric, y=spp_richness))+
+  geom_point(aes(colour = year))+
+  facet_wrap(~country)+
+  theme_few()+
+  xlab("month") + ylab("Species richness")
