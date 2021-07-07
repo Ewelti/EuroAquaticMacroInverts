@@ -21,11 +21,14 @@ summary(allYrs$iYear)
 allYrs$Date <- sapply(as.character(allYrs$sample_id),function(x)strsplit(x,"_")[[1]][2])
 allYrs$Date <- as.Date(allYrs$Date, format="%d.%m.%Y")
 allYrs$day_of_year <- yday(allYrs$Date)
-
+allYrs$cday_of_year <- allYrs$day_of_year - median(allYrs$day_of_year,na.rm=T)
+  
 #### two-stage models ####
 
 #fit trend model to a single time-series
 site100000001<-allYrs[which(allYrs$site_id=="100000001"),]
+
+#simplest model:
 fit1 <- brm(spp_richness ~ year_wMissing, data = site100000001,family = poisson())
 fit1
 
@@ -33,7 +36,7 @@ fit1
 get_prior(spp_richness ~ year_wMissing, data = site100000001, family = poisson())
 
 #set priors now
-prior = c(set_prior("normal(0,0.5)", class = "ar"), #I don't know what/if to change here
+prior1 = c(set_prior("normal(0,0.5)", class = "ar"), #I don't know what/if to change here
           set_prior("normal(0,5)", class = "b"))
 
 #including autocorrelation (of the residuals)
@@ -45,18 +48,19 @@ summary(fit1)
 #including seasonal term??
 unique(site100000001$month)
 
-fit1 <- brm(spp_richness ~ day_of_year + year_wMissing + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+fit1 <- brm(spp_richness ~ cday_of_year + cYear + ar(time = iYear, p = 1),data = site100000001, family = poisson(), prior = prior1)
 summary(fit1)
 
-#might need to consider month (or day of year) as a spline term though for other datasets
-
+#might need to consider month (or day of year) as a spline term though for other datasets??
+#the above linear term would not model complex seasonal patterns...
+fit1 <- brm(spp_richness ~ s(cday_of_year) + cYear + ar(time = iYear, p = 1),data = site100000001, family = poisson(), prior = prior1)
 
 # write a function to do this for any given dataset
 fitStanModel <- function(mydata){
   
   #write model formula
   nuMonths = length(unique(mydata$m))
-  myformula <- 
+  myformula <- bf(spp_richness ~ s(cday_of_year) + cYear + ar(time = iYear, p = 1))
   
 }
 
