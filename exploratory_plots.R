@@ -1,5 +1,6 @@
 #### libraries #####
 
+library(tidyverse)
 library(ggplot2)
 library(ggthemes)
 
@@ -8,13 +9,50 @@ library(ggthemes)
 DATA1_list <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
 DATA2 <- DATA1_list[!is.na(DATA1_list$site_id_wMissing),]
 
+#### quick exploratory analysis ####
 
-#### do time-series plots ####
+glimpse(DATA2)
+
+DATA2 %>%
+  group_by(country,year) %>%
+  summarise(nuYears = length(unique(site_id)))
+
+DATA2 %>%
+  group_by(country,site_id) %>%
+  summarise(nuYears = length(unique(year)))
+
+DATA2 %>%
+  group_by(country,site_id,year,sample_id) %>%
+  count()
+
+table(DATA2$month)
+
+#### time-series plots ####
 
 #raw data
-ggplot(DATA2)+
-  geom_point(aes(x=year, y=spp_richness,group=site_id))+
-  facet_wrap(~country)+
-  theme_few()
+
+ggplot(DATA2, aes(x = year, y = spp_richness))+
+  geom_point(aes(colour = factor(site_id)))+
+  facet_wrap(~ country)+
+  theme_few()+
+  theme(legend.position = "none")+
+  xlab("Year") + ylab("Species richness")
+
+ggsave("plots/raw_timeseries.png", width=10,height=6)
 
 #simple linear fits
+
+ggplot(DATA2, aes(x=year, y=spp_richness, group=factor(site_id)))+
+  facet_wrap(~country)+
+  theme_few()+
+  geom_smooth(aes(colour = factor(site_id)), method="lm")+
+  theme(legend.position = "none")+
+  xlab("Year") + ylab("Species richness")
+
+ggsave("plots/simple_linear.png", width=10,height=6)
+
+ggplot(DATA2, aes(x=year, y=spp_richness))+
+  facet_wrap(~country)+
+  theme_few()+
+  geom_smooth(method="lm")+
+  xlab("Year") + ylab("Species richness")
