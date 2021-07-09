@@ -104,19 +104,18 @@ hist(sr$SppRich_Est)
 
 #what random effects?
 #country?
-#site
-table(sr$site)
 #doesnt make sense to include site as a random ID since we only have one value per site
+table(sr$study_id) # study code
 
 
 #see what the default priors are
-get_prior(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country),
+get_prior(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country) + (1|study_id),
           data = sr, family = gaussian())
 #default ones ok  - we might play later with this more
 
 prior2 = c(set_prior("cauchy(0,2)", class = "sd"))#cauchy prior common for sd 
 
-fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country),
+fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country) + (1|study_id),
             data = sr, family = gaussian(), prior = prior2)
 
 summary(fit1)
