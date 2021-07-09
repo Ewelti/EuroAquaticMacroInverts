@@ -1,0 +1,4 @@
+*outputs/FunctionalTraits/CWMs_longform.cs filter=lfs diff=lfs merge=lfs -text
+outputs/FunctionalTraits/CWMs_longform.csv filter=lfs diff=lfs merge=lfs -text
+raw-data/All_000.csv filter=lfs diff=lfs merge=lfs -text
+outputs/FunctionalTraits/mform_abundances.csv filter=lfs diff=lfs merge=lfs -text
