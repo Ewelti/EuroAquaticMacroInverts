@@ -6,7 +6,7 @@ library(brms)
 library(lubridate)
 
 #load data
-d1 <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
+d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 head(allYrs)
 
@@ -110,13 +110,13 @@ table(sr$site)
 
 
 #see what the default priors are
-get_prior(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|country),
+get_prior(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country),
           data = sr, family = gaussian())
 #default ones ok  - we might play later with this more
 
 prior2 = c(set_prior("cauchy(0,2)", class = "sd"))#cauchy prior common for sd 
 
-fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|country),
+fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country),
             data = sr, family = gaussian(), prior = prior2)
 
 summary(fit1)
