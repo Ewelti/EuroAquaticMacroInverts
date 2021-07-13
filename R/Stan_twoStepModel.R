@@ -2,11 +2,13 @@
 # if (!require(devtools)) {
 #   install.packages("devtools")
 # }
+
+
 library(brms)
 library(lubridate)
 
 #load data
-d1 <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
+d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 head(allYrs)
 
@@ -87,7 +89,7 @@ fitStanModel(allYrs[which(allYrs$site_id=="100000001"),])
 
 
 ##load pre-calculated slopes
-slopeData <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
+slopeData <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
 head(slopeData)
 
 #combine trends in mixed model
@@ -102,21 +104,52 @@ hist(sr$SppRich_weights)
 #look at normality of slopes
 hist(sr$SppRich_Est)
 
-#what random effects?
-#country?
-#site
-table(sr$site)
-#doesnt make sense to include site as a random ID since we only have one value per site
+######################################################################################
+##variable for discussion
+################################
+####possible random effects:
+# study_id, Country, sampling_method_long, season, TaxonomicRes, MacrobasinID
 
+################################
+####possible fixed effects:
+
+##climate slopes and means:
+# aet_Est, ppt_Est, tmax_Est, tmin_Est, aet_mm_12moPrior, ppt_mm_12moPrior, tmax_C_12moPrior, tmin_C_12moPrior
+
+##N slopes and means:
+# NH4_Est, NO3_Est, NH4_mean, NO3_mean
+
+##stream characteristics:
+# strahler_streamOrder, accumulation_atPoint, elevation_atPoint, slope_atPoint, 
+
+##land use (right now just micorbasin):
+# crop_meanPerc, forest_meanPerc, grassShrubland_meanPerc, urban_meanPerc
+
+##dams
+# dam_impact_score_lessthan100km, dam_minDist_km_lessthan100km, dam_num_connected_lessthan100km # probably only need one of these
+
+##############################
+####possible response variables (these slso all have calcuated standard error, coded as 'Response_SE'):
+##Taxonomic diversity:
+# SppRich_Est, Adun_Est, TurnO_Est
+##maybe will not use or swop for other indices:
+# SimpD_Est, ShanH_Est, EvenJ_Est
+
+##Functional diversity:
+# F_to_Est, FRic_Est, FEve_Est, FDiv_Est, RaoQ_Est
+
+##ALiens (possible supplement, this can only be done on a subset of the data IDed to finer taxonomic level)
+# AlienAbun_Est, AlienSppRich_Est, nativeAbun_Est, nativeSppRich_Est
+#######################################################################################
 
 #see what the default priors are
-get_prior(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|country),
+get_prior(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country) + (1|study_id),
           data = sr, family = gaussian())
 #default ones ok  - we might play later with this more
 
 prior2 = c(set_prior("cauchy(0,2)", class = "sd"))#cauchy prior common for sd 
 
-fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|country),
+fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country) + (1|study_id),
             data = sr, family = gaussian(), prior = prior2)
 
 summary(fit1)

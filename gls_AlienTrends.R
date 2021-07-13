@@ -11,7 +11,7 @@ library(nlme)
 #this data is the same as raw-data/All_indices_benthicMacroInverts_AllYears.csv
 #accept that the sites IDed to family level are removed because non-native species are not able to be be determined at family level
 #and sites with all no non-native species are removed because these make singular models
-DATA3 <- read.csv("raw-data/All_indices_benthicMacroInverts_AllYears_alienSub.csv", header=T) # change file name according to the time series to be analyzed
+DATA3 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienSub.csv", header=T) # change file name according to the time series to be analyzed
 DATA4 <- DATA3[!is.na(DATA3$site_id_wMissing),]
 attach(DATA4)
 head(DATA4)
