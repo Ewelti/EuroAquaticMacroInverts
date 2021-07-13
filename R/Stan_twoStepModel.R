@@ -108,8 +108,10 @@ hist(sr$SppRich_Est)
 ##variable for discussion
 ################################
 ####possible random effects:
-# study_id, Country, sampling_method_long, season, TaxonomicRes, MacrobasinID
-
+# study_id, Country, 
+##redundant with study_id but maybe put as fixed at a coarse level?: sampling_method_long
+##too few levels: season, TaxonomicRes
+##manybe too many levels: MacrobasinID
 ################################
 ####possible fixed effects:
 
@@ -122,14 +124,14 @@ hist(sr$SppRich_Est)
 ##stream characteristics:
 # strahler_streamOrder, accumulation_atPoint, elevation_atPoint, slope_atPoint, 
 
-##land use (right now just micorbasin):
+##land use (right now just microbasin):
 # crop_meanPerc, forest_meanPerc, grassShrubland_meanPerc, urban_meanPerc
 
 ##dams
 # dam_impact_score_lessthan100km, dam_minDist_km_lessthan100km, dam_num_connected_lessthan100km # probably only need one of these
 
 ##############################
-####possible response variables (these slso all have calcuated standard error, coded as 'Response_SE'):
+####possible response variables (these also all have calcuated standard error, coded as 'Response_SE'):
 ##Taxonomic diversity:
 # SppRich_Est, Adun_Est, TurnO_Est
 ##maybe will not use or swop for other indices:
