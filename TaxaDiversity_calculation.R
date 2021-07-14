@@ -7,6 +7,7 @@
 library(vegan)
 library(reshape2)
 library(codyn)
+library(mobr)
 
 ###############################################################################################################
 
@@ -28,16 +29,17 @@ for(i in unique(all$site_id)){
   EvenJ <- Shan/log(SppRich) 							    	        # Pielou's evenness (J)
   E10 <- Shan/SppRich 								  	              # Shannon's evenness (E10)
   Abund <- rowSums (sub.ta) 								            # Total abundance
+  S_PIE <- calc_PIE(sub.ta, ENS = TRUE)						      # effective number of common species
   DATA1_Turnover <- turnover(sub, time.var = "year", species.var = "taxon_id", abundance.var = "abundance" , metric = "total")
   Turnover <- c("NA", DATA1_Turnover$total) 					  # Turnover per yr And first yr is "NA"
   sub.m_r <- dcast(sub, code ~ taxon_id, sum, value.var = "ro.ab")      # matrix form for rarefaction with rounded richness
   sub.ta_r <- subset(sub.m_r[,c(2:length(sub.m_r))])                  	# subset matrix to remove row names for rounded sppRich    	
-  rare.i <- if (min(rowSums(sub.ta_r)) > 10) {
-	rarefy(sub.ta_r, sample = min(rowSums(sub.ta_r)))			    # rarefy based on min abundance
-	} else {rarefy(sub.ta_r, sample = 10)} 					          # rarefy based on abund =10 if min is less
-  TD.i <- data.frame(sub.m$code, SppRich, Simp, Shan, EvenJ, E10, Abund, Turnover, rare.i)
+  rare.sppRich <- if (min(rowSums(sub.ta_r)) > 10) {
+    rarefy(sub.ta_r, sample = min(rowSums(sub.ta_r)))			# rarefy based on min abundance
+  } else {rarefy(sub.ta_r, sample = 10)} 					# rarefy based on abund =10 if min is less
+  TD.i <- data.frame(sub.m$code, SppRich, Simp, Shan, EvenJ, E10, Abund, S_PIE, Turnover, rare.sppRich)
   TD <- rbind(TD, TD.i) ; rm(TD.i, sub.m, sub.ta, sub, SppRich, Simp, Shan, 
-	EvenJ, E10, Abund, DATA1_Turnover, Turnover, sub.m_r, sub.ta_r, rare.i)
+                             EvenJ, E10, Abund, S_PIE, DATA1_Turnover, Turnover, sub.m_r, sub.ta_r, rare.sppRich)
 } ; rm(i)
 
 ####################################################
