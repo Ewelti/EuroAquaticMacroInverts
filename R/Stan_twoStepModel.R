@@ -19,10 +19,7 @@ summary(allYrs$cYear)
 allYrs$iYear <- allYrs$year_wMissing - min(allYrs$year_wMissing)+1
 summary(allYrs$iYear)
 
-#pull out date information (check with Ellen that is right?)
-allYrs$Date <- sapply(as.character(allYrs$sample_id),function(x)strsplit(x,"_")[[1]][2])
-allYrs$Date <- as.Date(allYrs$Date, format="%d.%m.%Y")
-allYrs$day_of_year <- yday(allYrs$Date)
+#centre day of year
 allYrs$cday_of_year <- allYrs$day_of_year - median(allYrs$day_of_year,na.rm=T)
   
 #### two-stage models ####
@@ -33,6 +30,7 @@ site100000001<-allYrs[which(allYrs$site_id=="100000001"),]
 #simplest model:
 fit1 <- brm(spp_richness ~ year_wMissing, data = site100000001,family = poisson())
 fit1
+
 
 #see what the default priors are
 get_prior(spp_richness ~ year_wMissing, data = site100000001, family = poisson())
@@ -57,15 +55,13 @@ summary(fit1)
 #the above linear term would not model complex seasonal patterns...
 fit1 <- brm(spp_richness ~ s(cday_of_year) + cYear + ar(time = iYear, p = 1),data = site100000001, family = poisson(), prior = prior1)
 
-# write a function to do this for any given dataset
+# write a function to consider day of year if sampling is more than 30 days apart
 fitStanModel <- function(mydata){
   
-  #write model formula
-  
   #if sampling occurs in more than one month include a seasonal term in the model
-  nuMonths = length(unique(mydata$month))
+  maxDiffDays = max(mydata$cday_of_year)-min(mydata$cday_of_year)
   
-  if(nuMonths == 1) {
+  if(maxDiffDays < 30) {
     myformula <- bf(spp_richness ~ cYear + ar(time = iYear, p = 1))
   } else{
     myformula <- bf(spp_richness ~ cday_of_year + cYear + ar(time = iYear, p = 1))
@@ -75,17 +71,27 @@ fitStanModel <- function(mydata){
   fit1 <- brm(myformula, data = mydata, family = poisson(), prior = prior1, refresh = 0)
   
   #extract model fits
-  modelSummary <- fixef(fit1, pars="cYear")
+  modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
   return(modelSummary)
   
 }
 
 #apply function to an example dataset
-fitStanModel(allYrs[which(allYrs$site_id=="100000001"),])
+est <- fitStanModel(allYrs[which(allYrs$site_id=="100000001"),])
 
 #including year random effects - probably not necessary (recommened by Daskalova et al.)
 #maybe check later
 #fit1 <- brm(spp_richness ~ year_wMissing + (1|year_wMissing) + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+
+#loop for all sites
+trends <- NULL
+for(i in unique(allYrs$site_id)){
+  sub <- allYrs[allYrs$site_id == i, ]
+  trend.i <- fitStanModel(sub)
+  trend.i <- data.frame(site = i, 
+                        t(trend.i))
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+} ; rm(i)
 
 
 ##load pre-calculated slopes
