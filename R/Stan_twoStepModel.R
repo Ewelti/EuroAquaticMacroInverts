@@ -136,6 +136,27 @@ hist(sr$SppRich_Est)
 ##dams
 # dam_impact_score_lessthan100km, dam_minDist_km_lessthan100km, dam_num_connected_lessthan100km # probably only need one of these
 
+
+#for all fixed effects - first scale the continuous variables by their standard deviations
+
+#function to add a new column onto the data with scaled vars (with s before their name)
+scaleVars <- function(df){
+  newd <- plyr::numcolwise(scale)(df)
+  names(newd) <- sapply(names(newd),function(x)paste0("s",x))
+  cbind(df, newd)
+}
+#apply function
+slopeData <- scaleVars(slopeData)
+
+#example driver model
+prior2 = c(set_prior("cauchy(0,2)", class = "sd"),
+           set_prior("normal(0,5)", class = "b"))
+
+fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ surban_meanPerc + (1|Country) + (1|study_id),
+            data = sr, family = gaussian(), prior = prior2)
+
+summary(fit1)
+
 ##############################
 ####possible response variables (these also all have calcuated standard error, coded as 'Response_SE'):
 ##Taxonomic diversity:
