@@ -83,7 +83,7 @@ est <- fitStanModel(allYrs[which(allYrs$site_id=="100000001"),])
 #maybe check later
 #fit1 <- brm(spp_richness ~ year_wMissing + (1|year_wMissing) + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
 
-#loop for all sites
+#loop for all sites ####but it always crashes
 trends <- NULL
 for(i in unique(allYrs$site_id)){
   sub <- allYrs[allYrs$site_id == i, ]
