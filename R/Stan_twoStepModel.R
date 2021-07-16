@@ -184,6 +184,23 @@ fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country) + (1|study_id
 summary(fit1)
 plot(fit1)
 
+
+### including spatial autocorrelation
+#?
+#We should reproject the long/lat into utm coordinates eventually
+
+#get distance matrix for CAR (spatial conditional autoregressive)
+distance <- as.matrix(dist(sr[,c("Longitude_X","Latitude_Y")]))
+K <- nrow(sr)
+W <- array(0, c(K, K))
+W[distance == 1] <- 1 	
+
+#lets fiddle with priors later
+fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|study_id) + car(W, type="icar"),
+            data = sr, data2 = list(W = W), 
+            family = gaussian())
+
+
 ### one-stage model #####
 
 prior1 = c(set_prior("normal(0,0.5)", class = "ar"),
