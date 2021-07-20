@@ -210,15 +210,15 @@ prior1 = c(set_prior("normal(0,0.5)", class = "ar"),
            set_prior("cauchy(0,2)", class = "sd"))
 
 
-fit1 <- brm(spp_richness ~ cYear + (1 + cYear|study_id), 
-            #autocor = cor_ar(~iYear, p = 1), 
+fit1 <- brm(spp_richness ~ cYear + (1 + cYear|study_id) + 
+            ar(time = iYear, p = 1), 
             data = allYrs, family = poisson(),
             niter = 100)
 
 
 ### moving average ####
 
-maTrend <- function(allYrs, startYear, timespan = 10){
+fitMAtrend <- function(allYrs, startYear, timeSpan = 10){
   
   #restrict to time period of interest
   allYrsS <- subset(allYrs, year_wMissing >= startYear)
@@ -231,15 +231,30 @@ maTrend <- function(allYrs, startYear, timespan = 10){
                                       names(study_periods)[study_periods>=5])                 
   #fit model to this subset
   fit1 <- brm(spp_richness ~ cYear, 
-              #+ (1 + cYear|study_id), 
-              #autocor = cor_ar(~iYear, p = 1), 
-              data = allYrsS, family = poisson())
+              #+ (1 + cYear|study_id) 
+              #+ ar(time = iYear, p = 1),
+              data = allYrsS, 
+              family = poisson())
   
   #extract trend coefficient
-  fixef(fit1, pars="cYear")[1, c(1,2)]
-  
+  temp <- data.frame(fixef(fit1, pars="cYear"))
+  temp$startYear = startYear
+  temp$timeSpan = timeSpan
+  return(temp)
   
 }
+
+#run model
+
+#decide time span to run model over
+table(allYrs$year_wMissing)
+years <- 1980:2010
+
+#run model over these years
+modelsList <- lapply(years, function(i){
+  fitMAtrend(allYrs, startYear = i, timeSpan = 10)
+  })
+maTrends <- do.call(rbind,modelsList)
 
 
 #### model fits ####
