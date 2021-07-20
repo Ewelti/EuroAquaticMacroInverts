@@ -208,9 +208,37 @@ prior1 = c(set_prior("normal(0,0.5)", class = "ar"),
            set_prior("cauchy(0,2)", class = "sd"))
 
 
-fit1 <- brm(Response ~ Year + (1 + Year|StudyID), 
-            autocor = cor_ar(~Year, p = 1), 
-            data = mydata, family = poisson())
+fit1 <- brm(spp_richness ~ cYear + (1 + cYear|study_id), 
+            #autocor = cor_ar(~iYear, p = 1), 
+            data = allYrs, family = poisson(),
+            niter = 100)
+
+
+### moving average ####
+
+maTrend <- function(allYrs, startYear, timespan = 10){
+  
+  #restrict to time period of interest
+  allYrsS <- subset(allYrs, year_wMissing >= startYear)
+  allYrsS <- subset(allYrsS, year_wMissing < (startYear+timespan))
+  
+  #restrict to study with sufficient data in this time period - 5 years?
+  study_periods <- tapply(allYrsS$year_wMissing,allYrsS$site_id,
+                          function(x)max(x)-min(x))
+  allYrsS <- subset(allYrsS, site_id %in% 
+                                      names(study_periods)[study_periods>=5])                 
+  #fit model to this subset
+  fit1 <- brm(spp_richness ~ cYear, 
+              #+ (1 + cYear|study_id), 
+              #autocor = cor_ar(~iYear, p = 1), 
+              data = allYrsS, family = poisson())
+  
+  #extract trend coefficient
+  fixef(fit1, pars="cYear")[1, c(1,2)]
+  
+  
+}
+
 
 #### model fits ####
 
