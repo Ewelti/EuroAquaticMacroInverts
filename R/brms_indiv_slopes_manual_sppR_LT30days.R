@@ -115,13 +115,13 @@ ests<-cbind(site[1],trend.i[,1],trend.i[,2])
 ests_b<-rbind(ests,ests_b) 
 write.csv(ests_b,"LT30_sppR_Est.csv")
 
-#site <- LT30_sppR_un[7]
-#sub <- LT30_sppR[LT30_sppR$site_id == site, ]
-#fit1 <- brm(myformula, data = sub, family = poisson(), prior = prior1, refresh = 0)
-#trend.i <- fixef(fit1, pars="cYear")
-#ests<-cbind(site[1],trend.i[,1],trend.i[,2])
-#ests_b<-rbind(ests,ests_b) 
-#write.csv(ests_b,"LT30_sppR_Est.csv")
+site <- LT30_sppR_un[7]
+sub <- LT30_sppR[LT30_sppR$site_id == site, ]
+fit1 <- brm(myformula, data = sub, family = poisson(), prior = prior1, refresh = 0)
+trend.i <- fixef(fit1, pars="cYear")
+ests<-cbind(site[1],trend.i[,1],trend.i[,2])
+ests_b<-rbind(ests,ests_b) 
+write.csv(ests_b,"LT30_sppR_Est.csv")
 
 site <- LT30_sppR_un[8]
 sub <- LT30_sppR[LT30_sppR$site_id == site, ]
