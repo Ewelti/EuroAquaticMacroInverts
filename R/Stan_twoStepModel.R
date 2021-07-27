@@ -10,7 +10,7 @@ library(lubridate)
 #load data
 d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
-turnover<-as.numeric(turnover) # make numeric
+allYrs$turnover<-as.numeric(allYrs$turnover) # make numeric
 head(allYrs)
 
 #centre Year - helps model convergence to center variables for the model
