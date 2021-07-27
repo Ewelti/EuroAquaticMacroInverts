@@ -21,7 +21,7 @@ summary(allYrs$iYear)
 
 #centre day of year
 allYrs$cday_of_year <- allYrs$day_of_year - median(allYrs$day_of_year,na.rm=T)
-  
+
 #### two-stage models ####
 
 #fit trend model to a single time-series
@@ -37,7 +37,7 @@ get_prior(spp_richness ~ year_wMissing, data = site100000001, family = poisson()
 
 #set priors now
 prior1 = c(set_prior("normal(0,0.5)", class = "ar"), #I don't know what/if to change here
-          set_prior("normal(0,5)", class = "b"))
+           set_prior("normal(0,5)", class = "b"))
 
 #including autocorrelation (of the residuals)
 #fit1 <- brm(spp_richness ~ year_wMissing, autocor = cor_ar(~year_wMissing, p = 1),data = site100000001, family = poisson()) #'cor_brms' objects for 'autocor' is deprecated
@@ -90,7 +90,7 @@ for(i in unique(allYrs$site_id)){
     sub <- allYrs[allYrs$site_id == i, ]
     trend.i <- fitStanModel(sub)
     trend.i <- data.frame(site = i, 
-                        t(trend.i))
+                          t(trend.i))
     trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
   }, error=function(e){cat(unique(sub$site),conditionMessage(e), "\n")})    
 } ; rm(i)
@@ -99,18 +99,6 @@ for(i in unique(allYrs$site_id)){
 ##load pre-calculated slopes
 slopeData <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
 head(slopeData)
-
-#combine trends in mixed model
-
-#Species richness dataset
-sr <- slopeData[!is.na(slopeData$SppRich_Est),]
-#where w = 1/sd of the trend estimates
-
-sr$SppRich_weights <- 1/sr$SppRich_SE
-hist(sr$SppRich_weights)
-
-#look at normality of slopes
-hist(sr$SppRich_Est)
 
 ######################################################################################
 ##variable for discussion
@@ -149,6 +137,16 @@ scaleVars <- function(df){
 }
 #apply function
 slopeData <- scaleVars(slopeData)
+
+#Species richness dataset
+sr <- slopeData[!is.na(slopeData$SppRich_Est),]
+#where w = 1/sd of the trend estimates
+
+sr$SppRich_weights <- 1/sr$SppRich_SE
+hist(sr$SppRich_weights)
+
+#look at normality of slopes
+hist(sr$SppRich_Est)
 
 #example driver model
 prior2 = c(set_prior("cauchy(0,2)", class = "sd"),
@@ -211,7 +209,7 @@ prior1 = c(set_prior("normal(0,0.5)", class = "ar"),
 
 
 fit1 <- brm(spp_richness ~ cYear + (1 + cYear|study_id) + 
-            ar(time = iYear, p = 1), 
+              ar(time = iYear, p = 1), 
             data = allYrs, family = poisson(),
             niter = 100)
 
@@ -228,7 +226,7 @@ fitMAtrend <- function(allYrs, startYear, timeSpan = 10){
   study_periods <- tapply(allYrsS$year_wMissing,allYrsS$site_id,
                           function(x)max(x)-min(x))
   allYrsS <- subset(allYrsS, site_id %in% 
-                                      names(study_periods)[study_periods>=5])                 
+                      names(study_periods)[study_periods>=5])                 
   #fit model to this subset
   fit1 <- brm(spp_richness ~ cYear, 
               #+ (1 + cYear|study_id) 
@@ -253,7 +251,7 @@ years <- 1980:2010
 #run model over these years
 modelsList <- lapply(years, function(i){
   fitMAtrend(allYrs, startYear = i, timeSpan = 10)
-  })
+})
 maTrends <- do.call(rbind,modelsList)
 
 
