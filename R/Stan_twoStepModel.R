@@ -10,6 +10,7 @@ library(lubridate)
 #load data
 d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
+turnover<-as.numeric(turnover) # make numeric
 head(allYrs)
 
 #centre Year - helps model convergence to center variables for the model
@@ -36,7 +37,7 @@ fit1
 get_prior(spp_richness ~ year_wMissing, data = site100000001, family = poisson())
 
 #set priors now
-prior1 = c(set_prior("normal(0,0.5)", class = "ar"), #I don't know what/if to change here
+prior1 = c(set_prior("normal(0,0.5)", class = "ar"),
            set_prior("normal(0,5)", class = "b"))
 
 #including autocorrelation (of the residuals)
@@ -178,8 +179,9 @@ get_prior(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country) + (1|study_id),
 
 prior2 = c(set_prior("cauchy(0,2)", class = "sd"))#cauchy prior common for sd 
 
-fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|Country) + (1|study_id),
+fit1 <- brm(SppRich_Est|weights(SppRich_weights) ~ 1 + (1|study_id), 
             data = sr, family = gaussian(), prior = prior2)
+#+ (1|Country) # i think we don't need country as no study spans multiple countries (or could nest study_id in country)
 
 summary(fit1)
 plot(fit1)
@@ -188,6 +190,7 @@ plot(fit1)
 ### including spatial autocorrelation
 #?
 #We should reproject the long/lat into utm coordinates eventually
+# the datum for all should be WGS 84 decimal
 
 #get distance matrix for CAR (spatial conditional autoregressive)
 distance <- as.matrix(dist(sr[,c("Longitude_X","Latitude_Y")]))
@@ -216,7 +219,7 @@ fit1 <- brm(spp_richness ~ cYear + (1 + cYear|study_id) +
 
 ### moving average ####
 
-fitMAtrend <- function(allYrs, startYear, timeSpan = 10){
+fitMAtrend <- function(allYrs, startYear, timespan = 10){
   
   #restrict to time period of interest
   allYrsS <- subset(allYrs, year_wMissing >= startYear)
@@ -237,7 +240,7 @@ fitMAtrend <- function(allYrs, startYear, timeSpan = 10){
   #extract trend coefficient
   temp <- data.frame(fixef(fit1, pars="cYear"))
   temp$startYear = startYear
-  temp$timeSpan = timeSpan
+  temp$timespan = timespan
   return(temp)
   
 }
@@ -250,7 +253,7 @@ years <- 1980:2010
 
 #run model over these years
 modelsList <- lapply(years, function(i){
-  fitMAtrend(allYrs, startYear = i, timeSpan = 10)
+  fitMAtrend(allYrs, startYear = i, timespan = 10)
 })
 maTrends <- do.call(rbind,modelsList)
 
