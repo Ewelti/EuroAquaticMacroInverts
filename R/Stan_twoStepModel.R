@@ -227,7 +227,7 @@ fitMAtrend <- function(allYrs, startYear, timespan = 10){
   
   #restrict to study with sufficient data in this time period - 5 years?
   study_periods <- tapply(allYrsS$year_wMissing,allYrsS$site_id,
-                          function(x)max(x)-min(x))
+                          function(x)length(unique(x)))
   allYrsS <- subset(allYrsS, site_id %in% 
                       names(study_periods)[study_periods>=5])                 
   #fit model to this subset
