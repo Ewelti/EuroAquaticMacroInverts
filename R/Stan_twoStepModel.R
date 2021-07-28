@@ -72,7 +72,7 @@ fitStanModel <- function(mydata){
   }
   
   #fit model
-  fit1 <- brm(myformula, data = mydata, family = poisson(), prior = prior1, refresh = 0)
+  fit1 <- brm(myformula, data = mydata, family = poisson(), prior = prior1, refresh = 0, cores=1)
   
   #extract model fits
   modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
@@ -108,7 +108,7 @@ for(i in unique(allYrs$site_id)){
   trend.i <- data.frame(site = i, 
                         t(trend.i))
   write.table(trend.i, file="outputs/running_modelOutput.txt", 
-              append=TRUE, row.names=FALSE, header=FALSE,sep=",") 
+              append=TRUE, row.names=FALSE, sep=",") 
 }
 
 #check where it crashes
