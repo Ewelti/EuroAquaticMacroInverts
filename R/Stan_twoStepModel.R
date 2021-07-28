@@ -38,7 +38,7 @@ get_prior(spp_richness ~ year_wMissing, data = site100000001, family = poisson()
 
 #set priors now
 prior1 = c(set_prior("normal(0,0.5)", class = "ar"),
-           set_prior("normal(0,5)", class = "b"))
+           set_prior("normal(0,10)", class = "b"))
 
 #including autocorrelation (of the residuals)
 #fit1 <- brm(spp_richness ~ year_wMissing, autocor = cor_ar(~year_wMissing, p = 1),data = site100000001, family = poisson()) #'cor_brms' objects for 'autocor' is deprecated
@@ -95,6 +95,24 @@ for(i in unique(allYrs$site_id)){
     trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
   }, error=function(e){cat(unique(sub$site),conditionMessage(e), "\n")})    
 } ; rm(i)
+
+
+#write to a text file during model fitting - to see where it is going wrong
+
+fileName <- tempfile(fileext=".txt")
+fileCon <- file(fileName, "wt") # a file connection, opened for writing text
+trends <- NULL
+for(i in unique(allYrs$site_id)){
+  sub <- allYrs[allYrs$site_id == i, ]
+  trend.i <- fitStanModel(sub)
+  trend.i <- data.frame(site = i, 
+                        t(trend.i))
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+  cat(file=fileCon, "Line", i, "\n")
+}
+
+close(fileCon)
+readLines(fileName) 
 
 
 ##load pre-calculated slopes
