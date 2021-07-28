@@ -7,6 +7,9 @@
 library(brms)
 library(lubridate)
 
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
 #load data
 d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T) # change file name according to the time series to be analyzed
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
@@ -104,9 +107,12 @@ for(i in unique(allYrs$site_id)){
   trend.i <- fitStanModel(sub)
   trend.i <- data.frame(site = i, 
                         t(trend.i))
-  write.table(trend.i, file="running_modelOutput.txt", append=TRUE, row.names=FALSE) 
+  write.table(trend.i, file="outputs/running_modelOutput.txt", 
+              append=TRUE, row.names=FALSE, header=FALSE,sep=",") 
 }
 
+#check where it crashes
+fitStanModel(allYrs[which(allYrs$site_id == unique(allYrs$site_id)[5]),])
 
 ##load pre-calculated slopes
 slopeData <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
