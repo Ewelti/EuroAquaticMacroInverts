@@ -99,19 +99,13 @@ for(i in unique(allYrs$site_id)){
 
 #write to a text file during model fitting - to see where it is going wrong
 
-fileName <- tempfile(fileext=".txt")
-fileCon <- file(fileName, "wt") # a file connection, opened for writing text
-trends <- NULL
-
 for(i in unique(allYrs$site_id)){
   sub <- allYrs[allYrs$site_id == i, ]
   trend.i <- fitStanModel(sub)
   trend.i <- data.frame(site = i, 
                         t(trend.i))
-  #trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
-  write.table(trend.i, file="x.txt", append=TRUE, row.names=FALSE) 
+  write.table(trend.i, file="running_modelOutput.txt", append=TRUE, row.names=FALSE) 
 }
-
 
 
 ##load pre-calculated slopes
