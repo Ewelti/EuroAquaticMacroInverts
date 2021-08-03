@@ -1,10 +1,8 @@
 library(brms)
 library(lubridate)
 
-rstan_options(auto_write = TRUE)
-options(mc.cores = parallel::detectCores())
-
-mydatafolder <- ""
+#rstan_options(auto_write = TRUE)
+#options(mc.cores = parallel::detectCores())
 
 #load data
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
