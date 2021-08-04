@@ -19,7 +19,7 @@ summary(allYrs$iYear)
 #centre day of year
 allYrs$cday_of_year <- allYrs$day_of_year - median(allYrs$day_of_year,na.rm=T)
 
-##maybe for each site? then we can take mean and se 
+##maybe for each site-- then we can take mean and se 
 years <- 1968:1969
 trends <- NULL
 for(i in unique(allYrs$site_id)){
