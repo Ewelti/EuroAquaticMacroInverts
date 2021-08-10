@@ -1,3 +1,5 @@
+rm(list=ls())
+
 library(brms)
 library(lubridate)
 
@@ -7,6 +9,14 @@ library(lubridate)
 #load data
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
+
+#choose which study
+#dataSets <- unique(allYrs[,c("country","study_id")])
+#write.table(dataSets,file="datasets.txt",sep="\t",row.names=FALSE)
+TaskID <- read.delim("/data/idiv_ess/Ellen/datasets.txt",as.is=T)
+task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
+mytask <- TaskID$study_id[which(TaskID$task_id==task.id)]
+allYrs <- subset(allYrs,study_id==mytask)
 
 #centre Year - helps model convergence to center variables for the model
 allYrs$cYear <- allYrs$year_wMissing - median(allYrs$year_wMissing)
@@ -21,8 +31,7 @@ allYrs$cday_of_year <- allYrs$day_of_year - median(allYrs$day_of_year,na.rm=T)
 #### two-stage models ####
 
 #set priors now
-prior1 = c(set_prior("normal(0,0.5)", class = "ar"),
-           set_prior("normal(0,10)", class = "b"))
+prior1 = c(set_prior("normal(0,10)", class = "b"))
 
 
 # write a function to consider day of year if sampling is more than 30 days apart
@@ -32,13 +41,17 @@ fitStanModel <- function(mydata){
   maxDiffDays = max(mydata$cday_of_year)-min(mydata$cday_of_year)
   
   if(maxDiffDays < 30) {
-    myformula <- bf(spp_richness ~ cYear + ar(time = iYear, p = 1))
+    myformula <- bf(spp_richness ~ cYear + ar(time = iYear, p = 1, cov=TRUE))
   } else{
-    myformula <- bf(spp_richness ~ cday_of_year + cYear + ar(time = iYear, p = 1))
+    myformula <- bf(spp_richness ~ cday_of_year + cYear + ar(time = iYear, p = 1, cov=TRUE))
   }
   
   #fit model
-  fit1 <- brm(myformula, data = mydata, family = poisson(), prior = prior1, refresh = 0)
+  fit1 <- brm(myformula, data = mydata, 
+              family = poisson(), 
+              chains = n.cores,
+              prior = prior1, 
+              refresh = 0)
   
   #extract model fits
   modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
@@ -46,15 +59,17 @@ fitStanModel <- function(mydata){
   
 }
 
-#loop for all sites ####has problems with crashing-- trying tryCatch
-trends <- NULL
-for(i in unique(allYrs$site_id)){
-  tryCatch({
-    sub <- allYrs[allYrs$site_id == i, ]
-    trend.i <- fitStanModel(sub)
-    trend.i <- data.frame(site = i, 
-                          t(trend.i))
-    trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
-  }, error=function(e){cat(unique(sub$site),conditionMessage(e), "\n")})    
-} ; rm(i)
-saveRDS(trends, file="trends.RDS")
+#get cores
+n.cores = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+
+#loop for all sites
+allsites <- sort(unique(allYrs$site_id))
+
+trends <- lapply(allsites, function(x){
+  fitStanModel(subset(allYrs, site_id == x))
+})
+
+trends <- data.frame(do.call(rbind, trends))
+trends$siteID <- allsites
+
+saveRDS(trends, file=paste0("trends_",mytask,".RDS"))
