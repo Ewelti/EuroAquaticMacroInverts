@@ -1,10 +1,10 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/aquatic_data/movingWindow")
+#setwd("C:/Users/ewelti/Desktop/aquatic_data/movingWindow")
 #setwd(dir = "C:/Users/Ellen/Desktop/aquatic_data/movingWindow")
 
 
 # attach data
-go <- read.csv("NorthSouthMovingWindow.csv", header=T) # change file name according to the time series to be analyzed
+go <- read.csv("plots/movingWindow/NorthSouthMovingWindow.csv", header=T) # change file name according to the time series to be analyzed
 head(go)
 
 par(mfrow=c(2,3),mar=c(2,5,0.4,0.4))
