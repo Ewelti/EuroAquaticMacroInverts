@@ -3,7 +3,7 @@
 #   install.packages("devtools")
 # }
 
-
+library(rstan)
 library(brms)
 library(lubridate)
 
@@ -81,7 +81,7 @@ fitStanModel <- function(mydata){
 }
 
 #apply function to an example dataset
-est <- fitStanModel(allYrs[which(allYrs$site_id=="100000001"),])
+est <- fitStanModel(allYrs[which(allYrs$site_id=="100000015"),])
 
 #including year random effects - probably not necessary (recommened by Daskalova et al.)
 #maybe check later
@@ -99,7 +99,7 @@ for(i in unique(allYrs$site_id)){
   }, error=function(e){cat(unique(sub$site),conditionMessage(e), "\n")})    
 } ; rm(i)
 
-
+write.csv(trends, "outputs/spprichness_test.csv")
 #write to a text file during model fitting - to see where it is going wrong
 
 for(i in unique(allYrs$site_id)){
