@@ -66,13 +66,13 @@ fitStanModel <- function(mydata){
   maxDiffDays = max(mydata$cday_of_year)-min(mydata$cday_of_year)
   
   if(maxDiffDays < 30) {
-    myformula <- bf(spp_richness ~ cYear + ar(time = iYear, p = 1))
+    myformula <- bf(log10(abundance) ~ cYear + ar(time = iYear, p = 1, cov=TRUE))
   } else{
-    myformula <- bf(spp_richness ~ cday_of_year + cYear + ar(time = iYear, p = 1))
+    myformula <- bf(log10(abundance) ~ cday_of_year + cYear + ar(time = iYear, p = 1, cov=TRUE))
   }
   
   #fit model
-  fit1 <- brm(myformula, data = mydata, family = poisson(), prior = prior1, refresh = 0, cores=1)
+  fit1 <- brm(myformula, data = mydata, family = gaussian(), prior = prior1, refresh = 0, cores=1)
   
   #extract model fits
   modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
@@ -83,9 +83,24 @@ fitStanModel <- function(mydata){
 #apply function to an example dataset
 est <- fitStanModel(allYrs[which(allYrs$site_id=="100000015"),])
 
+}
+
+
 #including year random effects - probably not necessary (recommened by Daskalova et al.)
 #maybe check later
 #fit1 <- brm(spp_richness ~ year_wMissing + (1|year_wMissing) + ar(time = year_wMissing, p = 1),data = site100000001, family = poisson())
+
+#loop for all sites
+allsites <- sort(unique(allYrs$site_id))
+
+trends <- lapply(allsites, function(x){
+  fitStanModel(subset(allYrs, site_id == x))
+})
+
+trends <- data.frame(do.call(rbind, trends))
+trends$siteID <- allsites
+
+write.csv(trends, "outputs/brms_abundance_trends.csv")
 
 #loop for all sites ####has problems with crashing-- trying tryCatch
 trends <- NULL
