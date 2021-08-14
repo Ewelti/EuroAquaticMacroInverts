@@ -83,6 +83,13 @@ library(rstan)
 #set priors now
 prior1 = c(set_prior("normal(0,10)", class = "b"))
 
+#get model code
+#model_code <- make_stancode(myformula, data = mydata, 
+#                            #family = poisson(), 
+#                            chains = n.cores,
+#                            prior = prior1, 
+#                            refresh = 0)
+
 # write a function to consider day of year if sampling is more than 30 days apart
 fitStanModel <- function(mydata){
   
@@ -91,26 +98,25 @@ fitStanModel <- function(mydata){
   
   if(maxDiffDays < 30) {
     myformula <- bf(log10(spp_richness+1) ~ cYear + ar(time = iYear, p = 1, cov=FALSE))
+    modelfile <- "/data/idiv_ess/Ellen/stan_code.stan"
+    
   } else{
-    myformula <- bf(log10(spp_richness+1) ~ cday_of_year + cYear + ar(time = iYear, p = 1, cov=FALSE))
+    myformula <- bf(log10(spp_richness+1) ~ cYear + cday_of_year + ar(time = iYear, p = 1, cov=FALSE))
+    modelfile <- "/data/idiv_ess/Ellen/stan_code_seasonal.stan"
+    
   }
   
-  #get model code
-  model_code <- make_stancode(myformula, data = mydata, 
-              #family = poisson(), 
-              chains = n.cores,
-              prior = prior1, 
-              refresh = 0)
   
   #get model data
   model_data <- make_standata(myformula, data = mydata, 
-                              #family = poisson(), 
                               chains = n.cores,
-                              prior = prior1, 
                               refresh = 0)
-  
+  model_data$cYear <- mydata$cYear
+  model_data$cday <- mydata$cday_of_year
+
   #fit model in stan
-  stan_model <- stan(model_code = model_code, data = model_data, seed = 20)
+  stan_model <- stan(modelfile, 
+                     data = model_data, seed = 20)
   
   
   #extract model fits
