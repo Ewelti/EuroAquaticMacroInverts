@@ -2,7 +2,9 @@
 
 trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs"
 
+#make sure it is just the rds trend files
 trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
+trendsFiles <- list.files(trendsDir)[grepl(".RDS",list.files(trendsDir))]
 
 countryTrends <- lapply(trendsFiles,function(x){
    
@@ -16,4 +18,5 @@ countryTrends <- lapply(trendsFiles,function(x){
 })
 
 countryTrends <- do.call(rbind,countryTrends)
+names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level.rds")
