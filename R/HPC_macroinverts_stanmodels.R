@@ -149,11 +149,3 @@ trends$siteID <- allsites
 
 saveRDS(trends, file=paste0("trends__",myResponse,"__",myCountry,".RDS"))
 
-#combine outputs afterwards
-# trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs"
-# trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
-# countryTrends <- lapply(trendsFiles,function(x){
-#   readRDS(paste(trendsDir,x,sep="/"))
-# })
-# countryTrends <- do.call(rbind,countryTrends)
-# saveRDS(countryTrends,file="outputs/stanTrends_spRichness_site-level.rds")
