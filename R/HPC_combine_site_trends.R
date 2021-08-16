@@ -1,9 +1,19 @@
-#combine trends across all countries for the same response afterwards
+#combine trends across all countries afterwards
 
 trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs"
+
 trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
+
 countryTrends <- lapply(trendsFiles,function(x){
-   readRDS(paste(trendsDir,x,sep="/"))
+   
+  temp <- readRDS(paste(trendsDir,x,sep="/"))
+  
+  #add on response
+  temp$Response <- strsplit(x,"__")[[1]][2]
+
+  return(temp)
+
 })
+
 countryTrends <- do.call(rbind,countryTrends)
-saveRDS(countryTrends,file="outputs/stanTrends_spp_richness_site-level.rds")
+saveRDS(countryTrends,file="outputs/stanTrends_site_level.rds")
