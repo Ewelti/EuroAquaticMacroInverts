@@ -114,13 +114,25 @@ fitStanModel <- function(mydata){
   #                             prior = prior1, 
   #                             refresh = 0)
   
+  
+
+  #there is any missing data, dont run the model
+  if(any(is.na(mydata$Response))){
+    
+    modelFits <- data.frame(estimate = NA,
+                            sd = NA,
+                            rhat = NA,
+                            propNAs = mean(is.na(mydata$Response)))
+  }else{
+    
   #get model data
   model_data <- make_standata(myformula, data = mydata, 
-                              chains = n.cores,
-                              refresh = 0)
+                                chains = n.cores,
+                                refresh = 0)
   model_data$cYear <- mydata$cYear
   model_data$cday <- mydata$cday_of_year
-
+    
+    
   #fit model in stan
   stan_model <- stan(modelfile, 
                      data = model_data, seed = 20)
@@ -129,7 +141,10 @@ fitStanModel <- function(mydata){
   modelSummary <- summary(stan_model)$summary
   modelFits <- data.frame(estimate = modelSummary[1,"mean"],
                           sd = modelSummary[1,"sd"],
-                          rhat = modelSummary[1,"Rhat"])
+                          rhat = modelSummary[1,"Rhat"],
+                          propNAs = mean(is.na(mydata$Response)))
+  
+  }
   return(modelFits)
   
 }
