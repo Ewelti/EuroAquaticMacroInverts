@@ -41,6 +41,6 @@ model {
   target += normal_lpdf(b | 0,1);
   target += normal_lpdf(s | 0,1);
   target += normal_lpdf(Intercept | 0,10);;
-  target += cauchy_lpdf(sigma | 0,1.5)
-    - 1 * cauchy_lccdf(0 | 0,1.5);
+  target += student_t_lpdf(sigma | 3, 0, 2.5)
+    - 1 * student_t_lccdf(0 | 3, 0, 2.5);
 }
