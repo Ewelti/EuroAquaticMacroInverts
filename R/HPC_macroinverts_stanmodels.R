@@ -7,17 +7,18 @@ d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.cs
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
 #choose which country for this task
-TaskID <- read.delim("/data/idiv_ess/Ellen/datasets.txt",as.is=T)
+TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
-myCountry <- TaskID$Country[which(TaskID$task_id==task.id)]
-allYrs <- subset(allYrs,Country==myCountry)
+myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
+allYrs <- subset(allYrs,country==myCountry)
 
 #choose which response for this task
-myResponse <- TaskID$Response[which(TaskID$task_id==task.id)]
+myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 allYrs$Response <- allYrs[,myResponse]
 
 #log responses that are right skewed
-if(Response %in% c("abundance")){
+if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
+                   "EPT_Abund","insect_Abund")){
   allYrs$Response <- log10(allYrs$Response+1) 
 }
 
@@ -109,7 +110,6 @@ fitStanModel <- function(mydata){
   #get model code - these are saved in the above files
   # prior1 = c(set_prior("normal(0,10)", class = "b"))
   # model_code <- make_stancode(myformula, data = mydata, 
-  #                             #family = poisson(), 
   #                             chains = n.cores,
   #                             prior = prior1, 
   #                             refresh = 0)
@@ -128,7 +128,8 @@ fitStanModel <- function(mydata){
   #extract model fits
   modelSummary <- summary(stan_model)$summary
   modelFits <- data.frame(estimate = modelSummary[1,"mean"],
-                             sd = modelSummary[1,"sd"])
+                          sd = modelSummary[1,"sd"],
+                          rhat = modelSummary[1,"Rhat"])
   return(modelFits)
   
 }
@@ -146,7 +147,7 @@ trends <- lapply(allsites, function(x){
 trends <- data.frame(do.call(rbind, trends))
 trends$siteID <- allsites
 
-saveRDS(trends, file=paste0("trends_",myResponse,"_",myCountry,".RDS"))
+saveRDS(trends, file=paste0("trends__",myResponse,"__",myCountry,".RDS"))
 
 #combine outputs afterwards
 # trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs"
