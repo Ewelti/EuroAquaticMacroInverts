@@ -14,8 +14,8 @@ response_stan <- subset(response_stan, Response == myResponse)
 ### site metadata ######
 
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
-siteData <- unique(d1[,c("site_id","study_id","Country")])
-response_stan <- merge(siteData,response_stan,by.x="site_id",by.y="siteID")
+siteData <- unique(d1[,c("site_id","study_id","country")])
+response_stan <- merge(siteData,response_stan,by="site_id")
 
 ### run model ####
 
@@ -29,11 +29,11 @@ summary(response_stan$estimate)
 response_stan$w <- 1/response_stan$sd
 summary(response_stan$w)
 
-#define priors
-prior1 = c(set_prior("normal(0,10)", class = "Intercept"))
+#define priors - default ok
+#prior1 = c(set_prior("normal(0,10)", class = "Intercept"))
 
-fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|Country),
-            data = response_stan, prior = prior1, iter=4000)
+fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
+            data = response_stan, iter=4000)
 
 #### save output ####
 
