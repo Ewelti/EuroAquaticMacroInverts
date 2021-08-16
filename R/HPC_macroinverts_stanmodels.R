@@ -148,7 +148,6 @@ trends$siteID <- allsites
 
 saveRDS(trends, file=paste0("trends_",myResponse,"_",myCountry,".RDS"))
 
-
 #combine outputs afterwards
 # trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs"
 # trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
