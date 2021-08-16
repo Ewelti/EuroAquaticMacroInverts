@@ -6,13 +6,20 @@ library(lubridate)
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
-#choose which study
-#dataSets <- unique(allYrs[,c("country","study_id")])
-#write.table(dataSets,file="datasets.txt",sep="\t",row.names=FALSE)
+#choose which country for this task
 TaskID <- read.delim("/data/idiv_ess/Ellen/datasets.txt",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
-mytask <- TaskID$study_id[which(TaskID$task_id==task.id)]
-allYrs <- subset(allYrs,study_id==mytask)
+myCountry <- TaskID$Country[which(TaskID$task_id==task.id)]
+allYrs <- subset(allYrs,Country==myCountry)
+
+#choose which response for this task
+myResponse <- TaskID$Response[which(TaskID$task_id==task.id)]
+allYrs$Response <- allYrs[,myResponse]
+
+#log responses that are right skewed
+if(Response %in% c("abundance")){
+  allYrs$Response <- log10(allYrs$Response+1) 
+}
 
 #centre Year - helps model convergence to center variables for the model
 allYrs$cYear <- allYrs$year_wMissing - median(allYrs$year_wMissing)
@@ -80,16 +87,6 @@ allYrs$cday_of_year <- allYrs$day_of_year - median(allYrs$day_of_year,na.rm=T)
 library(brms)
 library(rstan)
 
-#set priors now
-prior1 = c(set_prior("normal(0,10)", class = "b"))
-
-#get model code
-#model_code <- make_stancode(myformula, data = mydata, 
-#                            #family = poisson(), 
-#                            chains = n.cores,
-#                            prior = prior1, 
-#                            refresh = 0)
-
 # write a function to consider day of year if sampling is more than 30 days apart
 fitStanModel <- function(mydata){
   
@@ -97,15 +94,25 @@ fitStanModel <- function(mydata){
   maxDiffDays = max(mydata$cday_of_year)-min(mydata$cday_of_year)
   
   if(maxDiffDays < 30) {
-    myformula <- bf(log10(spp_richness+1) ~ cYear + ar(time = iYear, p = 1, cov=FALSE))
+    myformula <- bf(Response ~ cYear + cday_of_year + ar(time = iYear, p = 1, cov=FALSE))
+    
     modelfile <- "/data/idiv_ess/Ellen/stan_code.stan"
     
   } else{
-    myformula <- bf(log10(spp_richness+1) ~ cYear + cday_of_year + ar(time = iYear, p = 1, cov=FALSE))
+    myformula <- bf(Response ~ cYear + cday_of_year + ar(time = iYear, p = 1, cov=FALSE))
     modelfile <- "/data/idiv_ess/Ellen/stan_code_seasonal.stan"
     
   }
   
+#responses: spp_richness
+
+  #get model code - these are saved in the above files
+  # prior1 = c(set_prior("normal(0,10)", class = "b"))
+  # model_code <- make_stancode(myformula, data = mydata, 
+  #                             #family = poisson(), 
+  #                             chains = n.cores,
+  #                             prior = prior1, 
+  #                             refresh = 0)
   
   #get model data
   model_data <- make_standata(myformula, data = mydata, 
@@ -117,7 +124,6 @@ fitStanModel <- function(mydata){
   #fit model in stan
   stan_model <- stan(modelfile, 
                      data = model_data, seed = 20)
-  
   
   #extract model fits
   modelSummary <- summary(stan_model)$summary
@@ -140,10 +146,10 @@ trends <- lapply(allsites, function(x){
 trends <- data.frame(do.call(rbind, trends))
 trends$siteID <- allsites
 
-saveRDS(trends, file=paste0("trends_",mytask,".RDS"))
+saveRDS(trends, file=paste0("trends_",myResponse,"_",myCountry,".RDS"))
 
 
-#combine outputs
+#combine outputs afterwards
 # trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs"
 # trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
 # countryTrends <- lapply(trendsFiles,function(x){
