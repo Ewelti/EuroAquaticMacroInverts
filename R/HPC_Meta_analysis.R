@@ -6,12 +6,10 @@ TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 
-### read in site-level values for this response ####
+### get site-level values for this response ####
 
-myFile <- list.files("/data/idiv_ess/Ellen/site-level")
-myFile <- myFile[grepl("myResponse",myFile)]
-response_stan <- readRDS(paste("/data/idiv_ess/Ellen/site-level",
-                               ))
+response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level.rds")
+response_stan <- subset(response_stan, Response == myResponse)
 
 ### site metadata ######
 
@@ -32,11 +30,14 @@ response_stan$w <- 1/response_stan$sd
 summary(response_stan$w)
 
 #define priors
-prior1 = c(set_prior("normal(0,0.5)", class = "Intercept"),
-          set_prior("normal(0,5)", class = "b"),
-          set_prior("normal(0,5)", class = "sd"))
+prior1 = c(set_prior("normal(0,10)", class = "Intercept"))
 
 fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|Country),
-            data = response_stan, prior = prior1)
+            data = response_stan, prior = prior1, iter=4000)
 
 #### save output ####
+
+saveRDS(fit1,file=paste0("metaanalysis_",myResponse,".rds"))
+
+#for later, pull out section for plotting
+#fixed(fit1)
