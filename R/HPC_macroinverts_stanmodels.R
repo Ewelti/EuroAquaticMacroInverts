@@ -135,7 +135,10 @@ fitStanModel <- function(mydata){
     
   #fit model in stan
   stan_model <- stan(modelfile, 
-                     data = model_data, seed = 20)
+                     data = model_data, 
+                     chains = n.chains,
+                     iter = 3000,
+                     seed = 20)
   
   #extract model fits
   modelSummary <- summary(stan_model)$summary
@@ -150,7 +153,7 @@ fitStanModel <- function(mydata){
 }
 
 #get cores
-n.cores = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+n.chains = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
 
 #loop for all sites
 allsites <- sort(unique(allYrs$site_id))
