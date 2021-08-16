@@ -8,7 +8,7 @@ countryTrends <- lapply(trendsFiles,function(x){
    
   temp <- readRDS(paste(trendsDir,x,sep="/"))
   
-  #add on response
+  #add on response from file name
   temp$Response <- strsplit(x,"__")[[1]][2]
 
   return(temp)
