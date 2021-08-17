@@ -17,3 +17,13 @@ The scripts of density plots and slopes over mean sampling year provide some vis
 Ongoing issues:
 
 --Currently land-use values refer to land-use within microbasins the site is located within. Land-use for the larger upstream area is currently being caluculated and will later be added.
+
+
+HPC analysis: 
+Scripts for the analysis based on the HPC to be run as follows
+R/HPC_macroinverts_site_trends.R - calculates trends at the site-level (run on HPC)
+R/HPC_combine_site_trends.R - aggregates the site-level data from the previous step (run locally)
+R/HPC_Meta-analysis.R - synthesis the site-level data using the output of the previous step (run on HPC)
+R/HPC_modelchecking.R - examination of the meta-analysis files of the previous step (run locally)
+R/HPC-Meta-analysis_drivers.R - fit driver models to the site-level data (run on HPC)
+
