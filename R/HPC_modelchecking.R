@@ -1,5 +1,22 @@
 #read in model for each response and save fixed effects
 
+### site-level checking ####
+
+library(tidyverse)
+
+response_stan <- readRDS("outputs/stanTrends_site_level.rds")
+
+summaryData <- response_stan %>%
+             group_by(country,study_id) %>%
+             summarise(medTrends = median(estimate),
+                       nuData = length(estimate))
+
+ggplot(summaryData)+
+     geom_text(aes(x=medTrends, y =nuData,label=study_id),size=2)+
+     theme_classic()
+
+### meta-analysis ####
+
 setwd("outputs/Meta-analysis")
 
 #### spp_richness ####
