@@ -7,7 +7,7 @@ d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.cs
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
 #choose which country for this task
-TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
+TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs_rerun.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
 allYrs <- subset(allYrs,country==myCountry)
@@ -116,22 +116,24 @@ fitStanModel <- function(mydata){
   
   
 
-  #there is any missing data, dont run the model
-  if(any(is.na(mydata$Response))){
+  #there is missing data, dont run the model
+  if(all(is.na(mydata$Response))){
     
     modelFits <- data.frame(estimate = NA,
                             sd = NA,
-                            rhat = NA,
-                            propNAs = mean(is.na(mydata$Response)))
+                            rhat = NA)
   }else{
     
   #get model data
+  
+  #remove any missing values
+  mydata <- subset(mydata, !is.na(Response))
+      
   model_data <- make_standata(myformula, data = mydata, 
                                 chains = n.cores,
                                 refresh = 0)
   model_data$cYear <- mydata$cYear
   model_data$cday <- mydata$cday_of_year
-    
     
   #fit model in stan
   stan_model <- stan(modelfile, 
@@ -144,8 +146,7 @@ fitStanModel <- function(mydata){
   modelSummary <- summary(stan_model)$summary
   modelFits <- data.frame(estimate = modelSummary[1,"mean"],
                           sd = modelSummary[1,"sd"],
-                          rhat = modelSummary[1,"Rhat"],
-                          propNAs = mean(is.na(mydata$Response)))
+                          rhat = modelSummary[1,"Rhat"])
   
   }
   return(modelFits)

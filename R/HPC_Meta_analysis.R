@@ -29,11 +29,13 @@ summary(response_stan$estimate)
 response_stan$w <- 1/response_stan$sd
 summary(response_stan$w)
 
+n.chains = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+
 #define priors - default ok
 #prior1 = c(set_prior("normal(0,10)", class = "Intercept"))
 
 fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
-            data = response_stan, iter=4000)
+            data = response_stan, iter=4000, chains = n.chains)
 
 #### save output ####
 
