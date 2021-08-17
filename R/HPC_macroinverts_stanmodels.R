@@ -34,56 +34,6 @@ allYrs$cday_of_year <- allYrs$day_of_year - median(allYrs$day_of_year,na.rm=T)
 
 #### two-stage models ####
 
-#### fit model using brms ####
-
-# library(brms)
-# #rstan_options(auto_write = TRUE)
-# #options(mc.cores = parallel::detectCores())
-# 
-# #set priors now
-# prior1 = c(set_prior("normal(0,1)", class = "b"))
-# 
-# # write a function to consider day of year if sampling is more than 30 days apart
-# fitStanModel <- function(mydata){
-#   
-#   #if sampling occurs in more than one month include a seasonal term in the model
-#   maxDiffDays = max(mydata$cday_of_year)-min(mydata$cday_of_year)
-#   
-#   if(maxDiffDays < 30) {
-#     myformula <- bf(log10(spp_richness+1) ~ cYear + ar(time = iYear, p = 1, cov=FALSE))
-#   } else{
-#     myformula <- bf(log10(spp_richness+1) ~ cday_of_year + cYear + ar(time = iYear, p = 1, cov=FALSE))
-#   }
-#   
-#   #fit model
-#   fit1 <- brm(myformula, data = mydata, 
-#               #family = poisson(), 
-#               chains = n.cores,
-#               prior = prior1, 
-#               refresh = 0)
-#   
-#   #extract model fits
-#   modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
-#   return(modelSummary)
-#   
-# }
-# 
-# #get cores
-# n.cores = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-# 
-# #loop for all sites
-# allsites <- sort(unique(allYrs$site_id))
-# 
-# trends <- lapply(allsites, function(x){
-#   fitStanModel(subset(allYrs, site_id == x))
-# })
-# 
-# trends <- data.frame(do.call(rbind, trends))
-# trends$siteID <- allsites
-# 
-# saveRDS(trends, file=paste0("trends_",mytask,".RDS"))
-
-
 ### fitting directly in stan #####
 library(brms)
 library(rstan)
