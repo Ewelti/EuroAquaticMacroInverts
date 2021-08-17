@@ -1,0 +1,210 @@
+#read in model for each response and save fixed effects
+
+#### spp_richness ####
+fit <- readRDS("metaanalysis_spp_richness.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+sr_fixed <- fixef(fit)
+
+#### spp_rich_rare ####
+fit <- readRDS("metaanalysis_spp_rich_rare.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+srr_fixed <-fixef(fit)
+
+#### shannonsH ####
+fit <- readRDS("metaanalysis_shannonsH.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+shH_fixed <- fixef(fit)
+
+#### E10 ####
+fit <- readRDS("metaanalysis_E10.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+e10_fixed <- fixef(fit)
+
+#### abundance ####
+fit <- readRDS("metaanalysis_abundance.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+abund_fixed <- fixef(fit)
+
+#### turnover ####
+fit <- readRDS("metaanalysis_turnover.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+turn_fixed <- fixef(fit)
+
+#### F_to ####
+fit <- readRDS("metaanalysis_F_to.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+fto_fixed <- fixef(fit)
+
+#### FRic ####
+fit <- readRDS("metaanalysis_FRic.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+fric_fixed <- fixef(fit)
+
+#### FEve ####
+fit <- readRDS("metaanalysis_FEve.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+feve_fixed <- fixef(fit)
+
+#### FDiv ####
+fit <- readRDS("metaanalysis_FDiv.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+fdiv <- fixef(fit)
+
+#### RaoQ ####
+fit <- readRDS("metaanalysis_RaoQ.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+raoq_fixed <- fixef(fit)
+
+#### alien_SppRich ####
+fit <- readRDS("metaanalysis_alien_SppRich.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+aliensr_fixed <- fixef(fit)
+
+#### alien_Abund ####
+fit <- readRDS("metaanalysis_alien_Abund.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+alienabund_fixed <- fixef(fit)
+
+#### abund_nativeSpp ####
+fit <- readRDS("metaanalysis_abund_nativeSpp.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+nativeabund_fixed <- fixef(fit)
+
+#### SppRich_nativeSpp ####
+fit <- readRDS("metaanalysis_SppRich_nativeSpp.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+nativesr_fixed <- fixef(fit)
+
+#### EPT_SppRich ####
+fit <- readRDS("metaanalysis_EPT_SppRich.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+eptsr_fixed <- fixef(fit)
+
+#### EPT_Abund ####
+fit <- readRDS("metaanalysis_EPT_Abund.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+eptabund_fixed <- fixef(fit)
+
+#### insect_SppRich ####
+fit <- readRDS("metaanalysis_insect_SppRich.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+insectsr_fixed <- fixef(fit)
+
+#### insect_Abund ####
+fit <- readRDS("metaanalysis_insect_Abund.rds")
+
+#check model
+plot(fit)
+loo(fit, cores = getOption("mc.cores", 1))
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+insectabund_fixed <- fixef(fit)
