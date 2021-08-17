@@ -1,19 +1,34 @@
 #read in model for each response and save fixed effects
 
-### site-level checking ####
+### site-level trends ####
 
 library(tidyverse)
 
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
+response_stan <- subset(response_stan, Response == "spp_richness")
+
+#get site metadata
+d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T)
+d1<- d1[!is.na(d1$site_id_wMissing),]
+siteData <- unique(d1[,c("site_id","study_id","country","season","TaxonomicRes")])
+response_stan <- merge(siteData,response_stan,by="site_id")
 
 summaryData <- response_stan %>%
-             group_by(country,study_id) %>%
+             group_by(country,study_id,season,TaxonomicRes) %>%
              summarise(medTrends = median(estimate),
                        nuData = length(estimate))
 
 ggplot(summaryData)+
      geom_text(aes(x=medTrends, y =nuData,label=study_id),size=2)+
      theme_classic()
+
+ggplot(summaryData)+
+  geom_boxplot(aes(x=TaxonomicRes, y =medTrends),size=2)+
+  theme_classic()
+
+ggplot(summaryData)+
+  geom_boxplot(aes(x=season, y =medTrends),size=2)+
+  theme_classic()
 
 ### meta-analysis ####
 
