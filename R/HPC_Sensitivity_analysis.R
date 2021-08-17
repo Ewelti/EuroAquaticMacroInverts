@@ -16,6 +16,7 @@ response_stan <- subset(response_stan, Response == myResponse)
 ### site metadata ######
 
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
+d1<- d1[!is.na(d1$site_id_wMissing),]
 siteData <- unique(d1[,c("site_id","study_id","country","season","TaxonomicRes")])
 response_stan <- merge(siteData,response_stan,by="site_id")
 
