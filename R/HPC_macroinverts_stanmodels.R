@@ -7,7 +7,7 @@ d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.cs
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
 #choose which country for this task
-TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs_rerun.csv",as.is=T)
+TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
 allYrs <- subset(allYrs,country==myCountry)
@@ -22,15 +22,8 @@ if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
   allYrs$Response <- log10(allYrs$Response+1) 
 }
 
-#centre Year - helps model convergence to center variables for the model
-allYrs$cYear <- allYrs$year_wMissing - median(allYrs$year_wMissing)
-summary(allYrs$cYear)
-#or just have as an index starting from 1
-allYrs$iYear <- allYrs$year_wMissing - min(allYrs$year_wMissing)+1
-summary(allYrs$iYear)
-
-#centre day of year
-allYrs$cday_of_year <- allYrs$day_of_year - median(allYrs$day_of_year,na.rm=T)
+#order by site site year
+allYrs <- allYrs[order(allYrs$year_wMissing),]
 
 #### two-stage models ####
 
@@ -41,12 +34,20 @@ library(rstan)
 # write a function to consider day of year if sampling is more than 30 days apart
 fitStanModel <- function(mydata){
   
+  #centre Year - helps model convergence to center variables for the model
+  mydata$cYear <- mydata$year_wMissing - median(mydata$year_wMissing)
+
+  #or just have as an index starting from 1
+  mydata$iYear <- mydata$year_wMissing - min(mydata$year_wMissing)+1
+  
+  #centre day of year
+  mydata$cday_of_year <- mydata$day_of_year - median(mydata$day_of_year)
+  
   #if sampling occurs in more than one month include a seasonal term in the model
-  maxDiffDays = max(mydata$cday_of_year)-min(mydata$cday_of_year)
+  maxDiffDays = max(mydata$day_of_year)-min(mydata$day_of_year)
   
   if(maxDiffDays < 30) {
     myformula <- bf(Response ~ cYear + cday_of_year + ar(time = iYear, p = 1, cov=FALSE))
-    
     modelfile <- "/data/idiv_ess/Ellen/stan_code.stan"
     
   } else{
@@ -57,7 +58,7 @@ fitStanModel <- function(mydata){
   
 #responses: spp_richness
 
-  #get model code - these are saved in the above files
+  # get model code - these are saved in the above files
   # prior1 = c(set_prior("normal(0,10)", class = "b"))
   # model_code <- make_stancode(myformula, data = mydata, 
   #                             chains = n.cores,
@@ -84,7 +85,9 @@ fitStanModel <- function(mydata){
                                 refresh = 0)
   model_data$cYear <- mydata$cYear
   model_data$cday <- mydata$cday_of_year
-    
+  model_data$meanResponse <- round(median(mydata$Response), 1)
+  model_data$sdResponse <- max(round(mad(mydata$Response), 1), 2.5)
+  
   #fit model in stan
   stan_model <- stan(modelfile, 
                      data = model_data, 
