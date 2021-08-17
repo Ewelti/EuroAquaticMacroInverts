@@ -1,5 +1,7 @@
 #read in model for each response and save fixed effects
 
+setwd("outputs/Meta-analysis")
+
 #### spp_richness ####
 fit <- readRDS("metaanalysis_spp_richness.rds")
 
