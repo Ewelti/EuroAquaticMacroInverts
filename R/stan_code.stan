@@ -7,6 +7,8 @@ data {
   int<lower=0> Kar;  // AR order
   // number of lags per observation
   int<lower=0> J_lag[N];
+  real meanResponse; //mean value of data
+  real sdResponse; //sd value of data
 }
 transformed data {
   int max_lag = 1;
@@ -36,8 +38,8 @@ model {
     }
     target += normal_lpdf(Y | mu, sigma);
   // priors including constants
-  target += normal_lpdf(b | 0,1);
-  target += normal_lpdf(Intercept | 0,10);;
-  target += student_t_lpdf(sigma | 3, 0, 2.5)
-    - 1 * student_t_lccdf(0 | 3, 0, 2.5);
+  target += normal_lpdf(b | 0, 10);
+  target += student_t_lpdf(Intercept | 3, meanResponse, sdResponse);
+  target += student_t_lpdf(sigma | 3, 0, sdResponse)
+    - 1 * student_t_lccdf(0 | 3, 0, sdResponse);
 }
