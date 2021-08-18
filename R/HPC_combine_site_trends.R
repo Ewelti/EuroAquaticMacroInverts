@@ -29,16 +29,4 @@ sort(unique(TaskID$Response))
 
 #all responses?
 unique(countryTrends$Response)
-#we are missing alien_Abund, alien_SppRich, E10, EPT_Abund, EPT_SppRich,
-#insect_Abund, insect_SppRich
-
-missing <- c("alien_Abund", "alien_SppRich", "E10", "EPT_Abund","EPT_SppRich",
-             "insect_Abund", "insect_SppRich")
-
-#see which ones have some NAs
-temp <- subset(countryTrends, propNAs>0)
-table(temp$Response)
-
-missing2 <- names(table(temp$Response))
-
-allmissing <- sort(c(missing,missing2))
+#just turnover
