@@ -43,6 +43,8 @@ cor(gls$stan_fit,gls$SppRich_Est)
 
 setwd("outputs/Meta-analysis")
 
+library(brms)
+
 #### spp_richness ####
 fit <- readRDS("metaanalysis_spp_richness.rds")
 
