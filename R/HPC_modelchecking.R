@@ -30,6 +30,15 @@ ggplot(summaryData)+
   geom_boxplot(aes(x=season, y =medTrends),size=2)+
   theme_classic()
 
+
+#check against gls fits
+gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
+gls$stan_fit <- response_stan$estimate[match(gls$site,response_stan$site_id)]
+
+qplot(stan_fit,SppRich_Est, data=gls)
+cor(gls$stan_fit,gls$SppRich_Est)
+#0.94
+
 ### meta-analysis ####
 
 setwd("outputs/Meta-analysis")
