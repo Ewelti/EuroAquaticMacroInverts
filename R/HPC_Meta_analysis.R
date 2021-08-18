@@ -10,7 +10,8 @@ myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 
 response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level.rds")
 response_stan <- subset(response_stan, Response == myResponse)
-
+response_stan <- subset(response_stan, !is.na(estimate))
+  
 ### site metadata ######
 
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
@@ -22,7 +23,7 @@ response_stan <- merge(siteData,response_stan,by="site_id")
 library(brms)
 
 #examine response
-hist(response_stan$estimate)
+#hist(response_stan$estimate)
 summary(response_stan$estimate)
 
 #define weights
