@@ -20,10 +20,31 @@ myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 allYrs$Response <- allYrs[,myResponse]
 
 #log responses that are right skewed
+#original logging choices
+#if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
+#                   "EPT_Abund","insect_Abund","FRic")){
+#  allYrs$Response <- log10(allYrs$Response+1) 
+#}
+
+#new transformations
 if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
-                   "EPT_Abund","insect_Abund","FRic")){
+                      "EPT_Abund","insect_Abund","FRic",
+                     "spp_richness","spp_rich_rare",
+                     "alien_SppRich","SppRich_nativeSpp",
+                     "EPT_SppRich","insect_SppRich")){
+  
   allYrs$Response <- log10(allYrs$Response+1) 
+ 
+}else if(myResponse %in% c("E10","F_to")){
+  
+  allYrs$Response <- log10(allYrs$Response+0.01) 
+  
+}else if(myResponse %in% c("FDiv")){
+  
+  allYrs$Response <- allYrs$Response^2
+  
 }
+#not shannonH, RaoQ, turnover, FEve
 
 #order by site site year
 allYrs <- allYrs[order(allYrs$year_wMissing),]
