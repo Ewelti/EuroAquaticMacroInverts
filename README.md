@@ -22,6 +22,7 @@ R/HPC_modelchecking.R - examination of the meta-analysis files of the previous s
 R/HPC-Meta-analysis_drivers.R - fit driver models to the site-level data (run on HPC)
 
 Problem meta-analysis models (temporal--no drivers) observed in model checking:
+-E10
 -Func turn
 -Alien spp rich
 -EPT spp rich

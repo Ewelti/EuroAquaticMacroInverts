@@ -44,14 +44,19 @@ cor(gls$stan_fit,gls$SppRich_Est)
 setwd("outputs/Meta-analysis")
 
 library(brms)
+library(loo)
 
 #### spp_richness ####
 fit <- readRDS("metaanalysis_spp_richness.rds")
-
+#loo_R2(fit)
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+sr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+sr_loo
+sr_parento <- as.list(pareto_k_table(sr_loo))
+Count_sr <- rbind(sr_parento[[1]],sr_parento[[2]],sr_parento[[3]],sr_parento[[4]])
+colnames(Count_sr) <- "SppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -69,7 +74,11 @@ fit <- readRDS("metaanalysis_spp_rich_rare.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+srr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+srr_loo
+srr_parento <- as.list(pareto_k_table(srr_loo))
+Count_srr <- rbind(srr_parento[[1]],srr_parento[[2]],srr_parento[[3]],srr_parento[[4]])
+colnames(Count_srr) <- "SppRichRarefied"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -87,7 +96,11 @@ fit <- readRDS("metaanalysis_shannonsH.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+shH_loo <- loo(fit, cores = getOption("mc.cores", 1))
+shH_loo
+shH_parento <- as.list(pareto_k_table(shH_loo))
+Count_shH <- rbind(shH_parento[[1]],shH_parento[[2]],shH_parento[[3]],shH_parento[[4]])
+colnames(Count_shH) <- "ShannonsH"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -105,7 +118,11 @@ fit <- readRDS("metaanalysis_E10.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+e10_loo <- loo(fit, cores = getOption("mc.cores", 1))
+e10_loo
+e10_parento <- as.list(pareto_k_table(e10_loo))
+Count_e10 <- rbind(e10_parento[[1]],e10_parento[[2]],e10_parento[[3]],e10_parento[[4]])
+colnames(Count_e10) <- "E10"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -123,7 +140,11 @@ fit <- readRDS("metaanalysis_abundance.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+ab_loo <- loo(fit, cores = getOption("mc.cores", 1))
+ab_loo
+ab_parento <- as.list(pareto_k_table(ab_loo))
+Count_ab <- rbind(ab_parento[[1]],ab_parento[[2]],ab_parento[[3]],ab_parento[[4]])
+colnames(Count_ab) <- "Abundance"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -141,7 +162,11 @@ fit <- readRDS("metaanalysis_turnover.rds") ## not yet calculated
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+turn_loo <- loo(fit, cores = getOption("mc.cores", 1))
+turn_loo
+turn_parento <- as.list(pareto_k_table(turn_loo))
+Count_turn <- rbind(turn_parento[[1]],turn_parento[[2]],turn_parento[[3]],turn_parento[[4]])
+colnames(Count_turn) <- "turnover"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -159,7 +184,11 @@ fit <- readRDS("metaanalysis_F_to.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+fto_loo <- loo(fit, cores = getOption("mc.cores", 1))
+fto_loo
+fto_parento <- as.list(pareto_k_table(fto_loo))
+Count_fto <- rbind(fto_parento[[1]],fto_parento[[2]],fto_parento[[3]],fto_parento[[4]])
+colnames(Count_fto) <- "func_turnover"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -177,7 +206,11 @@ fit <- readRDS("metaanalysis_FRic.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+fric_loo <- loo(fit, cores = getOption("mc.cores", 1))
+fric_loo
+fric_parento <- as.list(pareto_k_table(fric_loo))
+Count_fric <- rbind(fric_parento[[1]],fric_parento[[2]],fric_parento[[3]],fric_parento[[4]])
+colnames(Count_fric) <- "func_rich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -195,7 +228,11 @@ fit <- readRDS("metaanalysis_FEve.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+feve_loo <- loo(fit, cores = getOption("mc.cores", 1))
+feve_loo
+feve_parento <- as.list(pareto_k_table(feve_loo))
+Count_feve <- rbind(feve_parento[[1]],feve_parento[[2]],feve_parento[[3]],feve_parento[[4]])
+colnames(Count_feve) <- "func_even"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -213,7 +250,11 @@ fit <- readRDS("metaanalysis_FDiv.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+fdiv_loo <- loo(fit, cores = getOption("mc.cores", 1))
+fdiv_loo
+fdiv_parento <- as.list(pareto_k_table(fdiv_loo))
+Count_fdiv <- rbind(fdiv_parento[[1]],fdiv_parento[[2]],fdiv_parento[[3]],fdiv_parento[[4]])
+colnames(Count_fdiv) <- "func_diverg"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -231,7 +272,11 @@ fit <- readRDS("metaanalysis_RaoQ.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+raoq_loo <- loo(fit, cores = getOption("mc.cores", 1))
+raoq_loo
+raoq_parento <- as.list(pareto_k_table(raoq_loo))
+Count_raoq <- rbind(raoq_parento[[1]],raoq_parento[[2]],raoq_parento[[3]],raoq_parento[[4]])
+colnames(Count_raoq) <- "RaoQ"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -249,7 +294,11 @@ fit <- readRDS("metaanalysis_alien_SppRich.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+aliensr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+aliensr_loo
+aliensr_parento <- as.list(pareto_k_table(aliensr_loo))
+Count_aliensr <- rbind(aliensr_parento[[1]],aliensr_parento[[2]],aliensr_parento[[3]],aliensr_parento[[4]])
+colnames(Count_aliensr) <- "alien_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -267,7 +316,11 @@ fit <- readRDS("metaanalysis_alien_Abund.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+alienab_loo <- loo(fit, cores = getOption("mc.cores", 1))
+alienab_loo
+alienab_parento <- as.list(pareto_k_table(alienab_loo))
+Count_alienab <- rbind(alienab_parento[[1]],alienab_parento[[2]],alienab_parento[[3]],alienab_parento[[4]])
+colnames(Count_alienab) <- "alien_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -285,7 +338,11 @@ fit <- readRDS("metaanalysis_abund_nativeSpp.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+nativeab_loo <- loo(fit, cores = getOption("mc.cores", 1))
+nativeab_loo
+nativeab_parento <- as.list(pareto_k_table(nativeab_loo))
+Count_nativeab <- rbind(nativeab_parento[[1]],nativeab_parento[[2]],nativeab_parento[[3]],nativeab_parento[[4]])
+colnames(Count_nativeab) <- "native_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -303,7 +360,11 @@ fit <- readRDS("metaanalysis_SppRich_nativeSpp.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+nativesr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+nativesr_loo
+nativesr_parento <- as.list(pareto_k_table(nativesr_loo))
+Count_nativesr <- rbind(nativesr_parento[[1]],nativesr_parento[[2]],nativesr_parento[[3]],nativesr_parento[[4]])
+colnames(Count_nativesr) <- "native_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -321,7 +382,11 @@ fit <- readRDS("metaanalysis_EPT_SppRich.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+EPTsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+EPTsr_loo
+EPTsr_parento <- as.list(pareto_k_table(EPTsr_loo))
+Count_EPTsr <- rbind(EPTsr_parento[[1]],EPTsr_parento[[2]],EPTsr_parento[[3]],EPTsr_parento[[4]])
+colnames(Count_EPTsr) <- "EPT_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -339,7 +404,11 @@ fit <- readRDS("metaanalysis_EPT_Abund.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+EPTab_loo <- loo(fit, cores = getOption("mc.cores", 1))
+EPTab_loo
+EPTab_parento <- as.list(pareto_k_table(EPTab_loo))
+Count_EPTab <- rbind(EPTab_parento[[1]],EPTab_parento[[2]],EPTab_parento[[3]],EPTab_parento[[4]])
+colnames(Count_EPTab) <- "EPT_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -357,7 +426,11 @@ fit <- readRDS("metaanalysis_insect_SppRich.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+insectsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+insectsr_loo
+insectsr_parento <- as.list(pareto_k_table(insectsr_loo))
+Count_insectsr <- rbind(insectsr_parento[[1]],insectsr_parento[[2]],insectsr_parento[[3]],insectsr_parento[[4]])
+colnames(Count_insectsr) <- "insect_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -375,7 +448,11 @@ fit <- readRDS("metaanalysis_insect_Abund.rds")
 
 #check model
 plot(fit)
-loo(fit, cores = getOption("mc.cores", 1))
+insectab_loo <- loo(fit, cores = getOption("mc.cores", 1))
+insectab_loo
+insectab_parento <- as.list(pareto_k_table(insectab_loo))
+Count_insectab <- rbind(insectab_parento[[1]],insectab_parento[[2]],insectab_parento[[3]],insectab_parento[[4]])
+colnames(Count_insectab) <- "insect_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
@@ -395,3 +472,12 @@ Yr_metaanaly_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixe
                            alienab_fixed, nativesr_fixed, nativeab_fixed, EPTsr_fixed, EPTab_fixed,
                            insectsr_fixed, insectab_fixed)
 write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Ests.csv")
+
+#### assemble model counts from Parento k diagnostic values from meta-analysis models #####
+
+Yr_metaanaly_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Count_ab, Count_turn, Count_fto,
+                               Count_fric, Count_feve, Count_fdiv, Count_raoq, Count_aliensr,
+                              Count_alienab, Count_nativesr, Count_nativeab, Count_EPTsr, Count_EPTab,
+                              Count_insectsr, Count_insectab)
+rownames(Yr_metaanaly_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
+write.csv(Yr_metaanaly_parento, "Yr_meta_parento_ModelCounts.csv")

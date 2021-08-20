@@ -1,0 +1,5 @@
+,SppRich,SppRichRarefied,ShannonsH,E10,Abundance,turnover,func_turnover,func_rich,func_even,func_diverg,RaoQ,alien_sppRich,alien_abund,native_sppRich,native_abund,EPT_sppRich,EPT_abund,insect_sppRich,insect_abund
+"good[-Inf, 0.5]",1797,1784,1710,184,1726,,209,1816,1503,1457,1806,314,847,1284,1211,627,947,1790,1721
+"ok[0.5, 0.7]",11,19,42,105,39,,61,0,122,129,7,39,21,5,46,75,166,13,42
+"bad[0.7, 1]",8,10,33,132,28,,86,0,81,113,3,55,20,9,25,74,164,10,28
+"verybad[1, Inf]",0,3,31,1395,23,,1460,0,110,117,0,497,17,1,17,1040,539,3,25
