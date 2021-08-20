@@ -18,7 +18,7 @@ allYrs$Response <- allYrs[,myResponse]
 
 #log responses that are right skewed
 if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
-                   "EPT_Abund","insect_Abund")){
+                   "EPT_Abund","insect_Abund","FRic")){
   allYrs$Response <- log10(allYrs$Response+1) 
 }
 
@@ -47,7 +47,7 @@ fitStanModel <- function(mydata){
   maxDiffDays = max(mydata$day_of_year)-min(mydata$day_of_year)
   
   if(maxDiffDays < 30) {
-    myformula <- bf(Response ~ cYear + cday_of_year + ar(time = iYear, p = 1, cov=FALSE))
+    myformula <- bf(Response ~ cYear + ar(time = iYear, p = 1, cov=FALSE))
     modelfile <- "/data/idiv_ess/Ellen/stan_code.stan"
     
   } else{
