@@ -6,6 +6,9 @@ library(lubridate)
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
+#make turnover numeric
+allYrs$turnover <- as.numeric(allYrs$turnover)
+
 #choose which country for this task
 TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
@@ -18,7 +21,7 @@ allYrs$Response <- allYrs[,myResponse]
 
 #log responses that are right skewed
 if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
-                   "EPT_Abund","insect_Abund")){
+                   "EPT_Abund","insect_Abund","FRic")){
   allYrs$Response <- log10(allYrs$Response+1) 
 }
 
@@ -47,7 +50,7 @@ fitStanModel <- function(mydata){
   maxDiffDays = max(mydata$day_of_year)-min(mydata$day_of_year)
   
   if(maxDiffDays < 30) {
-    myformula <- bf(Response ~ cYear + cday_of_year + ar(time = iYear, p = 1, cov=FALSE))
+    myformula <- bf(Response ~ cYear + ar(time = iYear, p = 1, cov=FALSE))
     modelfile <- "/data/idiv_ess/Ellen/stan_code.stan"
     
   } else{
