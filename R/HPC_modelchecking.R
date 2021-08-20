@@ -117,7 +117,7 @@ shH_fixed
 fit <- readRDS("metaanalysis_E10.rds")
 
 #check model
-plot(fit)
+plot(fit)#bad!!!
 e10_loo <- loo(fit, cores = getOption("mc.cores", 1))
 e10_loo
 e10_parento <- as.list(pareto_k_table(e10_loo))
@@ -183,7 +183,7 @@ turn_fixed
 fit <- readRDS("metaanalysis_F_to.rds")
 
 #check model
-plot(fit)
+plot(fit)#bad!!!
 fto_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fto_loo
 fto_parento <- as.list(pareto_k_table(fto_loo))
@@ -293,7 +293,7 @@ raoq_fixed
 fit <- readRDS("metaanalysis_alien_SppRich.rds")
 
 #check model
-plot(fit)
+plot(fit)#bad!!
 aliensr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 aliensr_loo
 aliensr_parento <- as.list(pareto_k_table(aliensr_loo))
@@ -381,7 +381,7 @@ nativesr_fixed
 fit <- readRDS("metaanalysis_EPT_SppRich.rds")
 
 #check model
-plot(fit)
+plot(fit)#bad!!
 EPTsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 EPTsr_loo
 EPTsr_parento <- as.list(pareto_k_table(EPTsr_loo))
@@ -403,7 +403,7 @@ EPTsr_fixed
 fit <- readRDS("metaanalysis_EPT_Abund.rds")
 
 #check model
-plot(fit)
+plot(fit)#bad!!
 EPTab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 EPTab_loo
 EPTab_parento <- as.list(pareto_k_table(EPTab_loo))
@@ -425,7 +425,7 @@ EPTab_fixed
 fit <- readRDS("metaanalysis_insect_SppRich.rds")
 
 #check model
-plot(fit)
+plot(fit)#not great
 insectsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 insectsr_loo
 insectsr_parento <- as.list(pareto_k_table(insectsr_loo))
