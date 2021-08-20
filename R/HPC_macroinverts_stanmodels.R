@@ -6,6 +6,9 @@ library(lubridate)
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
+#make turnover numeric
+allYrs$turnover <- as.numeric(allYrs$turnover)
+
 #choose which country for this task
 TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
