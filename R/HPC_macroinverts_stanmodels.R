@@ -67,7 +67,7 @@ if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
 #"alien_SppRich","SppRich_nativeSpp","EPT_SppRich","insect_SppRich"
 
 #still problems with func_turn(F_to), alien_SppRich, EPT_SppRich, and EPT_abund
-#turnover values are wierd
+#turnover values are weird
 
 #order by site site year
 allYrs <- allYrs[order(allYrs$year_wMissing),]
