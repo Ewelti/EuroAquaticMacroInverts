@@ -1,0 +1,20 @@
+Response,probIncrease,probDecrease,model has good fit
+spp_richness,0.996625,0.003375,X
+spp_richness_rarefied,0.87375,0.12625,X
+shannonsH,0.42975,0.57025,X
+E10,0,1,
+abundance,0.982625,0.017375,X
+turnover,,,
+func_turnover,0.75,0.25,
+func_rich,0.99925,0.00075,X
+func_even,0.092625,0.907375,X
+func_diverg,0.289125,0.710875,
+RaoQ,0.580125,0.419875,X
+alien_sppRich,1,0,
+alien_abund,0.993375,0.006625,X
+native_sppRich,0.978625,0.021375,X
+native_abund,0.9145,0.0855,X
+EPT_sppRich,0.75,0.25,
+EPT_abund,0.25,0.75,
+insect_sppRich,0.982875,0.017125,X
+insect_abund,0.986,0.014,X
