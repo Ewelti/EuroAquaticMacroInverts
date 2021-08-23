@@ -14,7 +14,8 @@ getTrendProbability <- function(fit){
 library(tidyverse)
 
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
-response_stan <- subset(response_stan, Response == "spp_richness")
+response_stan <- readRDS("outputs/stanTrends_site_level_logged.rds")
+response_stan <- subset(response_stan, Response == "turnover")
 
 #get site metadata
 d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T)
@@ -45,13 +46,15 @@ ggplot(summaryData)+
 gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
 gls$stan_fit <- response_stan$estimate[match(gls$site,response_stan$site_id)]
 
-qplot(stan_fit,SppRich_Est, data=gls)
-cor(gls$stan_fit,gls$SppRich_Est)
+qplot(stan_fit, TurnO_Est, data=gls)
+cor(gls$stan_fit,gls$TurnO_Est)
 #0.94
 
 ### meta-analysis ####
 
 setwd("outputs/Meta-analysis")
+setwd("outputs/Meta-analysis_logged")
+getwd()
 library(rstan)
 library(brms)
 library(loo)
@@ -61,8 +64,10 @@ fit <- readRDS("metaanalysis_spp_richness.rds")
 #loo_R2(fit)
 
 #prob of trend
-getTrendProbability(fit)
-  
+sr_prob <- getTrendProbability(fit)
+sr_prob <- data.frame(Response="spp_richness", sr_prob[,1:2])
+sr_prob
+
 #check model
 plot(fit)
 sr_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -73,7 +78,7 @@ colnames(Count_sr) <- "SppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-sr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+sr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 sr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 sr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 sr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -85,6 +90,11 @@ sr_fixed
 #### spp_rich_rare ####
 fit <- readRDS("metaanalysis_spp_rich_rare.rds")
 
+#prob of trend
+srr_prob <- getTrendProbability(fit)
+srr_prob <- data.frame(Response="spp_richness_rarefied", srr_prob[,1:2])
+srr_prob
+
 #check model
 plot(fit)
 srr_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -95,7 +105,7 @@ colnames(Count_srr) <- "SppRichRarefied"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-srr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+srr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 srr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 srr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 srr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -107,6 +117,11 @@ srr_fixed
 #### shannonsH ####
 fit <- readRDS("metaanalysis_shannonsH.rds")
 
+#prob of trend
+shH_prob <- getTrendProbability(fit)
+shH_prob <- data.frame(Response="shannonsH", shH_prob[,1:2])
+shH_prob
+
 #check model
 plot(fit)
 shH_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -117,7 +132,7 @@ colnames(Count_shH) <- "ShannonsH"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-shH_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+shH_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 shH_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 shH_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 shH_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -129,6 +144,11 @@ shH_fixed
 #### E10 ####
 fit <- readRDS("metaanalysis_E10.rds")
 
+#prob of trend
+e10_prob <- getTrendProbability(fit)
+e10_prob <- data.frame(Response="E10", e10_prob[,1:2])
+e10_prob
+
 #check model
 plot(fit)#bad!!!
 e10_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -139,7 +159,7 @@ colnames(Count_e10) <- "E10"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-e10_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+e10_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 e10_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 e10_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 e10_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -151,6 +171,11 @@ e10_fixed
 #### abundance ####
 fit <- readRDS("metaanalysis_abundance.rds")
 
+#prob of trend
+ab_prob <- getTrendProbability(fit)
+ab_prob <- data.frame(Response="abundance", ab_prob[,1:2])
+ab_prob
+
 #check model
 plot(fit)
 ab_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -161,7 +186,7 @@ colnames(Count_ab) <- "Abundance"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-abund_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+abund_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 abund_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 abund_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 abund_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -173,6 +198,11 @@ abund_fixed
 #### turnover ####
 fit <- readRDS("metaanalysis_turnover.rds") ## not yet calculated
 
+#prob of trend
+turn_prob <- getTrendProbability(fit)
+turn_prob <- data.frame(Response="turnover", turn_prob[,1:2])
+turn_prob
+
 #check model
 plot(fit)
 turn_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -183,7 +213,7 @@ colnames(Count_turn) <- "turnover"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-turn_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+turn_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 turn_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 turn_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 turn_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -195,6 +225,11 @@ turn_fixed
 #### F_to ####
 fit <- readRDS("metaanalysis_F_to.rds")
 
+#prob of trend
+fto_prob <- getTrendProbability(fit)
+fto_prob <- data.frame(Response="func_turnover", fto_prob[,1:2])
+fto_prob
+
 #check model
 plot(fit)#bad!!!
 fto_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -205,7 +240,7 @@ colnames(Count_fto) <- "func_turnover"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fto_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+fto_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 fto_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 fto_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 fto_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -217,6 +252,11 @@ fto_fixed
 #### FRic ####
 fit <- readRDS("metaanalysis_FRic.rds")
 
+#prob of trend
+fric_prob <- getTrendProbability(fit)
+fric_prob <- data.frame(Response="func_rich", fric_prob[,1:2])
+fric_prob
+
 #check model
 plot(fit)
 fric_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -227,7 +267,7 @@ colnames(Count_fric) <- "func_rich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fric_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+fric_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 fric_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 fric_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 fric_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -239,6 +279,11 @@ fric_fixed
 #### FEve ####
 fit <- readRDS("metaanalysis_FEve.rds")
 
+#prob of trend
+feve_prob <- getTrendProbability(fit)
+feve_prob <- data.frame(Response="func_even", feve_prob[,1:2])
+feve_prob
+
 #check model
 plot(fit)
 feve_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -249,7 +294,7 @@ colnames(Count_feve) <- "func_even"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-feve_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+feve_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 feve_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 feve_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 feve_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -261,6 +306,11 @@ feve_fixed
 #### FDiv ####
 fit <- readRDS("metaanalysis_FDiv.rds")
 
+#prob of trend
+fdiv_prob <- getTrendProbability(fit)
+fdiv_prob <- data.frame(Response="func_diverg", fdiv_prob[,1:2])
+fdiv_prob
+
 #check model
 plot(fit)
 fdiv_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -271,7 +321,7 @@ colnames(Count_fdiv) <- "func_diverg"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fdiv_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+fdiv_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 fdiv_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 fdiv_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 fdiv_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -283,6 +333,11 @@ fdiv_fixed
 #### RaoQ ####
 fit <- readRDS("metaanalysis_RaoQ.rds")
 
+#prob of trend
+raoq_prob <- getTrendProbability(fit)
+raoq_prob <- data.frame(Response="RaoQ", raoq_prob[,1:2])
+raoq_prob
+
 #check model
 plot(fit)
 raoq_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -293,7 +348,7 @@ colnames(Count_raoq) <- "RaoQ"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-raoq_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+raoq_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 raoq_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 raoq_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 raoq_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -305,6 +360,11 @@ raoq_fixed
 #### alien_SppRich ####
 fit <- readRDS("metaanalysis_alien_SppRich.rds")
 
+#prob of trend
+aliensr_prob <- getTrendProbability(fit)
+aliensr_prob <- data.frame(Response="alien_sppRich", aliensr_prob[,1:2])
+aliensr_prob
+
 #check model
 plot(fit)#bad!!
 aliensr_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -315,7 +375,7 @@ colnames(Count_aliensr) <- "alien_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-aliensr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+aliensr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 aliensr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 aliensr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 aliensr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -327,6 +387,11 @@ aliensr_fixed
 #### alien_Abund ####
 fit <- readRDS("metaanalysis_alien_Abund.rds")
 
+#prob of trend
+alienab_prob <- getTrendProbability(fit)
+alienab_prob <- data.frame(Response="alien_abund", alienab_prob[,1:2])
+alienab_prob
+
 #check model
 plot(fit)
 alienab_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -337,7 +402,7 @@ colnames(Count_alienab) <- "alien_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-alienab_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+alienab_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 alienab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 alienab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 alienab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -349,6 +414,11 @@ alienab_fixed
 #### abund_nativeSpp ####
 fit <- readRDS("metaanalysis_abund_nativeSpp.rds")
 
+#prob of trend
+nativeab_prob <- getTrendProbability(fit)
+nativeab_prob <- data.frame(Response="native_abund", nativeab_prob[,1:2])
+nativeab_prob
+
 #check model
 plot(fit)
 nativeab_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -359,7 +429,7 @@ colnames(Count_nativeab) <- "native_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-nativeab_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+nativeab_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 nativeab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 nativeab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 nativeab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -371,6 +441,11 @@ nativeab_fixed
 #### SppRich_nativeSpp ####
 fit <- readRDS("metaanalysis_SppRich_nativeSpp.rds")
 
+#prob of trend
+nativesr_prob <- getTrendProbability(fit)
+nativesr_prob <- data.frame(Response="native_sppRich", nativesr_prob[,1:2])
+nativesr_prob
+
 #check model
 plot(fit)
 nativesr_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -381,7 +456,7 @@ colnames(Count_nativesr) <- "native_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-nativesr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+nativesr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 nativesr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 nativesr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 nativesr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -393,6 +468,11 @@ nativesr_fixed
 #### EPT_SppRich ####
 fit <- readRDS("metaanalysis_EPT_SppRich.rds")
 
+#prob of trend
+EPTsr_prob <- getTrendProbability(fit)
+EPTsr_prob <- data.frame(Response="EPT_sppRich", EPTsr_prob[,1:2])
+EPTsr_prob
+
 #check model
 plot(fit)#bad!!
 EPTsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -403,7 +483,7 @@ colnames(Count_EPTsr) <- "EPT_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-EPTsr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+EPTsr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 EPTsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 EPTsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 EPTsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -415,6 +495,11 @@ EPTsr_fixed
 #### EPT_Abund ####
 fit <- readRDS("metaanalysis_EPT_Abund.rds")
 
+#prob of trend
+EPTab_prob <- getTrendProbability(fit)
+EPTab_prob <- data.frame(Response="EPT_abund", EPTab_prob[,1:2])
+EPTab_prob
+
 #check model
 plot(fit)#bad!!
 EPTab_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -425,7 +510,7 @@ colnames(Count_EPTab) <- "EPT_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-EPTab_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+EPTab_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 EPTab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 EPTab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 EPTab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -437,6 +522,11 @@ EPTab_fixed
 #### insect_SppRich ####
 fit <- readRDS("metaanalysis_insect_SppRich.rds")
 
+#prob of trend
+insectsr_prob <- getTrendProbability(fit)
+insectsr_prob <- data.frame(Response="insect_sppRich", insectsr_prob[,1:2])
+insectsr_prob
+
 #check model
 plot(fit)#not great
 insectsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -447,7 +537,7 @@ colnames(Count_insectsr) <- "insect_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-insectsr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+insectsr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 insectsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 insectsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 insectsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -459,6 +549,11 @@ insectsr_fixed
 #### insect_Abund ####
 fit <- readRDS("metaanalysis_insect_Abund.rds")
 
+#prob of trend
+insectab_prob <- getTrendProbability(fit)
+insectab_prob <- data.frame(Response="insect_abund", insectab_prob[,1:2])
+insectab_prob
+
 #check model
 plot(fit)
 insectab_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -469,7 +564,7 @@ colnames(Count_insectab) <- "insect_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-insectab_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+insectab_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 insectab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 insectab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 insectab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -485,6 +580,14 @@ Yr_metaanaly_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixe
                            alienab_fixed, nativesr_fixed, nativeab_fixed, EPTsr_fixed, EPTab_fixed,
                            insectsr_fixed, insectab_fixed)
 write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Ests.csv")
+
+#### assemble all probabilities of increases/decreases from meta-analysis models #####
+
+Yr_metaanaly_probs <- rbind(sr_prob, srr_prob, shH_prob, e10_prob, ab_prob, turn_prob, 
+                            fto_prob, fric_prob, feve_prob, fdiv_prob, raoq_prob, aliensr_prob,
+                            alienab_prob, nativesr_prob, nativeab_prob, EPTsr_prob, EPTab_prob,
+                            insectsr_prob, insectab_prob)
+write.csv(Yr_metaanaly_probs, "Yr_metaanaly_probabilities.csv")
 
 #### assemble model counts from Parento k diagnostic values from meta-analysis models #####
 

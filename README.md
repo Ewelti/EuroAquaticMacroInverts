@@ -21,12 +21,17 @@ R/HPC_Meta-analysis.R - synthesis the site-level data using the output of the pr
 R/HPC_modelchecking.R - examination of the meta-analysis files of the previous step (run locally)
 R/HPC-Meta-analysis_drivers.R - fit driver models to the site-level data (run on HPC)
 
-Problem meta-analysis models (temporal--no drivers) observed in model checking:
--E10
+Meta-analysis response variables which should be transformed:
+-all abundance responses, FRIC (log+1 transformed)
+-E10 (log+0.01 transformed)
+-FDiv (^2 transformed)
+
+Ongoing problem meta-analysis models (temporal--no drivers) observed in model checking:
+-turnover
 -Func turn
 -Alien spp rich
 -EPT spp rich
-~EPT abund (less problematic than others but potenially problematic)
-Fric needs to be log trans- it is quite log skewed?
+~EPT abund
+
 
 
