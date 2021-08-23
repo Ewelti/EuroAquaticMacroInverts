@@ -15,7 +15,7 @@ library(tidyverse)
 
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
 response_stan <- readRDS("outputs/stanTrends_site_level_logged.rds")
-response_stan <- subset(response_stan, Response == "spp_richness")
+response_stan <- subset(response_stan, Response == "turnover")
 
 #get site metadata
 d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T)
@@ -46,14 +46,15 @@ ggplot(summaryData)+
 gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
 gls$stan_fit <- response_stan$estimate[match(gls$site,response_stan$site_id)]
 
-qplot(stan_fit,SppRich_Est, data=gls)
-cor(gls$stan_fit,gls$SppRich_Est)
+qplot(stan_fit, TurnO_Est, data=gls)
+cor(gls$stan_fit,gls$TurnO_Est)
 #0.94
 
 ### meta-analysis ####
 
 setwd("outputs/Meta-analysis")
 setwd("outputs/Meta-analysis_logged")
+getwd()
 library(rstan)
 library(brms)
 library(loo)
@@ -77,7 +78,7 @@ colnames(Count_sr) <- "SppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-sr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+sr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 sr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 sr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 sr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -104,7 +105,7 @@ colnames(Count_srr) <- "SppRichRarefied"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-srr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+srr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 srr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 srr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 srr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -131,7 +132,7 @@ colnames(Count_shH) <- "ShannonsH"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-shH_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+shH_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 shH_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 shH_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 shH_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -158,7 +159,7 @@ colnames(Count_e10) <- "E10"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-e10_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+e10_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 e10_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 e10_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 e10_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -185,7 +186,7 @@ colnames(Count_ab) <- "Abundance"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-abund_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+abund_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 abund_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 abund_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 abund_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -212,7 +213,7 @@ colnames(Count_turn) <- "turnover"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-turn_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+turn_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 turn_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 turn_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 turn_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -239,7 +240,7 @@ colnames(Count_fto) <- "func_turnover"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fto_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+fto_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 fto_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 fto_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 fto_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -266,7 +267,7 @@ colnames(Count_fric) <- "func_rich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fric_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+fric_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 fric_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 fric_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 fric_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -293,7 +294,7 @@ colnames(Count_feve) <- "func_even"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-feve_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+feve_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 feve_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 feve_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 feve_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -320,7 +321,7 @@ colnames(Count_fdiv) <- "func_diverg"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fdiv_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+fdiv_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 fdiv_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 fdiv_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 fdiv_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -347,7 +348,7 @@ colnames(Count_raoq) <- "RaoQ"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-raoq_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+raoq_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 raoq_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 raoq_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 raoq_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -374,7 +375,7 @@ colnames(Count_aliensr) <- "alien_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-aliensr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+aliensr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 aliensr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 aliensr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 aliensr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -401,7 +402,7 @@ colnames(Count_alienab) <- "alien_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-alienab_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+alienab_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 alienab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 alienab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 alienab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -428,7 +429,7 @@ colnames(Count_nativeab) <- "native_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-nativeab_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+nativeab_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 nativeab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 nativeab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 nativeab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -455,7 +456,7 @@ colnames(Count_nativesr) <- "native_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-nativesr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+nativesr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 nativesr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 nativesr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 nativesr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -482,7 +483,7 @@ colnames(Count_EPTsr) <- "EPT_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-EPTsr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+EPTsr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 EPTsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 EPTsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 EPTsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -509,7 +510,7 @@ colnames(Count_EPTab) <- "EPT_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-EPTab_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+EPTab_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 EPTab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 EPTab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 EPTab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -536,7 +537,7 @@ colnames(Count_insectsr) <- "insect_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-insectsr_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+insectsr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 insectsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 insectsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 insectsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -563,7 +564,7 @@ colnames(Count_insectab) <- "insect_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-insectab_fixed_99 <- fixef(fit, probs = c(0.01, 0.99))
+insectab_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
 insectab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 insectab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 insectab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
@@ -578,7 +579,7 @@ Yr_metaanaly_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixe
                            fto_fixed, fric_fixed, feve_fixed, fdiv_fixed, raoq_fixed, aliensr_fixed,
                            alienab_fixed, nativesr_fixed, nativeab_fixed, EPTsr_fixed, EPTab_fixed,
                            insectsr_fixed, insectab_fixed)
-write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Ests_logged.csv")
+write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Ests.csv")
 
 #### assemble all probabilities of increases/decreases from meta-analysis models #####
 
@@ -586,7 +587,7 @@ Yr_metaanaly_probs <- rbind(sr_prob, srr_prob, shH_prob, e10_prob, ab_prob, turn
                             fto_prob, fric_prob, feve_prob, fdiv_prob, raoq_prob, aliensr_prob,
                             alienab_prob, nativesr_prob, nativeab_prob, EPTsr_prob, EPTab_prob,
                             insectsr_prob, insectab_prob)
-write.csv(Yr_metaanaly_probs, "Yr_metaanaly_probabilities_logged.csv")
+write.csv(Yr_metaanaly_probs, "Yr_metaanaly_probabilities.csv")
 
 #### assemble model counts from Parento k diagnostic values from meta-analysis models #####
 
@@ -595,6 +596,6 @@ Yr_metaanaly_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Count_a
                               Count_alienab, Count_nativesr, Count_nativeab, Count_EPTsr, Count_EPTab,
                               Count_insectsr, Count_insectab)
 rownames(Yr_metaanaly_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
-write.csv(Yr_metaanaly_parento, "Yr_meta_parento_ModelCounts_logged.csv")
+write.csv(Yr_metaanaly_parento, "Yr_meta_parento_ModelCounts.csv")
 
 
