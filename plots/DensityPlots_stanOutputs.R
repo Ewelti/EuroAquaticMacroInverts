@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+#setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 
 # attach data
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
