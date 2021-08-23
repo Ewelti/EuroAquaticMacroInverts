@@ -1,3 +1,13 @@
+#### function to extract posterior distribution of the trends ####
+
+
+getTrendProbability <- function(fit){
+  mySamples <- posterior_samples(fit,pars="b_Intercept")
+  data.frame(probIncrease = mean(mySamples>0),probDecrease = mean(mySamples<0))
+}
+
+### end of functions ############################################
+
 #read in model for each response and save fixed effects
 
 ### site-level trends ####
@@ -42,7 +52,7 @@ cor(gls$stan_fit,gls$SppRich_Est)
 ### meta-analysis ####
 
 setwd("outputs/Meta-analysis")
-
+library(rstan)
 library(brms)
 library(loo)
 
@@ -50,6 +60,9 @@ library(loo)
 fit <- readRDS("metaanalysis_spp_richness.rds")
 #loo_R2(fit)
 
+#prob of trend
+getTrendProbability(fit)
+  
 #check model
 plot(fit)
 sr_loo <- loo(fit, cores = getOption("mc.cores", 1))
@@ -481,3 +494,5 @@ Yr_metaanaly_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Count_a
                               Count_insectsr, Count_insectab)
 rownames(Yr_metaanaly_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
 write.csv(Yr_metaanaly_parento, "Yr_meta_parento_ModelCounts.csv")
+
+
