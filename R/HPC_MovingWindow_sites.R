@@ -66,6 +66,11 @@ allYrs <- subset(allYrs, site_id %in% siteSummary$site_id)
 library(brms)
 library(rstan)
 
+# try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
+cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+rstan_options(auto_write = TRUE)
+options(mc.cores = cpus_per_task)
+
 # write a function to consider day of year if sampling is more than 30 days apart
 fitStanModel <- function(mydata){
   
@@ -117,7 +122,7 @@ fitStanModel <- function(mydata){
                      chains = 4,
                      iter = 5000,
                      init = "0",
-                     control = list(adapt_delta = 0.95, 
+                     control = list(adapt_delta = 0.90, 
                                     max_treedepth = 12))
   
   #extract model fits
@@ -131,14 +136,6 @@ fitStanModel <- function(mydata){
   
 }
 
-#get cores
-rstan_options(auto_write = TRUE)
-
-
-# try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
-cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-rstan_options(auto_write = TRUE)
-options(mc.cores = cpus_per_task)
 
 #loop for all sites
 allsites <- sort(unique(allYrs$site_id))
