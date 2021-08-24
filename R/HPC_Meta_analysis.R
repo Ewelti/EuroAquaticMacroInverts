@@ -18,14 +18,14 @@ d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.cs
 siteData <- unique(d1[,c("site_id","study_id","country")])
 response_stan <- merge(siteData,response_stan,by="site_id")
 
-### decide on priors ####
-
-prior1 = c(set_prior("normal(0,5)", class = "Intercept"))
-
 ### run model ####
 
 library(rstan)
 library(brms)
+
+### decide on priors ####
+
+prior1 = c(set_prior("normal(0,5)", class = "Intercept"))
 
 #examine response
 #hist(response_stan$estimate)
