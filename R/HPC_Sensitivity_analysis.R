@@ -33,12 +33,15 @@ summary(response_stan$estimate)
 response_stan$w <- 1/response_stan$sd
 summary(response_stan$w)
 
-n.chains = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-
-### run season model ####
+# try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
+cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+rstan_options(auto_write = TRUE)
+options(mc.cores = cpus_per_task)
 
 #define priors - default mostly ok but set it for b
 prior1 = c(set_prior("normal(0,10)", class = "b"))
+
+### run season model ####
 
 #set spring as the reference level
 response_stan$season <- factor(response_stan$season,
@@ -47,7 +50,7 @@ response_stan$season <- factor(response_stan$season,
 
 #differences with respect to spring
 fit1 <- brm(estimate|weights(w) ~ season + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = n.chains,
+            data = response_stan, iter=4000, chains = 4,
             prior = prior1)
 
 #print output
@@ -56,7 +59,7 @@ saveRDS(fixef(fit1), file=paste0("fixef_seasonDiff_",myResponse,".rds"))
 
 #with intercept removed - each coefficient represents the mean trend per season
 fit1 <- brm(estimate|weights(w) ~ -1 + season + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = n.chains,
+            data = response_stan, iter=4000, chains = 4,
             prior = prior1)          
           
 saveRDS(fixef(fit1), file=paste0("fixef_seasonTrends_",myResponse,".rds"))
@@ -69,7 +72,7 @@ response_stan$TaxonomicRes <- factor(response_stan$TaxonomicRes,
 
 #difference in trends with respect to species
 fit1 <- brm(estimate|weights(w) ~ TaxonomicRes + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = n.chains,
+            data = response_stan, iter=4000, chains = 4,
             prior = prior1)
 
 #print output
@@ -78,7 +81,7 @@ saveRDS(fixef(fit1), file=paste0("fixef_taxonresDiff_",myResponse,".rds"))
 
 #trends for each taxonomic group
 fit1 <- brm(estimate|weights(w) ~ -1 + TaxonomicRes + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = n.chains,
+            data = response_stan, iter=4000, chains = 4,
             prior = prior1)
 
 #print output
