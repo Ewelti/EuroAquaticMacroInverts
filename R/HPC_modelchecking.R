@@ -1,6 +1,5 @@
 #### function to extract posterior distribution of the trends ####
 
-
 getTrendProbability <- function(fit){
   mySamples <- posterior_samples(fit,pars="b_Intercept")
   data.frame(probIncrease = mean(mySamples>0),probDecrease = mean(mySamples<0))
@@ -50,10 +49,29 @@ ggplot(summaryData)+
 
 #check against gls fits
 gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
-all <- inner_join(response_stan_pivot, gls, by.x="site_id", by.y="site")
+all <- merge(response_stan_pivot, gls, by.x="site_id", by.y="site")
 
+qplot(abund_nativeSpp, nativeAbun_Est, data=all)
 qplot(abundance, Abun_Est, data=all)
+qplot(alien_Abund, AlienAbun_Est, data=all)
+qplot(alien_SppRich, AlienSppRich_Est, data=all)
+
+qplot(EPT_Abund, EPT_Abund_Est, data=all)
+qplot(EPT_SppRich, EPT_SppRich_Est, data=all)
+qplot(F_to, F_to_Est, data=all)
+qplot(FDiv, FDiv_Est, data=all)
+qplot(FEve, FEve_Est, data=all)
+qplot(FRic, FRic_Est, data=all)
+
+qplot(insect_Abund, insect_Abund_Est, data=all)
+qplot(insect_SppRich, insect_SppRich_Est, data=all)
+qplot(RaoQ, RaoQ_Est, data=all)
+
+qplot(shannonsH, ShanH_Est, data=all)
+qplot(spp_rich_rare, SppRichRare_Est, data=all)
 qplot(spp_richness, SppRich_Est, data=all)
+qplot(SppRich_nativeSpp, nativeSppRich_Est, data=all)
+qplot(turnover, TurnO_Est, data=all)
 
 ### meta-analysis ####
 
