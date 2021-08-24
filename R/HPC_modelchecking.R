@@ -52,10 +52,8 @@ ggplot(summaryData)+
 gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
 all <- inner_join(response_stan_pivot, gls, by.x="site_id", by.y="site")
 
-par(mfrow=c(3,3))
 qplot(abundance, Abun_Est, data=all)
-#cor(gls$stan_fit,gls$TurnO_Est)
-#0.94
+qplot(spp_richness, SppRich_Est, data=all)
 
 ### meta-analysis ####
 
