@@ -18,6 +18,9 @@ d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.cs
 siteData <- unique(d1[,c("site_id","study_id","country")])
 response_stan <- merge(siteData,response_stan,by="site_id")
 
+### decide on priors ####
+
+
 ### run model ####
 
 library(brms)
@@ -36,11 +39,9 @@ n.chains = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
 #prior1 = c(set_prior("normal(0,10)", class = "Intercept"))
 
 fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = n.chains)
+            data = response_stan, iter=4000, inits = 0,
+            chains = n.chains)
 
-#### save output ####
+### save output ####
 
 saveRDS(fit1,file=paste0("metaanalysis_",myResponse,".rds"))
-
-#for later, pull out section for plotting
-#fixed(fit1)

@@ -1,6 +1,5 @@
 #### function to extract posterior distribution of the trends ####
 
-
 getTrendProbability <- function(fit){
   mySamples <- posterior_samples(fit,pars="b_Intercept")
   data.frame(probIncrease = mean(mySamples>0),probDecrease = mean(mySamples<0))
@@ -15,19 +14,25 @@ library(tidyverse)
 
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
 response_stan <- readRDS("outputs/stanTrends_site_level_logged.rds")
-response_stan <- subset(response_stan, Response == "turnover")
+
+
+#pivot responses
+response_stan_pivot <- response_stan %>%
+                    select(c(Response,estimate,site_id)) %>%
+                    pivot_wider(names_from = "Response",
+                                values_from = "estimate")
 
 #get site metadata
 d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T)
 d1<- d1[!is.na(d1$site_id_wMissing),]
 siteData <- unique(d1[,c("site_id","study_id","country","season","TaxonomicRes")])
-response_stan <- merge(siteData,response_stan,by="site_id")
-head(response_stan)
+response_stan_pivot <- merge(siteData,response_stan_pivot,by="site_id")
+head(response_stan_pivot)
 
-summaryData <- response_stan %>%
+summaryData <- response_stan_pivot %>%
   group_by(country,study_id,season,TaxonomicRes) %>%
-  summarise(medTrends = median(estimate),
-            nuData = length(estimate))
+  summarise(medTrends = median(abundance),
+            nuData = length(abundance))
 
 ggplot(summaryData)+
   geom_text(aes(x=medTrends, y =nuData,label=study_id),size=2)+
@@ -44,11 +49,29 @@ ggplot(summaryData)+
 
 #check against gls fits
 gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
-gls$stan_fit <- response_stan$estimate[match(gls$site,response_stan$site_id)]
+all <- merge(response_stan_pivot, gls, by.x="site_id", by.y="site")
 
-qplot(stan_fit, TurnO_Est, data=gls)
-cor(gls$stan_fit,gls$TurnO_Est)
-#0.94
+qplot(abund_nativeSpp, nativeAbun_Est, data=all)
+qplot(abundance, Abun_Est, data=all)
+qplot(alien_Abund, AlienAbun_Est, data=all)
+qplot(alien_SppRich, AlienSppRich_Est, data=all)
+
+qplot(EPT_Abund, EPT_Abund_Est, data=all)
+qplot(EPT_SppRich, EPT_SppRich_Est, data=all)
+qplot(F_to, F_to_Est, data=all)
+qplot(FDiv, FDiv_Est, data=all)
+qplot(FEve, FEve_Est, data=all)
+qplot(FRic, FRic_Est, data=all)
+
+qplot(insect_Abund, insect_Abund_Est, data=all)
+qplot(insect_SppRich, insect_SppRich_Est, data=all)
+qplot(RaoQ, RaoQ_Est, data=all)
+
+qplot(shannonsH, ShanH_Est, data=all)
+qplot(spp_rich_rare, SppRichRare_Est, data=all)
+qplot(spp_richness, SppRich_Est, data=all)
+qplot(SppRich_nativeSpp, nativeSppRich_Est, data=all)
+qplot(turnover, TurnO_Est, data=all)
 
 ### meta-analysis ####
 
