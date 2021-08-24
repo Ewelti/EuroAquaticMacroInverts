@@ -20,9 +20,11 @@ response_stan <- merge(siteData,response_stan,by="site_id")
 
 ### decide on priors ####
 
+prior1 = c(set_prior("normal(0,5)", class = "Intercept"))
 
 ### run model ####
 
+library(rstan)
 library(brms)
 
 #examine response
@@ -33,14 +35,18 @@ summary(response_stan$estimate)
 response_stan$w <- 1/response_stan$sd
 summary(response_stan$w)
 
-n.chains = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+# try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
+cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+rstan_options(auto_write = TRUE)
+options(mc.cores = cpus_per_task)
 
-#define priors - default ok
-#prior1 = c(set_prior("normal(0,10)", class = "Intercept"))
-
+#define priors
 fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, inits = 0,
-            chains = n.chains)
+            data = response_stan, iter=5000, inits = 0,
+            chains = 4, prior = prior1,
+            init = "0",
+            control = list(adapt_delta = 0.95, 
+                           max_treedepth = 12))
 
 ### save output ####
 
