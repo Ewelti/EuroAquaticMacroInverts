@@ -139,7 +139,7 @@ fitStanModel <- function(mydata){
                      data = model_data, 
                      chains = n.chains,
                      iter = 5000,
-                     inits = "0",
+                     init = "0",
                      control = list(adapt_delta = 0.95, 
                                     max_treedepth = 12))
   
