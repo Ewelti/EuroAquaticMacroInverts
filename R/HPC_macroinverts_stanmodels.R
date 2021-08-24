@@ -67,7 +67,7 @@ if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
 #"alien_SppRich","SppRich_nativeSpp","EPT_SppRich","insect_SppRich"
 
 #still problems with func_turn(F_to), alien_SppRich, EPT_SppRich, and EPT_abund
-#turnover values are wierd
+#turnover values are weird
 
 #order by site site year
 allYrs <- allYrs[order(allYrs$year_wMissing),]
@@ -87,8 +87,8 @@ fitStanModel <- function(mydata){
   #or just have as an index starting from 1
   mydata$iYear <- mydata$year_wMissing - min(mydata$year_wMissing)+1
   
-  #centre day of year
-  mydata$cday_of_year <- mydata$day_of_year - median(mydata$day_of_year)
+  #scale day of year
+  mydata$cday_of_year <- (mydata$day_of_year - mean(mydata$day_of_year))/sd(mydata$day_of_year)
   
   #if sampling occurs in more than one month include a seasonal term in the model
   maxDiffDays = max(mydata$day_of_year)-min(mydata$day_of_year)
@@ -128,8 +128,7 @@ fitStanModel <- function(mydata){
   mydata <- subset(mydata, !is.na(Response))
       
   model_data <- make_standata(myformula, data = mydata, 
-                                chains = n.cores,
-                                refresh = 0)
+                                chains = n.chains)
   model_data$cYear <- mydata$cYear
   model_data$cday <- mydata$cday_of_year
   model_data$meanResponse <- round(median(mydata$Response), 1)
@@ -139,8 +138,10 @@ fitStanModel <- function(mydata){
   stan_model <- stan(modelfile, 
                      data = model_data, 
                      chains = n.chains,
-                     iter = 3000,
-                     seed = 20)
+                     iter = 5000,
+                     inits = "0",
+                     control = list(adapt_delta = 0.95, 
+                                    max_treedepth = 12))
   
   #extract model fits
   modelSummary <- summary(stan_model)$summary
@@ -155,6 +156,7 @@ fitStanModel <- function(mydata){
 
 #get cores
 n.chains = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+n.chains
 
 #loop for all sites
 allsites <- sort(unique(allYrs$site_id))
@@ -167,4 +169,3 @@ trends <- data.frame(do.call(rbind, trends))
 trends$siteID <- allsites
 
 saveRDS(trends, file=paste0("trends__",myResponse,"__",myCountry,".RDS"))
-
