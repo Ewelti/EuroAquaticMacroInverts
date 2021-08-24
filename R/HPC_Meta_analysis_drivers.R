@@ -63,16 +63,19 @@ summary(response_stan$estimate)
 response_stan$w <- 1/response_stan$sd
 summary(response_stan$w)
 
-n.chains = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+# try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
+cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+rstan_options(auto_write = TRUE)
+options(mc.cores = cpus_per_task)
 
 #define priors - default ok
-#prior1 = c(set_prior("normal(0,10)", class = "Intercept"))
+prior1 = c(set_prior("normal(0,1)", class = "b"))
 
 fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
               sslope_mean + sN_Est + sN_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               scrop_Est + surban_Est + sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = n.chains)
+            data = response_stan, iter=4000, chains = 4, prior=prior1)
 
 #### save output ####
 
