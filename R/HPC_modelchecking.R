@@ -78,11 +78,11 @@ colnames(Count_sr) <- "SppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-sr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
+sr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
 sr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 sr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 sr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-sr_fixed <- list(Response="spp_richness", sr_fixed_99[,1:4], sr_fixed_975[,3:4],
+sr_fixed <- list(Response="spp_richness", sr_fixed_995[,1:4], sr_fixed_975[,3:4],
                  sr_fixed_95[,3:4],sr_fixed_90[,3:4])
 sr_fixed <-data.frame(lapply(sr_fixed, function(x) t(data.frame(x))))
 sr_fixed 
@@ -375,11 +375,11 @@ colnames(Count_aliensr) <- "alien_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-aliensr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
+aliensr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
 aliensr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 aliensr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 aliensr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-aliensr_fixed <- list(Response="alien_SppRich", aliensr_fixed_99[,1:4], aliensr_fixed_975[,3:4],
+aliensr_fixed <- list(Response="alien_SppRich", aliensr_fixed_995[,1:4], aliensr_fixed_975[,3:4],
                       aliensr_fixed_95[,3:4],aliensr_fixed_90[,3:4])
 aliensr_fixed <-data.frame(lapply(aliensr_fixed, function(x) t(data.frame(x))))
 aliensr_fixed
@@ -456,11 +456,11 @@ colnames(Count_nativesr) <- "native_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-nativesr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
+nativesr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
 nativesr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 nativesr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 nativesr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-nativesr_fixed <- list(Response="native_SppRich", nativesr_fixed_99[,1:4], nativesr_fixed_975[,3:4],
+nativesr_fixed <- list(Response="native_SppRich", nativesr_fixed_995[,1:4], nativesr_fixed_975[,3:4],
                        nativesr_fixed_95[,3:4],nativesr_fixed_90[,3:4])
 nativesr_fixed <-data.frame(lapply(nativesr_fixed, function(x) t(data.frame(x))))
 nativesr_fixed
@@ -483,11 +483,11 @@ colnames(Count_EPTsr) <- "EPT_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-EPTsr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
+EPTsr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
 EPTsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 EPTsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 EPTsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-EPTsr_fixed <- list(Response="EPT_SppRich", EPTsr_fixed_99[,1:4], EPTsr_fixed_975[,3:4],
+EPTsr_fixed <- list(Response="EPT_SppRich", EPTsr_fixed_995[,1:4], EPTsr_fixed_975[,3:4],
                     EPTsr_fixed_95[,3:4],EPTsr_fixed_90[,3:4])
 EPTsr_fixed <-data.frame(lapply(EPTsr_fixed, function(x) t(data.frame(x))))
 EPTsr_fixed
@@ -537,11 +537,11 @@ colnames(Count_insectsr) <- "insect_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-insectsr_fixed_99 <- fixef(fit, probs = c(0.005, 0.995))
+insectsr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
 insectsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 insectsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 insectsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-insectsr_fixed <- list(Response="insect_SppRich", insectsr_fixed_99[,1:4], insectsr_fixed_975[,3:4],
+insectsr_fixed <- list(Response="insect_SppRich", insectsr_fixed_995[,1:4], insectsr_fixed_975[,3:4],
                        insectsr_fixed_95[,3:4],insectsr_fixed_90[,3:4])
 insectsr_fixed <-data.frame(lapply(insectsr_fixed, function(x) t(data.frame(x))))
 insectsr_fixed
