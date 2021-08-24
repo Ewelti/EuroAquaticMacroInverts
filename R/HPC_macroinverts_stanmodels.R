@@ -128,7 +128,7 @@ fitStanModel <- function(mydata){
   mydata <- subset(mydata, !is.na(Response))
       
   model_data <- make_standata(myformula, data = mydata, 
-                                chains = n.chains)
+                                chains = 4)
   model_data$cYear <- mydata$cYear
   model_data$cday <- mydata$cday_of_year
   model_data$meanResponse <- round(median(mydata$Response), 1)
@@ -137,7 +137,7 @@ fitStanModel <- function(mydata){
   #fit model in stan
   stan_model <- stan(modelfile, 
                      data = model_data, 
-                     chains = n.chains,
+                     chains = 4,
                      iter = 5000,
                      init = "0",
                      control = list(adapt_delta = 0.95, 
@@ -154,9 +154,12 @@ fitStanModel <- function(mydata){
   
 }
 
-#get cores
-n.chains = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-n.chains
+# try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
+cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+rstan_options(auto_write = TRUE)
+options(mc.cores = cpus_per_task)
+
+#the model is called in the function below
 
 #loop for all sites
 allsites <- sort(unique(allYrs$site_id))
