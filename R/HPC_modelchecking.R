@@ -15,19 +15,25 @@ library(tidyverse)
 
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
 response_stan <- readRDS("outputs/stanTrends_site_level_logged.rds")
-response_stan <- subset(response_stan, Response == "turnover")
+
+
+#pivot responses
+response_stan_pivot <- response_stan %>%
+                    select(c(Response,estimate,site_id)) %>%
+                    pivot_wider(names_from = "Response",
+                                values_from = "estimate")
 
 #get site metadata
 d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T)
 d1<- d1[!is.na(d1$site_id_wMissing),]
 siteData <- unique(d1[,c("site_id","study_id","country","season","TaxonomicRes")])
-response_stan <- merge(siteData,response_stan,by="site_id")
-head(response_stan)
+response_stan_pivot <- merge(siteData,response_stan_pivot,by="site_id")
+head(response_stan_pivot)
 
-summaryData <- response_stan %>%
+summaryData <- response_stan_pivot %>%
   group_by(country,study_id,season,TaxonomicRes) %>%
-  summarise(medTrends = median(estimate),
-            nuData = length(estimate))
+  summarise(medTrends = median(abundance),
+            nuData = length(abundance))
 
 ggplot(summaryData)+
   geom_text(aes(x=medTrends, y =nuData,label=study_id),size=2)+
@@ -44,10 +50,11 @@ ggplot(summaryData)+
 
 #check against gls fits
 gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
-gls$stan_fit <- response_stan$estimate[match(gls$site,response_stan$site_id)]
+all <- inner_join(response_stan_pivot, gls, by.x="site_id", by.y="site")
 
-qplot(stan_fit, TurnO_Est, data=gls)
-cor(gls$stan_fit,gls$TurnO_Est)
+par(mfrow=c(3,3))
+qplot(abundance, Abun_Est, data=all)
+#cor(gls$stan_fit,gls$TurnO_Est)
 #0.94
 
 ### meta-analysis ####
