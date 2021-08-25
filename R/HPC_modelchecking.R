@@ -13,8 +13,6 @@ getTrendProbability <- function(fit){
 library(tidyverse)
 
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
-response_stan <- readRDS("outputs/stanTrends_site_level_logged.rds")
-
 
 #pivot responses
 response_stan_pivot <- response_stan %>%
@@ -49,22 +47,22 @@ ggplot(summaryData)+
 
 #check against gls fits
 gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
+head(all)
 all <- merge(response_stan_pivot, gls, by.x="site_id", by.y="site")
 
 qplot(abund_nativeSpp, nativeAbun_Est, data=all)
 qplot(abundance, Abun_Est, data=all)
 qplot(alien_Abund, AlienAbun_Est, data=all)
 qplot(alien_SppRich, AlienSppRich_Est, data=all)
-
+qplot(insect_Abund, insect_Abund_Est, data=all)
+qplot(insect_SppRich, insect_SppRich_Est, data=all)
 qplot(EPT_Abund, EPT_Abund_Est, data=all)
 qplot(EPT_SppRich, EPT_SppRich_Est, data=all)
+
 qplot(F_to, F_to_Est, data=all)
 qplot(FDiv, FDiv_Est, data=all)
 qplot(FEve, FEve_Est, data=all)
 qplot(FRic, FRic_Est, data=all)
-
-qplot(insect_Abund, insect_Abund_Est, data=all)
-qplot(insect_SppRich, insect_SppRich_Est, data=all)
 qplot(RaoQ, RaoQ_Est, data=all)
 
 qplot(shannonsH, ShanH_Est, data=all)
@@ -76,7 +74,6 @@ qplot(turnover, TurnO_Est, data=all)
 ### meta-analysis ####
 
 setwd("outputs/Meta-analysis")
-setwd("outputs/Meta-analysis_logged")
 getwd()
 library(rstan)
 library(brms)
@@ -84,7 +81,7 @@ library(loo)
 
 #### spp_richness ####
 fit <- readRDS("metaanalysis_spp_richness.rds")
-#loo_R2(fit)
+loo_R2(fit)
 
 #prob of trend
 sr_prob <- getTrendProbability(fit)
@@ -173,7 +170,7 @@ e10_prob <- data.frame(Response="E10", e10_prob[,1:2])
 e10_prob
 
 #check model
-plot(fit)#bad!!!
+plot(fit)
 e10_loo <- loo(fit, cores = getOption("mc.cores", 1))
 e10_loo
 e10_parento <- as.list(pareto_k_table(e10_loo))
@@ -443,7 +440,7 @@ nativeab_prob <- data.frame(Response="native_abund", nativeab_prob[,1:2])
 nativeab_prob
 
 #check model
-plot(fit)
+plot(fit)# a bit weird
 nativeab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 nativeab_loo
 nativeab_parento <- as.list(pareto_k_table(nativeab_loo))
@@ -551,7 +548,7 @@ insectsr_prob <- data.frame(Response="insect_sppRich", insectsr_prob[,1:2])
 insectsr_prob
 
 #check model
-plot(fit)#not great
+plot(fit)
 insectsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 insectsr_loo
 insectsr_parento <- as.list(pareto_k_table(insectsr_loo))

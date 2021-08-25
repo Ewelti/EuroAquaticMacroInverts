@@ -8,10 +8,6 @@ unique(response_stan$Response)
 
 Ests <- read.csv("outputs/Yr_metaanaly_Ests.csv")
 
-#attach data from second run
-response_stan_logged <- readRDS("outputs/stanTrends_site_level_logged.rds")
-Ests_logged <- read.csv("outputs/Yr_metaanaly_Ests_logged.csv")
-
 par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,3))
 
 #####################Taxonomic metrics ##############################
@@ -138,7 +134,7 @@ polygon(x=c(stand_shannonsH$Q5, stand_shannonsH$Q5, stand_shannonsH$Q95, stand_s
 legend(x=-12, y=(3/6*(b-a)+a), legend=("Shannon's H"), bty="n", cex=1.3)
 
 #### Shannon's Evenness #####
-E10 <- subset(response_stan_logged, Response == "E10")
+E10 <- subset(response_stan, Response == "E10")
 E10 <- E10$estimate[!is.na(E10$estimate)]
 #average Shannon's Evenness = 0.085019802
 percChange_perYr<-(E10*100)
@@ -155,7 +151,7 @@ polygon(c(d$x[d$x >= 0 ], 0),
 polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
-E10_Est <- subset(Ests_logged, Response == "E10")
+E10_Est <- subset(Ests, Response == "E10")
 stand_E10 <- lapply(E10_Est[,2:11],"*",100)
 yy <- (1/6*(b-a)+a)
 points(x=stand_E10$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
@@ -168,7 +164,7 @@ polygon(x=c(stand_E10$Q5, stand_E10$Q5, stand_E10$Q95, stand_E10$Q95),
 legend(x=-12, y=(2/6*(b-a)+a), legend=("Shannon's evenness"), bty="n", cex=1.3)
 
 #### Turnover #####
-turnover <- subset(response_stan_logged, Response == "turnover")
+turnover <- subset(response_stan, Response == "turnover")
 turnover <- turnover$estimate[!is.na(turnover$estimate)]
 head(turnover)
 #average turnover = 0.542933401
@@ -206,7 +202,7 @@ abline(v=0, lwd=1, lty=2)
 
 #####################Functional metrics ##############################
 #### Functional Richness #####
-FRic <- subset(response_stan_logged, Response == "spp_richness")
+FRic <- subset(response_stan, Response == "FRic")
 FRic <- FRic$estimate[!is.na(FRic$estimate)]
 #average functional richness= 1372.61497
 percChange_perYr<-(FRic*100)
@@ -223,7 +219,7 @@ polygon(c(d$x[d$x >= 0 ], 0),
 polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
-FRic_Est <- subset(Ests_logged, Response == "func_rich")
+FRic_Est <- subset(Ests, Response == "func_rich")
 stand_FRic <- lapply(FRic_Est[,2:11],"*", 100)
 yy <- (4/5*(b-a)+a)
 points(x=stand_FRic$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
@@ -267,7 +263,7 @@ polygon(x=c(stand_RaoQ$Q5, stand_RaoQ$Q5, stand_RaoQ$Q95, stand_RaoQ$Q95),
 legend(x=-12, y=(4/5*(b-a)+a), legend=("Rao's Q"), bty="n", cex=1.3)
 
 #### Func diverg #####
-FDiv <- subset(response_stan_logged, Response == "FDiv")
+FDiv <- subset(response_stan, Response == "FDiv")
 FDiv <- FDiv$estimate[!is.na(FDiv$estimate)]
 #average FDiv = 0.826257724
 ave_FDiv <- 0.826257724
@@ -285,7 +281,7 @@ polygon(c(d$x[d$x >= 0 ], 0),
 polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
-FDiv_Est <- subset(Ests_logged, Response == "func_diverg")
+FDiv_Est <- subset(Ests, Response == "func_diverg")
 stand_FDiv <- lapply(FDiv_Est[,2:11],"*",100/(ave_FDiv^2))
 yy <- (2/5*(b-a)+a)
 points(x=stand_FDiv$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
@@ -329,7 +325,7 @@ polygon(x=c(stand_FEve$Q5, stand_FEve$Q5, stand_FEve$Q95, stand_FEve$Q95),
 legend(x=-12, y=(2/5*(b-a)+a), legend=("Func. evenness"), bty="n", cex=1.3)
 
 #### Func turnover #####
-F_to <- subset(response_stan_logged, Response == "F_to")
+F_to <- subset(response_stan, Response == "F_to")
 F_to <- F_to$estimate[!is.na(F_to$estimate)]
 #average Func turnover = 0.086496081
 #ave_F_to <- 0.086496081
@@ -347,7 +343,7 @@ polygon(c(d$x[d$x >= 0 ], 0),
 polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
-F_to_Est <- subset(Ests_logged, Response == "func_turnover")
+F_to_Est <- subset(Ests, Response == "func_turnover")
 stand_F_to <- lapply(F_to_Est[,2:11],"*",100)
 yy <- (0/5*(b-a)+a)
 points(x=stand_F_to$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
@@ -604,8 +600,9 @@ polygon(x=c(stand_insect_Abund$Q5, stand_insect_Abund$Q5, stand_insect_Abund$Q95
         y=c(yy,yy,yy,yy),
         col = 1,border = 1,lwd = 3)
 legend(x=-12, y=(1/8*(b-a)+a), legend=("Insect abundance"), bty="n", cex=1.3)
-box(lwd=2)
+
 ##
+box(lwd=2)
 abline(v=0, lwd=1, lty=2)
 ##
 ########################################

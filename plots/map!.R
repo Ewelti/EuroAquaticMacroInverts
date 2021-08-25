@@ -86,27 +86,27 @@ par(mar=c(0,0,0,0))
 
 newmap <- getMap(resolution = "high")
 
-col <- rep("grey85", length(newmap@data$NAME))
-col[match(ddf$country, newmap@data$NAME)] <- c("grey60") #or pal instead of c("grey80")
+col <- rep("grey70", length(newmap@data$NAME))
+col[match(ddf$country, newmap@data$NAME)] <- c("black") #or pal instead of c("grey80")
 
 col2 <- rep("#00000000", length(newmap@data$NAME)) #or alpha("white",0) instead of #00000000
-col2[match(ddf$country, newmap@data$NAME)] <- c("white")
+col2[match(ddf$country, newmap@data$NAME)] <- c("grey50")
 
-col2[58:59] <- c("grey60")#change borders for N.Cyprus
+col2[58:59] <- c("black")#change borders for N.Cyprus
 wv<-seq(1, 1, length.out=253) 
 wv[58:59] <- c(0)
 
 plot(newmap,col=col,
-bg="white",border=col2, #bg="lightblue",border="grey70",
+bg="aliceblue",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
   ylim = c(34, 70),
   asp = 1,lwd=wv
 )
 
 sr_sites_asc <- sr_sites[order(-sr_sites$spp_richness),]
-points(sr_sites$Longitude_X[sr_sites$spp_richness > 0],sr_sites$Latitude_Y[sr_sites$spp_richness > 0],pch = 20,col = alpha(sr_sites$sr_col[sr_sites$spp_richness > 0],0.6),cex=1.5)
+points(sr_sites$Longitude_X[sr_sites$spp_richness > 0],sr_sites$Latitude_Y[sr_sites$spp_richness > 0],pch = 20,col = alpha(sr_sites$sr_col[sr_sites$spp_richness > 0],0.6),cex=0.8)
 
-points(sr_sites_asc$Longitude_X[sr_sites_asc$spp_richness <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$spp_richness <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$spp_richness <= 0],0.6),cex=1)
+points(sr_sites_asc$Longitude_X[sr_sites_asc$spp_richness <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$spp_richness <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$spp_richness <= 0],0.6),cex=0.8)
 
 lg <- round(seq(min(sr_sites$spp_richness), max(sr_sites$spp_richness), by=((max(sr_sites$spp_richness)-min(sr_sites$spp_richness))/7)),digits=1)
 
