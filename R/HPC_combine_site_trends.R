@@ -18,7 +18,7 @@ countryTrends <- lapply(trendsFiles,function(x){
 
 countryTrends <- do.call(rbind,countryTrends)
 names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
-saveRDS(countryTrends,file="outputs/stanTrends_site_level_logged.rds")
+saveRDS(countryTrends,file="outputs/stanTrends_site_level.rds")
 
 
 #check we have all data
