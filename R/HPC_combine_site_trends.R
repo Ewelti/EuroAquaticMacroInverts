@@ -61,6 +61,7 @@ saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaverages.rds")
 library(raster)
 require(data.table)
 
+## seasonDiff in separate folder
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff")
 path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff"
 
