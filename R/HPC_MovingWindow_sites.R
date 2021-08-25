@@ -13,6 +13,10 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
+### country ###
+myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
+allYrs <- subset(allYrs,country==myCountry)
+
 ### response ###
 
 #choose which response for this task
@@ -52,14 +56,11 @@ allYrs <- subset(allYrs, year_wMissing>=StartYear & year_wMissing<(StartYear+tim
 
 ### select sites with enough data ###
 
-require(tidyverse)
+allYrs <- subset(allYrs, !is.na(Response))
 
-siteSummary <- allYrs %>%
-                dplyr::group_by(site_id) %>%
-                dplyr::summarise(nuYears = length(Response[!is.na(Response)])) %>%
-                dplyr::filter(nuYears >=5)
-
-allYrs <- subset(allYrs, site_id %in% siteSummary$site_id)                
+siteSummary <- tapply(allYrs$Response,allYrs$site_id,length)
+sufficientSites <- names(siteSummary)[siteSummary>=5]
+allYrs <- subset(allYrs, site_id %in% sufficientSites)                
 
 ### fitting directly in stan #####
 
@@ -68,7 +69,7 @@ library(rstan)
 
 # try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
 cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-rstan_options(auto_write = TRUE)
+#rstan_options(auto_write = TRUE)
 options(mc.cores = cpus_per_task)
 
 # write a function to consider day of year if sampling is more than 30 days apart
@@ -120,10 +121,7 @@ fitStanModel <- function(mydata){
   stan_model <- stan(modelfile, 
                      data = model_data, 
                      chains = 4,
-                     iter = 5000,
-                     init = "0",
-                     control = list(adapt_delta = 0.90, 
-                                    max_treedepth = 12))
+                     iter = 3000)
   
   #extract model fits
   modelSummary <- summary(stan_model)$summary
@@ -147,4 +145,4 @@ trends <- lapply(allsites, function(x){
 trends <- data.frame(do.call(rbind, trends))
 trends$siteID <- allsites
 
-saveRDS(trends, file=paste0("trends__",myResponse,"__",StartYear,".RDS"))
+saveRDS(trends, file=paste0("trends__",myResponse,"__",myCountry,"__",StartYear,".RDS"))
