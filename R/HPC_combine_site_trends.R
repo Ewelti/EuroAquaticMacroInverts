@@ -56,4 +56,27 @@ countryTrends <- do.call(rbind,countryTrends)
 names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaverages.rds")
 
+### sensitivity analysis ####
+
+library(raster)
+require(data.table)
+
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff")
+path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff"
+
+firstfile <- readRDS("fixef_seasonDiff_abundance.rds")
+num_files <- length(list.files(path))
+n.res <- 1:num_files
+labs <- rownames(firstfile)
+season <- rep(labs,length(n.res))
+
+files = list.files(path = path, pattern = '\\.rds$')
+dat_list = lapply(files, function (x) data.table(readRDS(x)))
+trendsFiles <- gsub("fixef_seasonDiff_","", files)
+trendsFiles <- gsub(".rds","", trendsFiles)
+names(dat_list) <- trendsFiles
+sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
+sens <- cbind(season, sens)
+
+saveRDS(sens,file="sensitiv_seasonDiff.rds")
 
