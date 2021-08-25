@@ -4,6 +4,8 @@
 .Ruserdata
 outputs/Meta-analysis/*
 outputs/Drivers/*
-outputs/Meta-analysis_logged/*
-outputs/Drivers_logged/*
 outputs/Sensitivity/*
+outputs/old/*
+outputs/Meta-analysis.zip
+outputs/Drivers.zip
+
