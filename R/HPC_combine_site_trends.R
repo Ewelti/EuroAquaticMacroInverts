@@ -70,3 +70,31 @@ TaskID$Index[!TaskID$Index %in% countryTrends$Index]
 TaskID <- subset(TaskID, !Index %in% countryTrends$Index)
 TaskID$TaskID <- 1:nrow(TaskID)
 write.table(TaskID,"outputs/MovingAverage_TaskIDs2.csv",sep=",",row.names=FALSE)
+
+### sensitivity analysis ####
+
+library(raster)
+require(data.table)
+
+## seasonDiff in separate folder
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff")
+path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff"
+
+firstfile <- readRDS("fixef_seasonDiff_abundance.rds")
+num_files <- length(list.files(path))
+n.res <- 1:num_files
+labs <- rownames(firstfile)
+season <- rep(labs,length(n.res))
+
+files = list.files(path = path, pattern = '\\.rds$')
+dat_list = lapply(files, function (x) data.table(readRDS(x)))
+trendsFiles <- gsub("fixef_seasonDiff_","", files)
+trendsFiles <- gsub(".rds","", trendsFiles)
+names(dat_list) <- trendsFiles
+sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
+sens <- cbind(season, sens)
+
+saveRDS(sens,file="sensitiv_seasonDiff.rds")
+
+
+
