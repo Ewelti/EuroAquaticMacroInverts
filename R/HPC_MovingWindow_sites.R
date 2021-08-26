@@ -9,8 +9,27 @@ allYrs <- d1[!is.na(d1$site_id_wMissing),]
 #make turnover numeric
 allYrs$turnover <- as.numeric(allYrs$turnover)
 
+#first time to create the TaskID's
+# SufficientSites <- lapply(1971:2011, function(x){
+# 
+#   timewindow <- 10
+#   allYrs2 <- subset(allYrs, year_wMissing >= x & year_wMissing < (x+timewindow))
+#   siteSummary <- tapply(allYrs2$abundance,allYrs2$site_id,length)
+#   data.frame(StartYear = x, site_id = names(siteSummary)[siteSummary>=7])
+# 
+# })
+# 
+# SufficientSites <- do.call(rbind, SufficientSites)
+# SufficientSites$country <- allYrs$country[match(SufficientSites$site_id,allYrs$site_id)]
+# SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
+# SufficientSites <- rbind(SufficientSites,SufficientSites)
+# SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
+#                               rep("spp_richness", nrow(SufficientSites)/2))
+# SufficientSites$TaskID <- 1:nrow(SufficientSites)
+# write.table(SufficientSites,"outputs/MovingAverage_TaskIDs.csv",sep=",",row.names=FALSE)
+
 #get task id
-TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs.csv",as.is=T)
+TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs2.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
 ### country ###
@@ -59,7 +78,7 @@ allYrs <- subset(allYrs, year_wMissing>=StartYear & year_wMissing<(StartYear+tim
 allYrs <- subset(allYrs, !is.na(Response))
 
 siteSummary <- tapply(allYrs$Response,allYrs$site_id,length)
-sufficientSites <- names(siteSummary)[siteSummary>=5]
+sufficientSites <- names(siteSummary)[siteSummary>=7]
 allYrs <- subset(allYrs, site_id %in% sufficientSites)                
 
 ### fitting directly in stan #####
@@ -77,8 +96,6 @@ fitStanModel <- function(mydata){
   
   #centre Year - helps model convergence to center variables for the model
   mydata$cYear <- mydata$year_wMissing - median(mydata$year_wMissing)
-
-  #or just have as an index starting from 1
   mydata$iYear <- mydata$year_wMissing - min(mydata$year_wMissing)+1
   
   #scale day of year
