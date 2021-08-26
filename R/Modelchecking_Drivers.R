@@ -4,7 +4,6 @@ setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 ### meta-analysis drivers ####
 
 setwd("outputs/Drivers")
-setwd("outputs/Drivers_logged")
 getwd()
 library(rstan)
 library(brms)
@@ -439,5 +438,5 @@ Driver_metaanaly_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Cou
                               Count_alienab, Count_nativesr, Count_nativeab, Count_EPTsr, Count_EPTab,
                               Count_insectsr, Count_insectab)
 rownames(Driver_metaanaly_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
-write.csv(Driver_metaanaly_parento, "Yr_meta_parento_ModelCounts.csv")
+write.csv(Driver_metaanaly_parento, "Driver_meta_parento_ModelCounts.csv")
 
