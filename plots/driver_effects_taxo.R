@@ -6,12 +6,14 @@ drivEst <- read.csv("outputs/Drivers/Driver_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)
 
+tiff(filename = "Drivers_taxonDiv.tiff", width = 12, height = 9, units = 'in', res = 600, compression = 'lzw')
+
 layout(mat = matrix(c(1:8), 
                         nrow = 2, 
                         ncol = 4),
        heights = c(2,2,2,2,2,2,2,2),
        widths = c(1,2,2,2,1,2,2,2))
-layout.show(8)
+#layout.show(8)
 
 par(mar=c(4,0.4,0.4,0.4))
 #empty plot for where the labels will go
@@ -382,5 +384,6 @@ abline(h=8.5,lty=2)
 abline(h=10.5,lty=2)
 abline(h=14.5,lty=2)
 
+dev.off()
 ##
 
