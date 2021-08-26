@@ -48,7 +48,7 @@ countryTrends <- lapply(trendsFiles,function(x){
     temp$Response <- strsplit(as.character(x),"__")[[1]][2]
     temp$StartYear <- strsplit(as.character(x),"__")[[1]][4]
     temp$StartYear <- gsub(".RDS","",temp$StartYear)
-    temp$country <- strsplit(as.character(x),"__")[[1]][3]
+    #temp$country <- strsplit(as.character(x),"__")[[1]][3]
   }
   return(temp)
   
