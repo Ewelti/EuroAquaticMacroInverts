@@ -1,13 +1,20 @@
 #script to combine site-level trends together in a single meta-analysis
 
 ### get response for this task ######
-
+TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_Meta_TaskIDs.csv",as.is=T)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
-myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
+
+#and data
+response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level_movingaverages.rds")
+
+### get start year for this task #############
+
+myStartYear <- TaskID$StartYear[which(TaskID$TaskID==task.id)]
+response_stan <- subset(response_stan, StartYear == myStartYear)
 
 ### get site-level values for this response ####
 
-response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level.rds")
+myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 response_stan <- subset(response_stan, Response == myResponse)
 response_stan <- subset(response_stan, !is.na(estimate))
   
@@ -41,12 +48,12 @@ options(mc.cores = cpus_per_task)
 
 #define priors
 fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
-            data = response_stan, iter=5000, inits = 0,
+            data = response_stan, iter=3000, inits = 0,
             chains = 4, prior = prior1,
             init = "0",
-            control = list(adapt_delta = 0.95, 
+            control = list(adapt_delta = 0.90, 
                            max_treedepth = 12))
 
 ### save output ####
 
-saveRDS(fit1,file=paste0("metaanalysis_",myResponse,".rds"))
+saveRDS(fit1,file=paste0("metaanalysis_movingaverage_",myResponse,"_",myStartYear,".rds"))
