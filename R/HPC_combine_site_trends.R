@@ -71,6 +71,40 @@ TaskID <- subset(TaskID, !Index %in% countryTrends$Index)
 TaskID$TaskID <- 1:nrow(TaskID)
 write.table(TaskID,"outputs/MovingAverage_TaskIDs2.csv",sep=",",row.names=FALSE)
 
+
+##### Moving Average yr Syntheses! #####
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta")
+path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta"
+
+require(data.table)
+library(rstan)
+library(brms)
+library(loo)
+
+files = list.files(path = path, pattern = '\\.rds$')
+
+dat_list = lapply(files, function(x){
+  fit <- readRDS(x)
+  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+  fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
+  fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
+  fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
+  nam <- gsub("metaanalysis_movingaverage_","", x)
+  name <- gsub(".rds","", nam)
+  name <- gsub("_1","__1", name)
+  name <- gsub("_2","__2", name)
+  response <- strsplit(as.character(name),"__")[[1]][1]
+  year <- strsplit(as.character(name),"__")[[1]][2]
+  fixed <- list(Response=response, Yr=year, fixed_995[,1:4], fixed_975[,3:4],
+                fixed_95[,3:4],fixed_90[,3:4])
+  fixed <-data.frame(lapply(fixed, function(x) t(data.frame(x))))
+  return(fixed)
+})
+
+MovAve <- do.call(rbind.data.frame, dat_list)
+write.csv(MovAve, "movingAve_YrEsts.csv")
+
 ### sensitivity analysis ####
 
 library(raster)
