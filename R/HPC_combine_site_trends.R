@@ -77,9 +77,7 @@ setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage
 path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta"
 
 require(data.table)
-library(rstan)
 library(brms)
-library(loo)
 
 files = list.files(path = path, pattern = '\\.rds$')
 
