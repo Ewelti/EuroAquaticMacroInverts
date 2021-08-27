@@ -96,14 +96,29 @@ dat_list = lapply(files, function(x){
   name <- gsub("_2","__2", name)
   response <- strsplit(as.character(name),"__")[[1]][1]
   year <- strsplit(as.character(name),"__")[[1]][2]
-  fixed <- list(Response=response, Yr=year, fixed_995[,1:4], fixed_975[,3:4],
+  fixed <- list(Response=response, StartYear=year, fixed_995[,1:4], fixed_975[,3:4],
                 fixed_95[,3:4],fixed_90[,3:4])
   fixed <-data.frame(lapply(fixed, function(x) t(data.frame(x))))
   return(fixed)
 })
 
 MovAve <- do.call(rbind.data.frame, dat_list)
-write.csv(MovAve, "movingAve_YrEsts.csv")
+head(MovAve)
+##
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+
+ma <- readRDS("outputs/stanTrends_site_level_movingaverages.rds")
+head(ma)
+library(data.table)
+
+subs <- subset(ma, Response = abundance)
+DT <- data.table(subs)
+sitecount <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
+
+MoAv <- merge(MovAve,sitecount,by="StartYear")
+head(MoAv)
+##
+write.csv(MoAv, "outputs/movingAve_YrEsts.csv")
 
 ### sensitivity analysis ####
 
