@@ -154,13 +154,13 @@ bg="white",border=col2, #bg="lightblue",border="grey70",
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
 
-lg <- round(seq(min(sr_sites$response), max(sr_sites$response), by=((max(sr_sites$response)-min(sr_sites$response))/7)),digits=1)
+lg <- round(seq(min(sr_sites$response), max(sr_sites$response), by=((max(sr_sites$response)-min(sr_sites$response))/7)),digits=0)
 
 co_leng<-length(unique(sr_sites$sr_col))
 y <- seq(69.8,61.3, by=(-(69.8-61.3)/(co_leng-1)))
 x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
-legend(-9, 72.3,title="",legend=lg,col =rbPal(8),lty=1,lwd=1,bty="n",cex=0.85)
+legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.85)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
 legend(-10.2,72.7,legend=c("Mean Precip (mm/yr)"),bty='n')
 
@@ -258,7 +258,7 @@ co_leng<-length(unique(sr_sites$sr_col))
 y <- seq(69.8,61.3, by=(-(69.8-61.3)/(co_leng-1)))
 x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
-legend(-9, 72.3,title="",legend=lg,col =rbPal(8),lty=1,lwd=1,bty="n",cex=0.85)
+legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.85)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
 legend(-10.2,72.7,legend=c("Mean Tmax (°C/yr)"),bty='n')
 
@@ -309,7 +309,7 @@ points(sr_sites_asc$Longitude_X[sr_sites_asc$response <= 0],sr_sites_asc$Latitud
 
 lg <- round(seq(min(sr_sites$response), max(sr_sites$response), by=((max(sr_sites$response)-min(sr_sites$response))/7)),digits=1)
 
-lg2 <- c(round(min(sr_sites$response),digits=1), "","",0, "","",round(max(sr_sites$response),digits=1))
+lg2 <- c(round(min(sr_sites$response),digits=1), "",0,"","","",round(max(sr_sites$response),digits=1))
 
 co_leng<-length(unique(sr_sites$sr_col))
 y <- seq(69.8,61.3, by=(-(69.8-61.3)/(co_leng-1)))
