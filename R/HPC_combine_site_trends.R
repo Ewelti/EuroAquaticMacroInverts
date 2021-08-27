@@ -155,3 +155,36 @@ sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
 sens <- cbind(taxonres, sens)
 
 saveRDS(sens,file="sensitiv_taxonresTrends.rds")
+
+### country level trends ####
+
+trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/metacountries"
+
+#make sure it is just the rds trend files
+trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
+trendsFiles <- list.files(trendsDir)[grepl(".rds",list.files(trendsDir))]
+
+countryTrends <- lapply(trendsFiles,function(x){
+  
+  temp <- data.frame(readRDS(paste(trendsDir,x,sep="/")))
+  
+  #add on response from file name
+  temp$Response <- strsplit(as.character(x),"__")[[1]][2]
+  temp$Country <- strsplit(as.character(x),"__")[[1]][3]
+  temp$Country <- gsub(".rds","",temp$Country)
+  return(temp)
+  
+})
+
+countryTrends <- do.call(rbind,countryTrends)
+saveRDS(countryTrends,file="outputs/stanTrends_country_level.rds")
+
+library(ggplot2)
+library(ggthemes)
+
+ggplot(countryTrends)+
+  geom_pointrange(aes(x=Country, y=Estimate, ymin=Q2.5, ymax=Q97.5))+
+  coord_flip()+
+  geom_hline(yintercept=0, linetype="dashed")+
+  facet_wrap(~Response)+
+  theme_few()
