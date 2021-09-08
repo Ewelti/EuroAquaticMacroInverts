@@ -31,7 +31,7 @@ sort(unique(TaskID$Response))
 #yes!!
 
 
-### moving averages ####
+### site-level moving averages ####
 
 trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/movingaverage"
 
@@ -72,7 +72,7 @@ TaskID$TaskID <- 1:nrow(TaskID)
 write.table(TaskID,"outputs/MovingAverage_TaskIDs2.csv",sep=",",row.names=FALSE)
 
 
-##### Moving Average yr Syntheses! #####
+### moving average yr syntheses! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta")
 path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta"
 
