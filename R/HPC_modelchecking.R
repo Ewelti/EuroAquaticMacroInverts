@@ -7,9 +7,11 @@ getTrendProbability <- function(fit){
 
 ### end of functions ############################################
 
-#read in model for each response and save fixed effects
 
 ### site-level trends ####
+
+#read in model for each response and save fixed effects
+
 library(tidyverse)
 
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
