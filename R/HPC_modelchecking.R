@@ -77,12 +77,17 @@ qplot(turnover, TurnO_Est, data=all)
 ### meta-analysis ####
 
 setwd("outputs/Meta-analysis")
+
+#for unweighted models
+setwd("C:/Users/db40fysa/Dropbox/Git/ellen_outputs/meta")
+
 getwd()
 library(rstan)
 library(brms)
 library(loo)
 
 #### spp_richness ####
+fit <- readRDS("metaanalysis_unweighted_spp_richness.rds")
 fit <- readRDS("metaanalysis_spp_richness.rds")
 loo_R2(fit)
 
@@ -111,6 +116,7 @@ sr_fixed <-data.frame(lapply(sr_fixed, function(x) t(data.frame(x))))
 sr_fixed 
 
 #### spp_rich_rare ####
+fit <- readRDS("metaanalysis_unweighted_spp_rich_rare.rds")
 fit <- readRDS("metaanalysis_spp_rich_rare.rds")
 
 #prob of trend
@@ -138,6 +144,7 @@ srr_fixed <-data.frame(lapply(srr_fixed, function(x) t(data.frame(x))))
 srr_fixed
 
 #### shannonsH ####
+fit <- readRDS("metaanalysis_unweighted_shannonsH.rds")
 fit <- readRDS("metaanalysis_shannonsH.rds")
 
 #prob of trend
@@ -165,6 +172,7 @@ shH_fixed <-data.frame(lapply(shH_fixed, function(x) t(data.frame(x))))
 shH_fixed
 
 #### E10 ####
+fit <- readRDS("metaanalysis_unweighted_E10.rds")
 fit <- readRDS("metaanalysis_E10.rds")
 
 #prob of trend
@@ -192,6 +200,7 @@ e10_fixed <-data.frame(lapply(e10_fixed, function(x) t(data.frame(x))))
 e10_fixed
 
 #### abundance ####
+fit <- readRDS("metaanalysis_unweighted_abundance.rds")
 fit <- readRDS("metaanalysis_abundance.rds")
 
 #prob of trend
@@ -219,6 +228,7 @@ abund_fixed <-data.frame(lapply(abund_fixed, function(x) t(data.frame(x))))
 abund_fixed
 
 #### turnover ####
+fit <- readRDS("metaanalysis_unweighted_turnover.rds") 
 fit <- readRDS("metaanalysis_turnover.rds") ## not yet calculated
 
 #prob of trend
@@ -246,6 +256,7 @@ turn_fixed <-data.frame(lapply(turn_fixed, function(x) t(data.frame(x))))
 turn_fixed
 
 #### F_to ####
+fit <- readRDS("metaanalysis_unweighted_F_to.rds")
 fit <- readRDS("metaanalysis_F_to.rds")
 
 #prob of trend
@@ -254,7 +265,7 @@ fto_prob <- data.frame(Response="func_turnover", fto_prob[,1:2])
 fto_prob
 
 #check model
-plot(fit)#bad!!!
+plot(fit)#bad!!! - better when unweighted!!!
 fto_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fto_loo
 fto_parento <- as.list(pareto_k_table(fto_loo))
@@ -273,6 +284,7 @@ fto_fixed <-data.frame(lapply(fto_fixed, function(x) t(data.frame(x))))
 fto_fixed
 
 #### FRic ####
+fit <- readRDS("metaanalysis_unweighted_FRic.rds")
 fit <- readRDS("metaanalysis_FRic.rds")
 
 #prob of trend
@@ -300,6 +312,7 @@ fric_fixed <-data.frame(lapply(fric_fixed, function(x) t(data.frame(x))))
 fric_fixed
 
 #### FEve ####
+fit <- readRDS("metaanalysis_unweighted_FEve.rds")
 fit <- readRDS("metaanalysis_FEve.rds")
 
 #prob of trend
@@ -327,6 +340,7 @@ feve_fixed <-data.frame(lapply(feve_fixed, function(x) t(data.frame(x))))
 feve_fixed
 
 #### FDiv ####
+fit <- readRDS("metaanalysis_unweighted_FDiv.rds")
 fit <- readRDS("metaanalysis_FDiv.rds")
 
 #prob of trend
@@ -354,6 +368,7 @@ fdiv_fixed <-data.frame(lapply(fdiv_fixed, function(x) t(data.frame(x))))
 fdiv_fixed
 
 #### RaoQ ####
+fit <- readRDS("metaanalysis_unweighted_RaoQ.rds")
 fit <- readRDS("metaanalysis_RaoQ.rds")
 
 #prob of trend
@@ -381,6 +396,7 @@ raoq_fixed <-data.frame(lapply(raoq_fixed, function(x) t(data.frame(x))))
 raoq_fixed
 
 #### alien_SppRich ####
+fit <- readRDS("metaanalysis_unweighted_alien_SppRich.rds")
 fit <- readRDS("metaanalysis_alien_SppRich.rds")
 
 #prob of trend
@@ -389,7 +405,7 @@ aliensr_prob <- data.frame(Response="alien_sppRich", aliensr_prob[,1:2])
 aliensr_prob
 
 #check model
-plot(fit)#bad!!
+plot(fit)#bad!! - btter unweighted
 aliensr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 aliensr_loo
 aliensr_parento <- as.list(pareto_k_table(aliensr_loo))
@@ -408,6 +424,7 @@ aliensr_fixed <-data.frame(lapply(aliensr_fixed, function(x) t(data.frame(x))))
 aliensr_fixed
 
 #### alien_Abund ####
+fit <- readRDS("metaanalysis_unweighted_alien_Abund.rds")
 fit <- readRDS("metaanalysis_alien_Abund.rds")
 
 #prob of trend
@@ -416,7 +433,7 @@ alienab_prob <- data.frame(Response="alien_abund", alienab_prob[,1:2])
 alienab_prob
 
 #check model
-plot(fit)
+plot(fit) 
 alienab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 alienab_loo
 alienab_parento <- as.list(pareto_k_table(alienab_loo))
@@ -435,6 +452,7 @@ alienab_fixed <-data.frame(lapply(alienab_fixed, function(x) t(data.frame(x))))
 alienab_fixed
 
 #### abund_nativeSpp ####
+fit <- readRDS("metaanalysis_unweighted_abund_nativeSpp.rds")
 fit <- readRDS("metaanalysis_abund_nativeSpp.rds")
 
 #prob of trend
@@ -443,7 +461,7 @@ nativeab_prob <- data.frame(Response="native_abund", nativeab_prob[,1:2])
 nativeab_prob
 
 #check model
-plot(fit)# a bit weird
+plot(fit)# a bit weird - better unweighted
 nativeab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 nativeab_loo
 nativeab_parento <- as.list(pareto_k_table(nativeab_loo))
@@ -462,6 +480,7 @@ nativeab_fixed <-data.frame(lapply(nativeab_fixed, function(x) t(data.frame(x)))
 nativeab_fixed
 
 #### SppRich_nativeSpp ####
+fit <- readRDS("metaanalysis_unweighted_SppRich_nativeSpp.rds")
 fit <- readRDS("metaanalysis_SppRich_nativeSpp.rds")
 
 #prob of trend
@@ -489,6 +508,7 @@ nativesr_fixed <-data.frame(lapply(nativesr_fixed, function(x) t(data.frame(x)))
 nativesr_fixed
 
 #### EPT_SppRich ####
+fit <- readRDS("metaanalysis_unweighted_EPT_SppRich.rds")
 fit <- readRDS("metaanalysis_EPT_SppRich.rds")
 
 #prob of trend
@@ -497,7 +517,7 @@ EPTsr_prob <- data.frame(Response="EPT_sppRich", EPTsr_prob[,1:2])
 EPTsr_prob
 
 #check model
-plot(fit)#bad!!
+plot(fit)#bad!! better unweighted
 EPTsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 EPTsr_loo
 EPTsr_parento <- as.list(pareto_k_table(EPTsr_loo))
@@ -516,6 +536,7 @@ EPTsr_fixed <-data.frame(lapply(EPTsr_fixed, function(x) t(data.frame(x))))
 EPTsr_fixed
 
 #### EPT_Abund ####
+fit <- readRDS("metaanalysis_unweighted_EPT_Abund.rds")
 fit <- readRDS("metaanalysis_EPT_Abund.rds")
 
 #prob of trend
@@ -524,7 +545,7 @@ EPTab_prob <- data.frame(Response="EPT_abund", EPTab_prob[,1:2])
 EPTab_prob
 
 #check model
-plot(fit)#bad!!
+plot(fit)#bad!! better unweighted
 EPTab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 EPTab_loo
 EPTab_parento <- as.list(pareto_k_table(EPTab_loo))
@@ -543,6 +564,7 @@ EPTab_fixed <-data.frame(lapply(EPTab_fixed, function(x) t(data.frame(x))))
 EPTab_fixed
 
 #### insect_SppRich ####
+fit <- readRDS("metaanalysis_unweighted_insect_SppRich.rds")
 fit <- readRDS("metaanalysis_insect_SppRich.rds")
 
 #prob of trend
@@ -570,6 +592,7 @@ insectsr_fixed <-data.frame(lapply(insectsr_fixed, function(x) t(data.frame(x)))
 insectsr_fixed
 
 #### insect_Abund ####
+fit <- readRDS("metaanalysis_unweighted_insect_Abund.rds")
 fit <- readRDS("metaanalysis_insect_Abund.rds")
 
 #prob of trend
