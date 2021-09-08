@@ -31,8 +31,8 @@ head(response_stan_pivot)
 
 summaryData <- response_stan_pivot %>%
   group_by(country,study_id,season,TaxonomicRes) %>%
-  summarise(medTrends = median(abundance),
-            nuData = length(abundance))
+  summarise(medTrends = median(spp_richness),
+            nuData = length(spp_richness))
 
 ggplot(summaryData)+
   geom_text(aes(x=medTrends, y =nuData,label=study_id),size=2)+
