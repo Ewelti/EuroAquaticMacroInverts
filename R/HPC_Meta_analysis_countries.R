@@ -27,7 +27,7 @@ library(brms)
 
 ### decide on priors ####
 
-prior1 = c(set_prior("normal(0,5)", class = "Intercept"))
+prior1 = c(set_prior("normal(0,1)", class = "Intercept"))
 
 # try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
 cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
@@ -41,7 +41,7 @@ response_stan$w <- 1/response_stan$sd
 
 response_sta_sr <- subset(response_stan, Response=="spp_richness")
 
-fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
+fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id),
             data = response_sta_sr, iter=5000, inits = 0,
             chains = 4, prior = prior1,
             init = "0",
@@ -56,7 +56,7 @@ saveRDS(fixef(fit1),file=paste0("metaanalysis__spp_richness__",myCountry,".rds")
 
 response_sta_abund <- subset(response_stan, Response=="abundance")
 
-fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
+fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id),
             data = response_sta_abund, iter=5000, inits = 0,
             chains = 4, prior = prior1,
             init = "0",
