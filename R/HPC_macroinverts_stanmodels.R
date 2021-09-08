@@ -19,7 +19,6 @@ allYrs <- subset(allYrs,country==myCountry)
 myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 allYrs$Response <- allYrs[,myResponse]
 
-
 #log responses that are right skewed
 #original logging choices
 #if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
@@ -67,7 +66,6 @@ if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
 #"alien_SppRich","SppRich_nativeSpp","EPT_SppRich","insect_SppRich"
 
 #still problems with func_turn(F_to), alien_SppRich, EPT_SppRich, and EPT_abund
-#turnover values are weird
 
 #order by site site year
 allYrs <- allYrs[order(allYrs$year_wMissing),]
@@ -103,7 +101,6 @@ fitStanModel <- function(mydata){
     
   }
   
-#responses: spp_richness
 
   # get model code - these are saved in the above files
   # prior1 = c(set_prior("normal(0,10)", class = "b"))
