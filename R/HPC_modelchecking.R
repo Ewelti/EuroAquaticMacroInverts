@@ -52,6 +52,7 @@ gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
 head(all)
 all <- merge(response_stan_pivot, gls, by.x="site_id", by.y="site")
 
+#compare estimates
 qplot(abund_nativeSpp, nativeAbun_Est, data=all)
 qplot(abundance, Abun_Est, data=all)
 qplot(alien_Abund, AlienAbun_Est, data=all)
