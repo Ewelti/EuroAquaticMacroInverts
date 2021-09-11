@@ -52,7 +52,7 @@ options(mc.cores = cpus_per_task)
 # 
 # saveRDS(fit1,file=paste0("metaanalysis_",myResponse,".rds"))
 
-# try unweighted model 
+# unweighted model 
 
 fit1 <- brm(estimate ~ 1 + (1|study_id) + (1|country),
             data = response_stan, iter=5000, 
