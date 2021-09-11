@@ -11,6 +11,7 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 
 #choose which country for this task
 TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
+
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
 allYrs <- subset(allYrs,country==myCountry)
