@@ -11,9 +11,13 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 
 #organise task IDs
 TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
-TaskID <- subset(TaskID, Response %in% c("alien_SppRich",
-                                         "EPT_SppRich",
-                                         "insect_SppRich"))
+# TaskID <- subset(TaskID, Response %in% c("alien_SppRich",
+#                                          "EPT_SppRich",
+#                                          "insect_SppRich"))
+TaskID <- subset(TaskID, Response %in% c("insect_Abund",
+                                         "EPT_Abund",
+                                         "alien_Abund"))
+
 TaskID$TaskID <- 1:nrow(TaskID)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 nrow(TaskID)#66
@@ -25,6 +29,7 @@ allYrs <- subset(allYrs,country==myCountry)
 #choose which response for this task
 myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 allYrs$Response <- allYrs[,myResponse]
+allYrs$Response <- round(allYrs$Response)
 
 #order by site site year
 allYrs <- allYrs[order(allYrs$year_wMissing),]
@@ -108,7 +113,7 @@ fitStanModel <- function(mydata){
   mydata <- subset(mydata, !is.na(Response))
       
   model_data <- make_standata(myformula, data = mydata, 
-                                chains = 4)
+                              family = zero_inflated_poisson(),chains = 4)
   model_data$cYear <- mydata$cYear
   model_data$cday <- mydata$cday_of_year
   model_data$meanResponse <- round(median(mydata$Response), 1)
