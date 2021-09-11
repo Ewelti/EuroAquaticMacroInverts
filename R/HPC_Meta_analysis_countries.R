@@ -66,3 +66,28 @@ fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id),
 ### save output ####
 
 saveRDS(fixef(fit1),file=paste0("metaanalysis__abundance__",myCountry,".rds"))
+
+### unweighted analysis ####
+
+response_sta_sr <- subset(response_stan, Response=="spp_richness")
+
+fit1 <- brm(estimate ~ 1 + (1|study_id),
+            data = response_sta_sr, iter=5000, inits = 0,
+            chains = 4, prior = prior1,
+            init = "0",
+            control = list(adapt_delta = 0.90, 
+                           max_treedepth = 12))
+
+saveRDS(fixef(fit1),file=paste0("metaanalysis__unweight_spp_richness__",myCountry,".rds"))
+
+response_sta_abund <- subset(response_stan, Response=="abundance")
+
+fit1 <- brm(estimate ~ 1 + (1|study_id),
+            data = response_sta_abund, iter=5000, inits = 0,
+            chains = 4, prior = prior1,
+            init = "0",
+            control = list(adapt_delta = 0.90, 
+                           max_treedepth = 12))
+
+
+saveRDS(fixef(fit1),file=paste0("metaanalysis__unweight_abundance__",myCountry,".rds"))
