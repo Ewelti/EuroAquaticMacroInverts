@@ -11,16 +11,16 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 
 #organise task IDs
 TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
-# TaskID <- subset(TaskID, Response %in% c("alien_SppRich",
-#                                          "EPT_SppRich",
-#                                          "insect_SppRich"))
-TaskID <- subset(TaskID, Response %in% c("insect_Abund",
+TaskID <- subset(TaskID, Response %in% c("alien_SppRich",
+                                          "EPT_SppRich",
+                                          "insect_SppRich",
+                                          "insect_Abund",
                                          "EPT_Abund",
                                          "alien_Abund"))
 
 TaskID$TaskID <- 1:nrow(TaskID)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
-nrow(TaskID)#66
+nrow(TaskID)#132
 
 #choose which country for this task
 myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
