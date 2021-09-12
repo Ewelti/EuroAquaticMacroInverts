@@ -9,27 +9,31 @@ allYrs <- d1[!is.na(d1$site_id_wMissing),]
 #make turnover numeric
 allYrs$turnover <- as.numeric(allYrs$turnover)
 
-#first time to create the TaskID's
-# SufficientSites <- lapply(1971:2011, function(x){
-# 
-#   timewindow <- 10
-#   allYrs2 <- subset(allYrs, year_wMissing >= x & year_wMissing < (x+timewindow))
-#   siteSummary <- tapply(allYrs2$abundance,allYrs2$site_id,length)
-#   data.frame(StartYear = x, site_id = names(siteSummary)[siteSummary>=7])
-# 
-# })
-# 
-# SufficientSites <- do.call(rbind, SufficientSites)
-# SufficientSites$country <- allYrs$country[match(SufficientSites$site_id,allYrs$site_id)]
-# SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
-# SufficientSites <- rbind(SufficientSites,SufficientSites)
-# SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
-#                               rep("spp_richness", nrow(SufficientSites)/2))
-# SufficientSites$TaskID <- 1:nrow(SufficientSites)
-# write.table(SufficientSites,"outputs/MovingAverage_TaskIDs.csv",sep=",",row.names=FALSE)
+#to create the TaskID's
+timeWindow <- 10
+minimumThreshold <- 5
+
+SufficientSites <- lapply(1971:2011, function(x){
+  allYrs2 <- subset(allYrs, year_wMissing >= x & year_wMissing < (x+timeWindow))
+  siteSummary <- tapply(allYrs2$abundance,allYrs2$site_id,length)
+  data.frame(StartYear = x, site_id = names(siteSummary)[siteSummary>=minimumThreshold])
+
+})
+
+SufficientSites <- do.call(rbind, SufficientSites)
+SufficientSites$country <- allYrs$country[match(SufficientSites$site_id,allYrs$site_id)]
+SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
+SufficientSites <- rbind(SufficientSites,SufficientSites)
+SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
+                              rep("spp_richness", nrow(SufficientSites)/2))
+SufficientSites$TaskID <- 1:nrow(SufficientSites)
+
+#write.table(SufficientSites,"outputs/MovingAverage_TaskIDs.csv",sep=",",row.names=FALSE)
 
 #get task id
-TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs2.csv",as.is=T)
+#TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs.csv",as.is=T)
+TaskID <- SufficientSites
+nrow(TaskID)#846
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
 ### country ###
@@ -59,7 +63,7 @@ if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
 }
 
 #not transformed: shannonH, RaoQ, turnover, FEve, "spp_richness","spp_rich_rare",
-#"alien_SppRich","SppRich_nativeSpp","EPT_SppRich","insect_SppRich"
+#"alien_SppRich","SppRich_nativeSpp","EPT_SppRich","insect_SppRich", Fred
 
 #order by site site year
 allYrs <- allYrs[order(allYrs$year_wMissing),]
@@ -70,15 +74,14 @@ allYrs <- allYrs[order(allYrs$year_wMissing),]
 StartYear <- TaskID$StartYear[which(TaskID$TaskID==task.id)]
 
 #subset 10 year time span
-timewindow <- 10
-allYrs <- subset(allYrs, year_wMissing>=StartYear & year_wMissing<(StartYear+timewindow))
+allYrs <- subset(allYrs, year_wMissing>=StartYear & year_wMissing<(StartYear+timeWindow))
 
 ### select sites with enough data ###
 
 allYrs <- subset(allYrs, !is.na(Response))
 
 siteSummary <- tapply(allYrs$Response,allYrs$site_id,length)
-sufficientSites <- names(siteSummary)[siteSummary>=7]
+sufficientSites <- names(siteSummary)[siteSummary>= minimumThreshold]
 allYrs <- subset(allYrs, site_id %in% sufficientSites)                
 
 ### fitting directly in stan #####
@@ -88,7 +91,7 @@ library(rstan)
 
 # try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
 cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-#rstan_options(auto_write = TRUE)
+rstan_options(auto_write = FALSE)
 options(mc.cores = cpus_per_task)
 
 # write a function to consider day of year if sampling is more than 30 days apart
@@ -150,7 +153,6 @@ fitStanModel <- function(mydata){
   return(modelFits)
   
 }
-
 
 #loop for all sites
 allsites <- sort(unique(allYrs$site_id))

@@ -128,7 +128,7 @@ model {
       target += zero_inflated_poisson_log_lpmf(Y[n] | mu[n], zi);
     }
   // priors including constants
-  target += normal_lpdf(b | 0,1);
+  target += normal_lpdf(b | 0,5);
   target += student_t_lpdf(Intercept | 3, meanResponse, sdResponse);
   target += student_t_lpdf(sderr | 3, 0, sdResponse);
   target += std_normal_lpdf(zerr);

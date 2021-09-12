@@ -65,7 +65,7 @@ summary(response_stan$w)
 
 # try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
 cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-rstan_options(auto_write = TRUE)
+rstan_options(auto_write = FALSE)
 options(mc.cores = cpus_per_task)
 
 #define priors - default ok
