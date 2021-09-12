@@ -11,7 +11,7 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 
 #to create the TaskID's
 timeWindow <- 10
-minimumThreshold <- 5
+minimumThreshold <- 6
 
 SufficientSites <- lapply(1971:2011, function(x){
   allYrs2 <- subset(allYrs, year_wMissing >= x & year_wMissing < (x+timeWindow))
@@ -33,7 +33,7 @@ SufficientSites$TaskID <- 1:nrow(SufficientSites)
 #get task id
 #TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs.csv",as.is=T)
 TaskID <- SufficientSites
-nrow(TaskID)#846
+nrow(TaskID)#748
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
 ### country ###
@@ -79,7 +79,6 @@ allYrs <- subset(allYrs, year_wMissing>=StartYear & year_wMissing<(StartYear+tim
 ### select sites with enough data ###
 
 allYrs <- subset(allYrs, !is.na(Response))
-
 siteSummary <- tapply(allYrs$Response,allYrs$site_id,length)
 sufficientSites <- names(siteSummary)[siteSummary>= minimumThreshold]
 allYrs <- subset(allYrs, site_id %in% sufficientSites)                
