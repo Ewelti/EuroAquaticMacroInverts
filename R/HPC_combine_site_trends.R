@@ -30,6 +30,63 @@ TaskID <- read.csv("outputs/ResponseTrends_TaskIDs.csv",as.is=T)
 sort(unique(TaskID$Response))
 #yes!!
 
+### updated models #####
+
+#use beta for F_to
+#use zero-inflated for AlienSppRich, EPTSppRich, EPTAbund
+#the normal models for the rest
+
+#beta models
+trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/beta"
+trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
+
+countryTrends <- lapply(trendsFiles,function(x){
+  
+  temp <- readRDS(paste(trendsDir,x,sep="/"))
+  
+  #add on response from file name
+  temp$Response <- strsplit(as.character(x),"__")[[1]][2]
+  return(temp)
+  
+})
+countryTrends <- do.call(rbind,countryTrends)
+
+# #zero inflated models - some didnt run
+# trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/zero"
+# trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
+# trendsFiles <- trendsFiles[grep(paste(c("alien_SppRich","EPT_SppRich","EPT_Abund"),collapse="|"),trendsFiles)]
+# 
+# countryTrends <- lapply(trendsFiles,function(x){
+#   
+#   temp <- readRDS(paste(trendsDir,x,sep="/"))
+#   
+#   #add on response from file name
+#   temp$Response <- strsplit(as.character(x),"__")[[1]][2]
+#   return(temp)
+#   
+# })
+# countryTrends <- do.call(rbind,countryTrends)
+
+# standard model - for the rest
+trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/siteLevel_updated"
+trendsFiles <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
+trendsFiles <- trendsFiles[!grepl("F_to",trendsFiles)]
+
+countryTrends2 <- lapply(trendsFiles,function(x){
+  
+  temp <- readRDS(paste(trendsDir,x,sep="/"))
+  
+  #add on response from file name
+  temp$Response <- strsplit(as.character(x),"__")[[1]][2]
+  return(temp)
+  
+})
+countryTrends2 <- do.call(rbind,countryTrends2)
+
+#combine all
+countryTrends <- rbind(countryTrends,countryTrends2)
+names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
+saveRDS(countryTrends,file="outputs/stanTrends_site_level.rds")
 
 ### site-level moving averages ####
 
