@@ -76,10 +76,11 @@ qplot(turnover, TurnO_Est, data=all)
 
 ### meta-analysis ####
 
-setwd("outputs/Meta-analysis")
+setwd("outputs/meta_updated")
 
 #for unweighted models
 setwd("C:/Users/db40fysa/Dropbox/Git/ellen_outputs/meta")
+
 
 getwd()
 library(rstan)
@@ -405,7 +406,7 @@ aliensr_prob <- data.frame(Response="alien_sppRich", aliensr_prob[,1:2])
 aliensr_prob
 
 #check model
-plot(fit)#bad!! - btter unweighted
+plot(fit)#bad!! - better unweighted
 aliensr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 aliensr_loo
 aliensr_parento <- as.list(pareto_k_table(aliensr_loo))
@@ -625,7 +626,7 @@ Yr_metaanaly_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixe
                            fto_fixed, fric_fixed, feve_fixed, fdiv_fixed, raoq_fixed, aliensr_fixed,
                            alienab_fixed, nativesr_fixed, nativeab_fixed, EPTsr_fixed, EPTab_fixed,
                            insectsr_fixed, insectab_fixed)
-write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Ests.csv")
+write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Unweight_Ests.csv")
 
 #### assemble all probabilities of increases/decreases from meta-analysis models #####
 
@@ -633,7 +634,7 @@ Yr_metaanaly_probs <- rbind(sr_prob, srr_prob, shH_prob, e10_prob, ab_prob, turn
                             fto_prob, fric_prob, feve_prob, fdiv_prob, raoq_prob, aliensr_prob,
                             alienab_prob, nativesr_prob, nativeab_prob, EPTsr_prob, EPTab_prob,
                             insectsr_prob, insectab_prob)
-write.csv(Yr_metaanaly_probs, "Yr_metaanaly_probabilities.csv")
+write.csv(Yr_metaanaly_probs, "Yr_metaanaly_Unweight_probabilities.csv")
 
 #### assemble model counts from Parento k diagnostic values from meta-analysis models #####
 
@@ -642,6 +643,6 @@ Yr_metaanaly_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Count_a
                               Count_alienab, Count_nativesr, Count_nativeab, Count_EPTsr, Count_EPTab,
                               Count_insectsr, Count_insectab)
 rownames(Yr_metaanaly_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
-write.csv(Yr_metaanaly_parento, "Yr_meta_parento_ModelCounts.csv")
+write.csv(Yr_metaanaly_parento, "Yr_meta_parento_Unweight_ModelCounts.csv")
 
 
