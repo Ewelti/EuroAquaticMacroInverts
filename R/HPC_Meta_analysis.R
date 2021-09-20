@@ -40,17 +40,18 @@ cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
 rstan_options(auto_write = FALSE)
 options(mc.cores = cpus_per_task)
 
-#define priors
-# fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
-#             data = response_stan, iter=5000, inits = 0,
-#             chains = 4, prior = prior1,
-#             init = "0",
-#             control = list(adapt_delta = 0.95, 
-#                            max_treedepth = 12))
-# 
-# ### save output ####
-# 
-# saveRDS(fit1,file=paste0("metaanalysis_",myResponse,".rds"))
+#fit weighted model
+
+fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
+            data = response_stan, iter=5000, inits = 0,
+            chains = 4, prior = prior1,
+            init = "0",
+            control = list(adapt_delta = 0.95,
+                           max_treedepth = 12))
+
+### save output ####
+
+saveRDS(fit1,file=paste0("metaanalysis_",myResponse,".rds"))
 
 # unweighted model 
 
