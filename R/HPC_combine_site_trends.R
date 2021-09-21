@@ -33,7 +33,7 @@ sort(unique(TaskID$Response))
 ### updated models #####
 
 #use beta for F_to
-#use zero-inflated for AlienSppRich, EPTSppRich, EPTAbund
+#use zero-inflated for AlienSppRich, EPTSppRich, EPTAbund - not use, since still doesnt work well when weighted
 #the normal models for the rest
 
 # standard model - for the rest
@@ -68,27 +68,28 @@ countryTrends_Beta <- lapply(trendsFiles_Beta,function(x){
 })
 countryTrends_Beta <- do.call(rbind,countryTrends_Beta)
 
-#zero inflated models - some didnt run
-trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/zero"
-trendsFiles_Zero <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
-
-countryTrends_Zero <- lapply(trendsFiles_Zero,function(x){
-
-  temp <- readRDS(paste(trendsDir,x,sep="/"))
-
-  #add on response from file name
-  temp$File <- x
-  temp$Response <- strsplit(as.character(x),"__")[[1]][2]
-  return(temp)
-
-})
-countryTrends_Zero <- do.call(rbind,countryTrends_Zero)
+#zero inflated models 
+# trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/zero"
+# trendsFiles_Zero <- list.files(trendsDir)[!grepl("txt",list.files(trendsDir))]
+# 
+# countryTrends_Zero <- lapply(trendsFiles_Zero,function(x){
+# 
+#   temp <- readRDS(paste(trendsDir,x,sep="/"))
+# 
+#   #add on response from file name
+#   temp$File <- x
+#   temp$Response <- strsplit(as.character(x),"__")[[1]][2]
+#   return(temp)
+# 
+# })
+# countryTrends_Zero <- do.call(rbind,countryTrends_Zero)
 
 
 #combine all
-countryTrends <- subset(countryTrends, !File %in% countryTrends_Zero$File)
+#countryTrends <- subset(countryTrends, !File %in% countryTrends_Zero$File)
 countryTrends <- subset(countryTrends, !File %in% countryTrends_Beta$File)
-countryTrends <- rbind(countryTrends,countryTrends_Beta,countryTrends_Zero)
+#countryTrends <- rbind(countryTrends,countryTrends_Beta,countryTrends_Zero)
+countryTrends <- rbind(countryTrends,countryTrends_Beta)
 names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level.rds")
 
