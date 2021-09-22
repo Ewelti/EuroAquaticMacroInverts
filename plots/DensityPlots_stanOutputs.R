@@ -33,14 +33,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 SppRich_Est <- subset(Ests, Response == "spp_richness")
 stand_SppRich <- lapply(SppRich_Est[,2:11],"*",100/ave_SppRich)
-yy <- (5/6*(b-a)+a)
-points(x=stand_SppRich$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (5.2/6*(b-a)+a)
+points(x=stand_SppRich$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_SppRich$Q2.5, stand_SppRich$Q2.5, stand_SppRich$Q97.5, stand_SppRich$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_SppRich$Q5, stand_SppRich$Q5, stand_SppRich$Q95, stand_SppRich$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd = 1)
+polygon(x=c(stand_SppRich$Q10, stand_SppRich$Q10, stand_SppRich$Q90, stand_SppRich$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd = 1)
 legend(x=-18, y=(6/6*(b-a)+a), legend=("Species richness"), bty="n", cex=1.3)
 
 #### rarefied Spp Richness #####
@@ -64,14 +67,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 SppRichRare_Est <- subset(Ests, Response == "spp_richness_rarefied")
 stand_SppRichRare <- lapply(SppRichRare_Est[,2:11],"*",100/ave_SppRichRare)
-yy <- (4/6*(b-a)+a)
-points(x=stand_SppRichRare$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (4.2/6*(b-a)+a)
+points(x=stand_SppRichRare$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_SppRichRare$Q2.5, stand_SppRichRare$Q2.5, stand_SppRichRare$Q97.5, stand_SppRichRare$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_SppRichRare$Q5, stand_SppRichRare$Q5, stand_SppRichRare$Q95, stand_SppRichRare$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_SppRichRare$Q10, stand_SppRichRare$Q10, stand_SppRichRare$Q90, stand_SppRichRare$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(5/6*(b-a)+a), legend=("Rarefied spp richness"), bty="n", cex=1.3)
 
 #### Abundance #####
@@ -93,14 +99,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 abund_Est <- subset(Ests, Response == "abundance")
 stand_abund <- lapply(abund_Est[,2:11],"*",100)
-yy <- (3/6*(b-a)+a)
-points(x=stand_abund$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (3.2/6*(b-a)+a)
+points(x=stand_abund$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_abund$Q2.5, stand_abund$Q2.5, stand_abund$Q97.5, stand_abund$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_abund$Q5, stand_abund$Q5, stand_abund$Q95, stand_abund$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_abund$Q10, stand_abund$Q10, stand_abund$Q90, stand_abund$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(4/6*(b-a)+a), legend=("Abundance"), bty="n", cex=1.3)
 
 #### Shannon's H #####
@@ -124,14 +133,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 shannonsH_Est <- subset(Ests, Response == "shannonsH")
 stand_shannonsH <- lapply(shannonsH_Est[,2:11],"*",100/ave_shannonsH)
-yy <- (2/6*(b-a)+a)
-points(x=stand_shannonsH$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (2.2/6*(b-a)+a)
+points(x=stand_shannonsH$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_shannonsH$Q2.5, stand_shannonsH$Q2.5, stand_shannonsH$Q97.5, stand_shannonsH$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_shannonsH$Q5, stand_shannonsH$Q5, stand_shannonsH$Q95, stand_shannonsH$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_shannonsH$Q10, stand_shannonsH$Q10, stand_shannonsH$Q90, stand_shannonsH$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/6*(b-a)+a), legend=("Shannon's H"), bty="n", cex=1.3)
 
 #### Shannon's Evenness #####
@@ -154,14 +166,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 E10_Est <- subset(Ests, Response == "E10")
 stand_E10 <- lapply(E10_Est[,2:11],"*",100)
-yy <- (1/6*(b-a)+a)
-points(x=stand_E10$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (1.2/6*(b-a)+a)
+points(x=stand_E10$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_E10$Q2.5, stand_E10$Q2.5, stand_E10$Q97.5, stand_E10$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_E10$Q5, stand_E10$Q5, stand_E10$Q95, stand_E10$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_E10$Q10, stand_E10$Q10, stand_E10$Q90, stand_E10$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/6*(b-a)+a), legend=("Shannon's evenness"), bty="n", cex=1.3)
 
 #### Turnover #####
@@ -186,14 +201,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 turnover_Est <- subset(Ests, Response == "turnover")
 stand_turnover <- lapply(turnover_Est[,2:11],"*",100/ave_turnover)
-yy <- (0/6*(b-a)+a)
-points(x=stand_turnover$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (0.2/6*(b-a)+a)
+points(x=stand_turnover$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_turnover$Q2.5, stand_turnover$Q2.5, stand_turnover$Q97.5, stand_turnover$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_turnover$Q5, stand_turnover$Q5, stand_turnover$Q95, stand_turnover$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_turnover$Q10, stand_turnover$Q10, stand_turnover$Q90, stand_turnover$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/6*(b-a)+a), legend=("Turnover"), bty="n", cex=1.3)
 
 ##
@@ -222,14 +240,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 FRic_Est <- subset(Ests, Response == "func_rich")
 stand_FRic <- lapply(FRic_Est[,2:11],"*", 100)
-yy <- (5/6*(b-a)+a)
-points(x=stand_FRic$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (5.2/6*(b-a)+a)
+points(x=stand_FRic$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_FRic$Q2.5, stand_FRic$Q2.5, stand_FRic$Q97.5, stand_FRic$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_FRic$Q5, stand_FRic$Q5, stand_FRic$Q95, stand_FRic$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_FRic$Q10, stand_FRic$Q10, stand_FRic$Q90, stand_FRic$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(6/6*(b-a)+a), legend=("Func. richness"), bty="n", cex=1.3)
 
 #### Rao's Q #####
@@ -253,14 +274,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 RaoQ_Est <- subset(Ests, Response == "RaoQ")
 stand_RaoQ <- lapply(RaoQ_Est[,2:11],"*",100/ave_RaoQ)
-yy <- (4/6*(b-a)+a)
-points(x=stand_RaoQ$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (4.2/6*(b-a)+a)
+points(x=stand_RaoQ$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_RaoQ$Q2.5, stand_RaoQ$Q2.5, stand_RaoQ$Q97.5, stand_RaoQ$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_RaoQ$Q5, stand_RaoQ$Q5, stand_RaoQ$Q95, stand_RaoQ$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_RaoQ$Q10, stand_RaoQ$Q10, stand_RaoQ$Q90, stand_RaoQ$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(5/6*(b-a)+a), legend=("Rao's Q"), bty="n", cex=1.3)
 
 #### Functional Redundancy #####
@@ -284,14 +308,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 FRed_Est <- subset(Ests, Response == "FRed")
 stand_FRed <- lapply(FRed_Est[,2:11],"*",100/ave_FRed)
-yy <- (3/6*(b-a)+a)
-points(x=stand_FRed$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (3.2/6*(b-a)+a)
+points(x=stand_FRed$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_FRed$Q2.5, stand_FRed$Q2.5, stand_FRed$Q97.5, stand_FRed$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_FRed$Q5, stand_FRed$Q5, stand_FRed$Q95, stand_FRed$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_FRed$Q10, stand_FRed$Q10, stand_FRed$Q90, stand_FRed$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(4/6*(b-a)+a), legend=("Func. redundancy"), bty="n", cex=1.3)
 
 #### Func diverg #####
@@ -315,14 +342,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 FDiv_Est <- subset(Ests, Response == "func_diverg")
 stand_FDiv <- lapply(FDiv_Est[,2:11],"*",100/(ave_FDiv^2))
-yy <- (2/6*(b-a)+a)
-points(x=stand_FDiv$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (2.2/6*(b-a)+a)
+points(x=stand_FDiv$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_FDiv$Q2.5, stand_FDiv$Q2.5, stand_FDiv$Q97.5, stand_FDiv$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_FDiv$Q5, stand_FDiv$Q5, stand_FDiv$Q95, stand_FDiv$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_FDiv$Q10, stand_FDiv$Q10, stand_FDiv$Q90, stand_FDiv$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/6*(b-a)+a), legend=("Func. divergence"), bty="n", cex=1.3)
 
 #### Func evenness #####
@@ -346,14 +376,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 FEve_Est <- subset(Ests, Response == "func_even")
 stand_FEve <- lapply(FEve_Est[,2:11],"*",100/ave_FEve)
-yy <- (1/6*(b-a)+a)
-points(x=stand_FEve$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (1.2/6*(b-a)+a)
+points(x=stand_FEve$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_FEve$Q2.5, stand_FEve$Q2.5, stand_FEve$Q97.5, stand_FEve$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_FEve$Q5, stand_FEve$Q5, stand_FEve$Q95, stand_FEve$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_FEve$Q10, stand_FEve$Q10, stand_FEve$Q90, stand_FEve$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/6*(b-a)+a), legend=("Func. evenness"), bty="n", cex=1.3)
 
 #### Func turnover #####
@@ -377,14 +410,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 F_to_Est <- subset(Ests, Response == "func_turnover")
 stand_F_to <- lapply(F_to_Est[,2:11],"*",100)
-yy <- (0/6*(b-a)+a)
-points(x=stand_F_to$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (0.2/6*(b-a)+a)
+points(x=stand_F_to$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_F_to$Q2.5, stand_F_to$Q2.5, stand_F_to$Q97.5, stand_F_to$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_F_to$Q5, stand_F_to$Q5, stand_F_to$Q95, stand_F_to$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_F_to$Q10, stand_F_to$Q10, stand_F_to$Q90, stand_F_to$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/6*(b-a)+a), legend=("Func. turnover"), bty="n", cex=1.3)
 
 ##
@@ -414,14 +450,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 alien_SppRich_Est <- subset(Ests, Response == "alien_SppRich_unweighted")
 stand_alien_SppRich <- lapply(alien_SppRich_Est[,2:11],"*", (100/ave_alien_SppRich))
-yy <- (7/8*(b-a)+a)
-points(x=stand_alien_SppRich$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (7.2/8*(b-a)+a)
+points(x=stand_alien_SppRich$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_alien_SppRich$Q2.5, stand_alien_SppRich$Q2.5, stand_alien_SppRich$Q97.5, stand_alien_SppRich$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_alien_SppRich$Q5, stand_alien_SppRich$Q5, stand_alien_SppRich$Q95, stand_alien_SppRich$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_alien_SppRich$Q10, stand_alien_SppRich$Q10, stand_alien_SppRich$Q90, stand_alien_SppRich$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(8/8*(b-a)+a), legend=("Alien spp richness"), bty="n", cex=1.3)
 
 #### alien abund #####
@@ -443,14 +482,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 alien_Abund_Est <- subset(Ests, Response == "alien_abund")
 stand_alien_Abund <- lapply(alien_Abund_Est[,2:11],"*",100)
-yy <- (6/8*(b-a)+a)
-points(x=stand_alien_Abund$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (6.2/8*(b-a)+a)
+points(x=stand_alien_Abund$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_alien_Abund$Q2.5, stand_alien_Abund$Q2.5, stand_alien_Abund$Q97.5, stand_alien_Abund$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_alien_Abund$Q5, stand_alien_Abund$Q5, stand_alien_Abund$Q95, stand_alien_Abund$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_alien_Abund$Q10, stand_alien_Abund$Q10, stand_alien_Abund$Q90, stand_alien_Abund$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(7/8*(b-a)+a), legend=("Alien abundance"), bty="n", cex=1.3)
 
 #### native spp rich #####
@@ -474,14 +516,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 SppRich_nativeSpp_Est <- subset(Ests, Response == "native_SppRich")
 stand_SppRich_nativeSpp <- lapply(SppRich_nativeSpp_Est[,2:11],"*",(100/ave_SppRich_nativeSpp))
-yy <- (5/8*(b-a)+a)
-points(x=stand_SppRich_nativeSpp$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (5.2/8*(b-a)+a)
+points(x=stand_SppRich_nativeSpp$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_SppRich_nativeSpp$Q2.5, stand_SppRich_nativeSpp$Q2.5, stand_SppRich_nativeSpp$Q97.5, stand_SppRich_nativeSpp$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_SppRich_nativeSpp$Q5, stand_SppRich_nativeSpp$Q5, stand_SppRich_nativeSpp$Q95, stand_SppRich_nativeSpp$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_SppRich_nativeSpp$Q10, stand_SppRich_nativeSpp$Q10, stand_SppRich_nativeSpp$Q90, stand_SppRich_nativeSpp$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(6/8*(b-a)+a), legend=("Native spp richness"), bty="n", cex=1.3)
 
 #### native abund #####
@@ -505,14 +550,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 abund_nativeSpp_Est <- subset(Ests, Response == "native_abund")
 stand_abund_nativeSpp <- lapply(abund_nativeSpp_Est[,2:11],"*",100)
-yy <- (4/8*(b-a)+a)
-points(x=stand_abund_nativeSpp$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (4.2/8*(b-a)+a)
+points(x=stand_abund_nativeSpp$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_abund_nativeSpp$Q2.5, stand_abund_nativeSpp$Q2.5, stand_abund_nativeSpp$Q97.5, stand_abund_nativeSpp$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_abund_nativeSpp$Q5, stand_abund_nativeSpp$Q5, stand_abund_nativeSpp$Q95, stand_abund_nativeSpp$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_abund_nativeSpp$Q10, stand_abund_nativeSpp$Q10, stand_abund_nativeSpp$Q90, stand_abund_nativeSpp$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(5/8*(b-a)+a), legend=("Native abundance"), bty="n", cex=1.3)
 
 #### EPT spp rich #####
@@ -536,14 +584,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 EPT_SppRich_Est <- subset(Ests, Response == "EPT_SppRich_unweighted")
 stand_EPT_SppRich <- lapply(EPT_SppRich_Est[,2:11],"*",100/ave_EPT_SppRich)
-yy <- (3/8*(b-a)+a)
-points(x=stand_EPT_SppRich$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (3.2/8*(b-a)+a)
+points(x=stand_EPT_SppRich$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_EPT_SppRich$Q2.5, stand_EPT_SppRich$Q2.5, stand_EPT_SppRich$Q97.5, stand_EPT_SppRich$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_EPT_SppRich$Q5, stand_EPT_SppRich$Q5, stand_EPT_SppRich$Q95, stand_EPT_SppRich$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_EPT_SppRich$Q10, stand_EPT_SppRich$Q10, stand_EPT_SppRich$Q90, stand_EPT_SppRich$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(4/8*(b-a)+a), legend=("EPT spp richness"), bty="n", cex=1.3)
 
 #### EPT abund #####
@@ -567,14 +618,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 EPT_Abund_Est <- subset(Ests, Response == "EPT_abund_unweighted")
 stand_EPT_Abund <- lapply(EPT_Abund_Est[,2:11],"*",100)
-yy <- (2/8*(b-a)+a)
-points(x=stand_EPT_Abund$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (2.2/8*(b-a)+a)
+points(x=stand_EPT_Abund$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_EPT_Abund$Q2.5, stand_EPT_Abund$Q2.5, stand_EPT_Abund$Q97.5, stand_EPT_Abund$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_EPT_Abund$Q5, stand_EPT_Abund$Q5, stand_EPT_Abund$Q95, stand_EPT_Abund$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_EPT_Abund$Q10, stand_EPT_Abund$Q10, stand_EPT_Abund$Q90, stand_EPT_Abund$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/8*(b-a)+a), legend=("EPT abundance"), bty="n", cex=1.3)
 
 #### insect spp rich #####
@@ -598,14 +652,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 insect_SppRich_Est <- subset(Ests, Response == "insect_SppRich")
 stand_insect_SppRich <- lapply(insect_SppRich_Est[,2:11],"*",100/ave_insect_SppRich)
-yy <- (1/8*(b-a)+a)
-points(x=stand_insect_SppRich$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (1.2/8*(b-a)+a)
+points(x=stand_insect_SppRich$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_insect_SppRich$Q2.5, stand_insect_SppRich$Q2.5, stand_insect_SppRich$Q97.5, stand_insect_SppRich$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_insect_SppRich$Q5, stand_insect_SppRich$Q5, stand_insect_SppRich$Q95, stand_insect_SppRich$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_insect_SppRich$Q10, stand_insect_SppRich$Q10, stand_insect_SppRich$Q90, stand_insect_SppRich$Q90),
+        y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/8*(b-a)+a), legend=("Insect spp richness"), bty="n", cex=1.3)
 
 #### insect abund #####
@@ -627,14 +684,17 @@ polygon(c(d$x[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 insect_Abund_Est <- subset(Ests, Response == "insect_abund")
 stand_insect_Abund <- lapply(insect_Abund_Est[,2:11],"*",100)
-yy <- (0/8*(b-a)+a)
-points(x=stand_insect_Abund$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
+yy <- (0.2/8*(b-a)+a)
+points(x=stand_insect_Abund$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_insect_Abund$Q2.5, stand_insect_Abund$Q2.5, stand_insect_Abund$Q97.5, stand_insect_Abund$Q97.5),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 2)
+        y=c((yy-yy/18),(yy+yy/18),(yy+yy/18),(yy-yy/18)),
+        col = 1,border = 0,lwd = 1)
 polygon(x=c(stand_insect_Abund$Q5, stand_insect_Abund$Q5, stand_insect_Abund$Q95, stand_insect_Abund$Q95),
-        y=c(yy,yy,yy,yy),
-        col = 1,border = 1,lwd = 3)
+        y=c((yy-yy/10),(yy+yy/10),(yy+yy/10),(yy-yy/10)),
+        col = 1,border = 0,lwd =1)
+polygon(x=c(stand_insect_Abund$Q10, stand_insect_Abund$Q10, stand_insect_Abund$Q90, stand_insect_Abund$Q90),
+        y=c((yy-yy/4.5),(yy+yy/4.5),(yy+yy/4.5),(yy-yy/4.6)),
+        col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/8*(b-a)+a), legend=("Insect abundance"), bty="n", cex=1.3)
 
 ##
