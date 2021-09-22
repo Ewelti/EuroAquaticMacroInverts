@@ -397,8 +397,8 @@ abline(v=0, lwd=1, lty=2)
 alien_SppRich <- subset(response_stan, Response == "alien_SppRich")
 alien_SppRich <- alien_SppRich$estimate[!is.na(alien_SppRich$estimate)]
 #average alien richness= 1.420037807
-#ave_alien_SppRich <- 1.420037807
-percChange_perYr<-(alien_SppRich)*100
+ave_alien_SppRich <- 1.420037807
+percChange_perYr<-(alien_SppRich/ave_alien_SppRich)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-7
 b <- (max(d$y)+(max(d$y)/10))*1
@@ -413,7 +413,7 @@ polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "tomato", border = "tomato", lwd =2)
 alien_SppRich_Est <- subset(Ests, Response == "alien_SppRich_unweighted")
-stand_alien_SppRich <- lapply(alien_SppRich_Est[,2:11],"*", 100)
+stand_alien_SppRich <- lapply(alien_SppRich_Est[,2:11],"*", (100/ave_alien_SppRich))
 yy <- (7/8*(b-a)+a)
 points(x=stand_alien_SppRich$Estimate, y=yy, lwd=2,pch="l",cex=1.5)
 polygon(x=c(stand_alien_SppRich$Q2.5, stand_alien_SppRich$Q2.5, stand_alien_SppRich$Q97.5, stand_alien_SppRich$Q97.5),
@@ -429,7 +429,7 @@ alien_Abund <- subset(response_stan, Response == "alien_Abund")
 alien_Abund <- alien_Abund$estimate[!is.na(alien_Abund$estimate)]
 percChange_perYr<- alien_Abund*100
 d <- density(percChange_perYr)
-a <- (max(d$y)+(max(d$y)/10)) *-6
+a <- (max(d$y)+(max(d$y)/10))*-6
 b <- (max(d$y)+(max(d$y)/10))*2
 par(new=TRUE)
 plot(d, main="",ylab="",xlab="",cex.lab=2,xlim=c(-15,15),ylim=c(a,b),col="white",yaxt='n',xaxt='n')

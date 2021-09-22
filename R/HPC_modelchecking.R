@@ -230,7 +230,7 @@ abund_fixed
 
 #### turnover ####
 fit <- readRDS("metaanalysis_unweighted_turnover.rds") 
-fit <- readRDS("metaanalysis_turnover.rds") ## not yet calculated
+fit <- readRDS("metaanalysis_turnover.rds")
 
 #prob of trend
 turn_prob <- getTrendProbability(fit)
@@ -266,7 +266,7 @@ fto_prob <- data.frame(Response="func_turnover", fto_prob[,1:2])
 fto_prob
 
 #check model
-plot(fit)#bad!!! - better when unweighted!!!
+plot(fit)# looks okay even unweighted now
 fto_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fto_loo
 fto_parento <- as.list(pareto_k_table(fto_loo))
@@ -396,6 +396,34 @@ raoq_fixed <- list(Response="RaoQ", raoq_fixed_995[,1:4], raoq_fixed_975[,3:4],
 raoq_fixed <-data.frame(lapply(raoq_fixed, function(x) t(data.frame(x))))
 raoq_fixed
 
+#### FRed ####
+fit <- readRDS("metaanalysis_unweighted_FRed.rds")
+fit <- readRDS("metaanalysis_FRed.rds")
+
+#prob of trend
+FRed_prob <- getTrendProbability(fit)
+FRed_prob <- data.frame(Response="FRed", FRed_prob[,1:2])
+FRed_prob
+
+#check model
+plot(fit)
+FRed_loo <- loo(fit, cores = getOption("mc.cores", 1))
+FRed_loo
+FRed_parento <- as.list(pareto_k_table(FRed_loo))
+Count_FRed <- rbind(FRed_parento[[1]],FRed_parento[[2]],FRed_parento[[3]],FRed_parento[[4]])
+colnames(Count_FRed) <- "FRed"
+pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+FRed_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+FRed_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
+FRed_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
+FRed_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
+FRed_fixed <- list(Response="FRed", FRed_fixed_995[,1:4], FRed_fixed_975[,3:4],
+                   FRed_fixed_95[,3:4],FRed_fixed_90[,3:4])
+FRed_fixed <-data.frame(lapply(FRed_fixed, function(x) t(data.frame(x))))
+FRed_fixed
+
 #### alien_SppRich ####
 fit <- readRDS("metaanalysis_unweighted_alien_SppRich.rds")
 fit <- readRDS("metaanalysis_alien_SppRich.rds")
@@ -462,7 +490,7 @@ nativeab_prob <- data.frame(Response="native_abund", nativeab_prob[,1:2])
 nativeab_prob
 
 #check model
-plot(fit)# a bit weird - better unweighted
+plot(fit)# seems okay weighted now
 nativeab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 nativeab_loo
 nativeab_parento <- as.list(pareto_k_table(nativeab_loo))
@@ -623,26 +651,26 @@ insectab_fixed
 #### assemble all model estimates from meta-analysis models #####
 
 Yr_metaanaly_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixed, turn_fixed, 
-                           fto_fixed, fric_fixed, feve_fixed, fdiv_fixed, raoq_fixed, aliensr_fixed,
+                           fto_fixed, fric_fixed, feve_fixed, fdiv_fixed, raoq_fixed, FRed_fixed, aliensr_fixed,
                            alienab_fixed, nativesr_fixed, nativeab_fixed, EPTsr_fixed, EPTab_fixed,
                            insectsr_fixed, insectab_fixed)
-write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Unweight_Ests.csv")
+write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Ests.csv")
 
 #### assemble all probabilities of increases/decreases from meta-analysis models #####
 
 Yr_metaanaly_probs <- rbind(sr_prob, srr_prob, shH_prob, e10_prob, ab_prob, turn_prob, 
-                            fto_prob, fric_prob, feve_prob, fdiv_prob, raoq_prob, aliensr_prob,
+                            fto_prob, fric_prob, feve_prob, fdiv_prob, raoq_prob, FRed_prob, aliensr_prob,
                             alienab_prob, nativesr_prob, nativeab_prob, EPTsr_prob, EPTab_prob,
                             insectsr_prob, insectab_prob)
-write.csv(Yr_metaanaly_probs, "Yr_metaanaly_Unweight_probabilities.csv")
+write.csv(Yr_metaanaly_probs, "Yr_metaanaly_probabilities.csv")
 
 #### assemble model counts from Parento k diagnostic values from meta-analysis models #####
 
 Yr_metaanaly_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Count_ab, Count_turn, Count_fto,
-                               Count_fric, Count_feve, Count_fdiv, Count_raoq, Count_aliensr,
+                               Count_fric, Count_feve, Count_fdiv, Count_raoq, Count_FRed, Count_aliensr,
                               Count_alienab, Count_nativesr, Count_nativeab, Count_EPTsr, Count_EPTab,
                               Count_insectsr, Count_insectab)
 rownames(Yr_metaanaly_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
-write.csv(Yr_metaanaly_parento, "Yr_meta_parento_Unweight_ModelCounts.csv")
+write.csv(Yr_metaanaly_parento, "Yr_meta_parento_ModelCounts.csv")
 
 
