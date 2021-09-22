@@ -448,7 +448,7 @@ aliensr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
 aliensr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 aliensr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 aliensr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-aliensr_fixed <- list(Response="alien_SppRich", aliensr_fixed_995[,1:4], aliensr_fixed_975[,3:4],
+aliensr_fixed <- list(Response="alien_SppRich_unweighted", aliensr_fixed_995[,1:4], aliensr_fixed_975[,3:4],
                       aliensr_fixed_95[,3:4],aliensr_fixed_90[,3:4])
 aliensr_fixed <-data.frame(lapply(aliensr_fixed, function(x) t(data.frame(x))))
 aliensr_fixed
@@ -560,7 +560,7 @@ EPTsr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
 EPTsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 EPTsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 EPTsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-EPTsr_fixed <- list(Response="EPT_SppRich", EPTsr_fixed_995[,1:4], EPTsr_fixed_975[,3:4],
+EPTsr_fixed <- list(Response="EPT_SppRich_unweighted", EPTsr_fixed_995[,1:4], EPTsr_fixed_975[,3:4],
                     EPTsr_fixed_95[,3:4],EPTsr_fixed_90[,3:4])
 EPTsr_fixed <-data.frame(lapply(EPTsr_fixed, function(x) t(data.frame(x))))
 EPTsr_fixed
@@ -588,7 +588,7 @@ EPTab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
 EPTab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
 EPTab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
 EPTab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-EPTab_fixed <- list(Response="EPT_abund", EPTab_fixed_995[,1:4], EPTab_fixed_975[,3:4],
+EPTab_fixed <- list(Response="EPT_abund_unweighted", EPTab_fixed_995[,1:4], EPTab_fixed_975[,3:4],
                     EPTab_fixed_95[,3:4],EPTab_fixed_90[,3:4])
 EPTab_fixed <-data.frame(lapply(EPTab_fixed, function(x) t(data.frame(x))))
 EPTab_fixed
