@@ -11,7 +11,7 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 
 #organise task IDs
 TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
-TaskID <- subset(TaskID, Response %in% c("F_to"))
+TaskID <- subset(TaskID, Response %in% c("FDiv"))#also for F_to
 TaskID$TaskID <- 1:nrow(TaskID)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 nrow(TaskID)#22
@@ -23,7 +23,7 @@ allYrs <- subset(allYrs,country==myCountry)
 #choose which response for this task
 myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 allYrs$Response <- allYrs[,myResponse]
-allYrs$Response <- allYrs$Response +0.01
+#allYrs$Response <- allYrs$Response +0.01
 
 #order by site site year
 allYrs <- allYrs[order(allYrs$year_wMissing),]

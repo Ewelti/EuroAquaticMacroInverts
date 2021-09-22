@@ -12,11 +12,11 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 #organise task IDs
 TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
 TaskID <- subset(TaskID, Response %in% c("alien_SppRich",
-                                          "EPT_SppRich",
-                                          "insect_SppRich",
-                                          "insect_Abund",
-                                         "EPT_Abund",
-                                         "alien_Abund"))
+                                          "EPT_SppRich"))
+                                          #"insect_SppRich",
+                                          #"insect_Abund",
+                                         #"EPT_Abund",
+                                         #"alien_Abund"))
 
 TaskID$TaskID <- 1:nrow(TaskID)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
