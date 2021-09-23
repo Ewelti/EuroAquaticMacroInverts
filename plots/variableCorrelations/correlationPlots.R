@@ -1,5 +1,6 @@
 ##Set working directory
 setwd("C:/Users/Ellen/Desktop/aquatic_data")
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/")
 
 # load libraries
 #install.packages("psych")
@@ -8,7 +9,7 @@ library(psych)
 # attach data
 DATA1_list <- read.csv("All_indices_benthicMacroInverts_AllYears.csv", header=T)
 DATA2 <- DATA1_list[!is.na(DATA1_list$site_id_wMissing),]
-turnover <- as.numeric(turnover)
+DATA2$turnover <- as.numeric(DATA2$turnover)
 attach(DATA2)
 head(DATA2)
 
@@ -22,7 +23,7 @@ pairs.panels(td,
              density = TRUE,  # show density plots
              )
 
-fd <- cbind.data.frame(log10(FRic),FEve,FDiv,RaoQ,F_to)
+fd <- cbind.data.frame(log10(FRic),FRed,FDiv,RaoQ,FEve,F_to)
 head(fd)
 
 pairs.panels(fd, 
@@ -38,9 +39,12 @@ ShH <- shannonsH
 Abun <- log10(abundance)
 E10 <- log10(DATA2$E10+0.01)
 TO <- turnover
-FRic <- log10(DATA2$FRic+0.01)
+DATA2$FRic <- log10(DATA2$FRic+0.1)
 FTO <- F_to
-dd <- cbind.data.frame(SR,RSR,ShH, E10, Abun, TO, FRic, FEve, FDiv, RaoQ, FTO)
+dd <- cbind.data.frame(SR,RSR,ShH, E10, Abun, TO, FRic, FRed, FDiv, RaoQ, FEve, FTO)
+head(dd)
+
+dd <- cbind.data.frame(SR, FRic, FRed)
 head(dd)
 
 pairs.panels(dd, 
