@@ -3,7 +3,7 @@ setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 
 ### meta-analysis drivers ####
 
-setwd("outputs/Drivers")
+setwd("outputs/metadrivers")
 getwd()
 library(rstan)
 library(brms)
@@ -12,9 +12,10 @@ library(loo)
 #### spp_richness ####
 fit <- readRDS("metaanalysis_drivers_spp_richness.rds")
 loo_R2(fit)
+summary(fit)
 
 #check model
-#plot(fit)
+plot(fit)
 sr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 sr_loo
 sr_parento <- as.list(pareto_k_table(sr_loo))
@@ -36,7 +37,7 @@ colnames(sr_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_spp_rich_rare.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 srr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 srr_loo
 srr_parento <- as.list(pareto_k_table(srr_loo))
@@ -58,7 +59,7 @@ colnames(srr_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_shannonsH.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 shH_loo <- loo(fit, cores = getOption("mc.cores", 1))
 shH_loo
 shH_parento <- as.list(pareto_k_table(shH_loo))
@@ -80,7 +81,7 @@ colnames(shH_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_E10.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 e10_loo <- loo(fit, cores = getOption("mc.cores", 1))
 e10_loo
 e10_parento <- as.list(pareto_k_table(e10_loo))
@@ -102,7 +103,7 @@ colnames(e10_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_abundance.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 ab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 ab_loo
 ab_parento <- as.list(pareto_k_table(ab_loo))
@@ -124,7 +125,7 @@ colnames(abund_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_turnover.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 turn_loo <- loo(fit, cores = getOption("mc.cores", 1))
 turn_loo
 turn_parento <- as.list(pareto_k_table(turn_loo))
@@ -146,7 +147,7 @@ colnames(turn_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_F_to.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 fto_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fto_loo
 fto_parento <- as.list(pareto_k_table(fto_loo))
@@ -168,7 +169,7 @@ colnames(fto_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_FRic.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 fric_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fric_loo
 fric_parento <- as.list(pareto_k_table(fric_loo))
@@ -190,7 +191,7 @@ colnames(fric_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_FEve.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 feve_loo <- loo(fit, cores = getOption("mc.cores", 1))
 feve_loo
 feve_parento <- as.list(pareto_k_table(feve_loo))
@@ -212,7 +213,7 @@ colnames(feve_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_FDiv.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 fdiv_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fdiv_loo
 fdiv_parento <- as.list(pareto_k_table(fdiv_loo))
@@ -234,7 +235,7 @@ colnames(fdiv_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_RaoQ.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 raoq_loo <- loo(fit, cores = getOption("mc.cores", 1))
 raoq_loo
 raoq_parento <- as.list(pareto_k_table(raoq_loo))
@@ -252,11 +253,33 @@ raoq_fixed <- data.frame(Response="RaoQ", raoq_fixed_995[,1:4], raoq_fixed_975[,
 raoq_fixed <- cbind(rownames(raoq_fixed), data.frame(raoq_fixed, row.names=NULL))
 colnames(raoq_fixed)[1] <- "drivers"
 
+#### FRed ####
+fit <- readRDS("metaanalysis_drivers_FRed.rds")
+
+#check model
+plot(fit)
+FRed_loo <- loo(fit, cores = getOption("mc.cores", 1))
+FRed_loo
+FRed_parento <- as.list(pareto_k_table(FRed_loo))
+Count_FRed <- rbind(FRed_parento[[1]],FRed_parento[[2]],FRed_parento[[3]],FRed_parento[[4]])
+colnames(Count_FRed) <- "FRed"
+#pp_check(fit, nsamples = 100)
+
+#pull out fixed effects
+FRed_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+FRed_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
+FRed_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
+FRed_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
+FRed_fixed <- data.frame(Response="FRed", FRed_fixed_995[,1:4], FRed_fixed_975[,3:4],
+                         FRed_fixed_95[,3:4],FRed_fixed_90[,3:4])
+FRed_fixed <- cbind(rownames(FRed_fixed), data.frame(FRed_fixed, row.names=NULL))
+colnames(FRed_fixed)[1] <- "drivers"
+
 #### alien_SppRich ####
 fit <- readRDS("metaanalysis_drivers_alien_SppRich.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 aliensr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 aliensr_loo
 aliensr_parento <- as.list(pareto_k_table(aliensr_loo))
@@ -278,7 +301,7 @@ colnames(aliensr_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_alien_Abund.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 alienab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 alienab_loo
 alienab_parento <- as.list(pareto_k_table(alienab_loo))
@@ -300,8 +323,9 @@ colnames(alienab_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_abund_nativeSpp.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 nativeab_loo <- loo(fit, cores = getOption("mc.cores", 1))
+nativeab_loo
 nativeab_parento <- as.list(pareto_k_table(nativeab_loo))
 Count_nativeab <- rbind(nativeab_parento[[1]],nativeab_parento[[2]],nativeab_parento[[3]],nativeab_parento[[4]])
 colnames(Count_nativeab) <- "native_abund"
@@ -321,8 +345,9 @@ colnames(nativeab_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_SppRich_nativeSpp.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 nativesr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+nativesr_loo
 nativesr_parento <- as.list(pareto_k_table(nativesr_loo))
 Count_nativesr <- rbind(nativesr_parento[[1]],nativesr_parento[[2]],nativesr_parento[[3]],nativesr_parento[[4]])
 colnames(Count_nativesr) <- "native_sppRich"
@@ -342,8 +367,9 @@ colnames(nativesr_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_EPT_SppRich.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 EPTsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+EPTsr_loo
 EPTsr_parento <- as.list(pareto_k_table(EPTsr_loo))
 Count_EPTsr <- rbind(EPTsr_parento[[1]],EPTsr_parento[[2]],EPTsr_parento[[3]],EPTsr_parento[[4]])
 colnames(Count_EPTsr) <- "EPT_sppRich"
@@ -363,7 +389,7 @@ colnames(EPTsr_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_EPT_Abund.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 EPTab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 EPTab_loo
 EPTab_parento <- as.list(pareto_k_table(EPTab_loo))
@@ -385,8 +411,9 @@ colnames(EPTab_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_insect_SppRich.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 insectsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
+insectsr_loo
 insectsr_parento <- as.list(pareto_k_table(insectsr_loo))
 Count_insectsr <- rbind(insectsr_parento[[1]],insectsr_parento[[2]],insectsr_parento[[3]],insectsr_parento[[4]])
 colnames(Count_insectsr) <- "insect_sppRich"
@@ -406,8 +433,9 @@ colnames(insectsr_fixed)[1] <- "drivers"
 fit <- readRDS("metaanalysis_drivers_insect_Abund.rds")
 
 #check model
-#plot(fit)
+plot(fit)
 insectab_loo <- loo(fit, cores = getOption("mc.cores", 1))
+insectab_loo
 insectab_parento <- as.list(pareto_k_table(insectab_loo))
 Count_insectab <- rbind(insectab_parento[[1]],insectab_parento[[2]],insectab_parento[[3]],insectab_parento[[4]])
 colnames(Count_insectab) <- "insect_abund"
@@ -425,8 +453,8 @@ colnames(insectab_fixed)[1] <- "drivers"
 
 #### assemble all model estimates from Driver meta-analysis models #####
 
-Driver_metaanaly_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixed, #turn_fixed, 
-                           fto_fixed, fric_fixed, feve_fixed, fdiv_fixed, raoq_fixed, aliensr_fixed,
+Driver_metaanaly_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixed, turn_fixed, 
+                           fto_fixed, fric_fixed, feve_fixed, fdiv_fixed, raoq_fixed, FRed_fixed, aliensr_fixed,
                            alienab_fixed, nativesr_fixed, nativeab_fixed, EPTsr_fixed, EPTab_fixed,
                            insectsr_fixed, insectab_fixed)
 write.csv(Driver_metaanaly_Ests, "Driver_metaanaly_Ests.csv")
@@ -434,7 +462,7 @@ write.csv(Driver_metaanaly_Ests, "Driver_metaanaly_Ests.csv")
 #### assemble model counts from Parento k diagnostic values from Driver meta-analysis models #####
 
 Driver_metaanaly_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Count_ab, Count_turn, Count_fto,
-                               Count_fric, Count_feve, Count_fdiv, Count_raoq, Count_aliensr,
+                               Count_fric, Count_feve, Count_fdiv, Count_raoq, Count_FRed, Count_aliensr,
                               Count_alienab, Count_nativesr, Count_nativeab, Count_EPTsr, Count_EPTab,
                               Count_insectsr, Count_insectab)
 rownames(Driver_metaanaly_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
