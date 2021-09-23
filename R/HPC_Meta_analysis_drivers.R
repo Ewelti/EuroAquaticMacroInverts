@@ -72,7 +72,8 @@ options(mc.cores = cpus_per_task)
 #define priors 
 prior1 = c(set_prior("normal(0,1)", class = "b"))
 
-fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+#weights? weights(w)
+fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
               sslope_mean + sN_Est + sN_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               scrop_Est + surban_Est + sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
@@ -82,7 +83,7 @@ fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stm
 
 #### save output ####
 
-saveRDS(fit1,file=paste0("metaanalysis_drivers_",myResponse,".rds"))
+saveRDS(fit1,file=paste0("metaanalysis_unweighted_drivers_",myResponse,".rds"))
 
 ### prior check ###
 
@@ -90,7 +91,7 @@ saveRDS(fit1,file=paste0("metaanalysis_drivers_",myResponse,".rds"))
 
 prior1 = c(set_prior("horseshoe(1)", class = "b"))
 
-fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
               sslope_mean + sN_Est + sN_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               scrop_Est + surban_Est + sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
@@ -100,6 +101,6 @@ fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stm
 
 #### save output ####
 
-saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_",myResponse,".rds"))
+saveRDS(fit1,file=paste0("metaanalysis_unweighted_drivers_horseshoe_",myResponse,".rds"))
 
 
