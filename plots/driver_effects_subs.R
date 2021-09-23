@@ -2,9 +2,11 @@
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 
 # attach data
-drivEst <- read.csv("outputs/Drivers/Driver_metaanaly_Ests.csv")
+drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)
+
+options(scipen=999)
 
 ##save plot
 tiff(filename = "Drivers_subs.tiff", width = 14, height = 9, units = 'in', res = 600, compression = 'lzw')
@@ -28,7 +30,7 @@ est <- sub$Estimate[2:16]
 yy <- c(1,3,2,4,5,6,7,8,9,10,14,12,11,13,15)
 plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.02,0.02), cex=2)
 axis(2, at=yy, labels=c("ppt sl.", "tmax sl.", "ppt mean", "tmax mean", "str. order",
-    "accum.", "elev.", "slope", "N sl.", "N mean", "urban mean", "crop mean", "crop sl.",
+    "accum.", "elevation", "slope", "N sl.", "N mean", "urban mean", "crop mean", "crop sl.",
     "urban sl.", "dam"), las=1,cex.axis=1.3)
 title(xlab="Est. on alien spp richness", line=2.4,cex.lab=1.3)
 polygon(x=c(-100,-100,0,0),
@@ -94,7 +96,7 @@ est <- sub$Estimate[2:16]
 plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.005,0.01), cex=2)
 title(xlab="Est. on alien abund.", line=2.4,cex.lab=1.3)
 axis(2, at=yy, labels=c("ppt sl.", "tmax sl.", "ppt mean", "tmax mean", "str. order",
-    "accum.", "elev.", "slope", "N sl.", "N mean", "urban mean", "crop mean", "crop sl.",
+    "accum.", "elevation", "slope", "N sl.", "N mean", "urban mean", "crop mean", "crop sl.",
     "urban sl.", "dam"), las=1,cex.axis=1.3)
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
