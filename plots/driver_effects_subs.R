@@ -28,7 +28,7 @@ plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 sub <- subset(drivEst, Response == "alien_SppRich")
 est <- sub$Estimate[2:16]
 yy <- c(1,3,2,4,5,6,7,8,9,10,14,12,11,13,15)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.02,0.02), cex=2)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.025,0.068), cex=2)
 axis(2, at=yy, labels=c("ppt sl.", "tmax sl.", "ppt mean", "tmax mean", "str. order",
     "accum.", "elevation", "slope", "N sl.", "N mean", "urban mean", "crop mean", "crop sl.",
     "urban sl.", "dam"), las=1,cex.axis=1.3)
@@ -273,7 +273,7 @@ abline(h=14.5,lty=2)
 #### EPT_SppRich #####
 sub <- subset(drivEst, Response == "EPT_SppRich")
 est <- sub$Estimate[2:16]
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.07,0.05), cex=2)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.06,0.065), cex=2)
 title(xlab="Est. on EPT spp. richness", line=2.4,cex.lab=1.3)
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
@@ -332,7 +332,7 @@ abline(h=14.5,lty=2)
 #### EPT_abund #####
 sub <- subset(drivEst, Response == "EPT_abund")
 est <- sub$Estimate[2:16]
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.008,0.005), cex=2)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0075,0.0115), cex=2)
 title(xlab="Est. on EPT abund.", line=2.4,cex.lab=1.3)
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
