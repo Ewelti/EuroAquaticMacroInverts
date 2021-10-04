@@ -174,6 +174,7 @@ library(data.table)
 subs <- subset(ma, Response = abundance)
 DT <- data.table(subs)
 sitecount <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
+length(sitecount)
 
 MoAv <- merge(MovAve,sitecount,by="StartYear")
 head(MoAv)
