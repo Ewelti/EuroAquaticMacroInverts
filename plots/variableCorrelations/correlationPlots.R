@@ -53,6 +53,61 @@ pairs.panels(dd,
              density = TRUE,  # show density plots
              )
 
+##TD and alien/native subsets
+
+alienSR <- alien_SppRich
+alienAb <- log10(alien_Abund +1)
+natSR <- SppRich_nativeSpp
+natAb <- log10(abund_nativeSpp +1)
+
+
+dd <- cbind.data.frame(SR,RSR,ShH, E10, Abun, TO, alienSR, alienAb, natSR, natAb)
+head(dd)
+
+pairs.panels(dd, 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+)
+
+##TD and EPT/insect subsets
+
+EPTSR <- EPT_SppRich
+EPTAb <- log10(EPT_Abund +1)
+insSR <- insect_SppRich
+insAb <- log10(insect_Abund +1)
+
+
+dd <- cbind.data.frame(SR,RSR,ShH, E10, Abun, TO, EPTSR, EPTAb, insSR, insAb)
+head(dd)
+
+pairs.panels(dd, 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+)
+
+##FD and alien/native subsets
+
+dd <- cbind.data.frame(FRic, FRed, FDiv, RaoQ, FEve, FTO, alienSR, alienAb, natSR, natAb)
+head(dd)
+
+pairs.panels(dd, 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+)
+
+##FD and EPT/insect subsets
+
+dd <- cbind.data.frame(FRic, FRed, FDiv, RaoQ, FEve, FTO, EPTSR, EPTAb, insSR, insAb)
+head(dd)
+
+pairs.panels(dd, 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+)
 #######################################
 ##import metadata with sites locations
 # attach data

@@ -1,17 +1,17 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs")
 
 ### meta-analysis drivers ####
 
-setwd("outputs/metadrivers")
 getwd()
 library(rstan)
 library(brms)
 library(loo)
 
 #### spp_richness ####
-fit <- readRDS("metaanalysis_drivers_spp_richness.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_spp_richness.rds")
 loo_R2(fit)
+bayes_R2(fit, resp = c("tmax_Est","tmax_C_12moPrior")) #this does not change with changing variables in "resp"
 summary(fit)
 
 #check model
@@ -34,7 +34,7 @@ sr_fixed <- cbind(rownames(sr_fixed), data.frame(sr_fixed, row.names=NULL))
 colnames(sr_fixed)[1] <- "drivers"
 
 #### spp_rich_rare ####
-fit <- readRDS("metaanalysis_drivers_spp_rich_rare.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_spp_rich_rare.rds")
 
 #check model
 plot(fit)
@@ -56,7 +56,7 @@ srr_fixed <- cbind(rownames(srr_fixed), data.frame(srr_fixed, row.names=NULL))
 colnames(srr_fixed)[1] <- "drivers"
 
 #### shannonsH ####
-fit <- readRDS("metaanalysis_drivers_shannonsH.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_shannonsH.rds")
 
 #check model
 plot(fit)
@@ -78,7 +78,7 @@ shH_fixed <- cbind(rownames(shH_fixed), data.frame(shH_fixed, row.names=NULL))
 colnames(shH_fixed)[1] <- "drivers"
 
 #### E10 ####
-fit <- readRDS("metaanalysis_drivers_E10.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_E10.rds")
 
 #check model
 plot(fit)
@@ -100,7 +100,7 @@ e10_fixed <- cbind(rownames(e10_fixed), data.frame(e10_fixed, row.names=NULL))
 colnames(e10_fixed)[1] <- "drivers"
 
 #### abundance ####
-fit <- readRDS("metaanalysis_drivers_abundance.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_abundance.rds")
 
 #check model
 plot(fit)
@@ -122,7 +122,7 @@ abund_fixed <- cbind(rownames(abund_fixed), data.frame(abund_fixed, row.names=NU
 colnames(abund_fixed)[1] <- "drivers"
 
 #### turnover ####
-fit <- readRDS("metaanalysis_drivers_turnover.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_turnover.rds")
 
 #check model
 plot(fit)
@@ -144,7 +144,7 @@ turn_fixed <- cbind(rownames(turn_fixed), data.frame(turn_fixed, row.names=NULL)
 colnames(turn_fixed)[1] <- "drivers"
 
 #### F_to ####
-fit <- readRDS("metaanalysis_drivers_F_to.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_F_to.rds")
 
 #check model
 plot(fit)
@@ -166,7 +166,7 @@ fto_fixed <- cbind(rownames(fto_fixed), data.frame(fto_fixed, row.names=NULL))
 colnames(fto_fixed)[1] <- "drivers"
 
 #### FRic ####
-fit <- readRDS("metaanalysis_drivers_FRic.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_FRic.rds")
 
 #check model
 plot(fit)
@@ -188,7 +188,7 @@ fric_fixed <- cbind(rownames(fric_fixed), data.frame(fric_fixed, row.names=NULL)
 colnames(fric_fixed)[1] <- "drivers"
 
 #### FEve ####
-fit <- readRDS("metaanalysis_drivers_FEve.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_FEve.rds")
 
 #check model
 plot(fit)
@@ -210,7 +210,7 @@ feve_fixed <- cbind(rownames(feve_fixed), data.frame(feve_fixed, row.names=NULL)
 colnames(feve_fixed)[1] <- "drivers"
 
 #### FDiv ####
-fit <- readRDS("metaanalysis_drivers_FDiv.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_FDiv.rds")
 
 #check model
 plot(fit)
@@ -232,7 +232,7 @@ fdiv_fixed <- cbind(rownames(fdiv_fixed), data.frame(fdiv_fixed, row.names=NULL)
 colnames(fdiv_fixed)[1] <- "drivers"
 
 #### RaoQ ####
-fit <- readRDS("metaanalysis_drivers_RaoQ.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_RaoQ.rds")
 
 #check model
 plot(fit)
@@ -254,7 +254,7 @@ raoq_fixed <- cbind(rownames(raoq_fixed), data.frame(raoq_fixed, row.names=NULL)
 colnames(raoq_fixed)[1] <- "drivers"
 
 #### FRed ####
-fit <- readRDS("metaanalysis_drivers_FRed.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_FRed.rds")
 
 #check model
 plot(fit)
@@ -276,7 +276,7 @@ FRed_fixed <- cbind(rownames(FRed_fixed), data.frame(FRed_fixed, row.names=NULL)
 colnames(FRed_fixed)[1] <- "drivers"
 
 #### alien_SppRich ####
-fit <- readRDS("metaanalysis_drivers_alien_SppRich.rds")
+fit <- readRDS("driver_unweighted/metaanalysis_unweighted_drivers_alien_SppRich.rds")
 
 #check model
 plot(fit)
@@ -298,7 +298,7 @@ aliensr_fixed <- cbind(rownames(aliensr_fixed), data.frame(aliensr_fixed, row.na
 colnames(aliensr_fixed)[1] <- "drivers"
 
 #### alien_Abund ####
-fit <- readRDS("metaanalysis_drivers_alien_Abund.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_alien_Abund.rds")
 
 #check model
 plot(fit)
@@ -320,7 +320,7 @@ alienab_fixed <- cbind(rownames(alienab_fixed), data.frame(alienab_fixed, row.na
 colnames(alienab_fixed)[1] <- "drivers"
 
 #### abund_nativeSpp ####
-fit <- readRDS("metaanalysis_drivers_abund_nativeSpp.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_abund_nativeSpp.rds")
 
 #check model
 plot(fit)
@@ -342,7 +342,7 @@ nativeab_fixed <- cbind(rownames(nativeab_fixed), data.frame(nativeab_fixed, row
 colnames(nativeab_fixed)[1] <- "drivers"
 
 #### SppRich_nativeSpp ####
-fit <- readRDS("metaanalysis_drivers_SppRich_nativeSpp.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_SppRich_nativeSpp.rds")
 
 #check model
 plot(fit)
@@ -364,7 +364,7 @@ nativesr_fixed <- cbind(rownames(nativesr_fixed), data.frame(nativesr_fixed, row
 colnames(nativesr_fixed)[1] <- "drivers"
 
 #### EPT_SppRich ####
-fit <- readRDS("metaanalysis_drivers_EPT_SppRich.rds")
+fit <- readRDS("driver_unweighted/metaanalysis_unweighted_drivers_EPT_SppRich.rds")
 
 #check model
 plot(fit)
@@ -386,7 +386,7 @@ EPTsr_fixed <- cbind(rownames(EPTsr_fixed), data.frame(EPTsr_fixed, row.names=NU
 colnames(EPTsr_fixed)[1] <- "drivers"
 
 #### EPT_Abund ####
-fit <- readRDS("metaanalysis_drivers_EPT_Abund.rds")
+fit <- readRDS("driver_unweighted/metaanalysis_unweighted_drivers_EPT_Abund.rds")
 
 #check model
 plot(fit)
@@ -408,7 +408,7 @@ EPTab_fixed <- cbind(rownames(EPTab_fixed), data.frame(EPTab_fixed, row.names=NU
 colnames(EPTab_fixed)[1] <- "drivers"
 
 #### insect_SppRich ####
-fit <- readRDS("metaanalysis_drivers_insect_SppRich.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_insect_SppRich.rds")
 
 #check model
 plot(fit)
@@ -430,7 +430,7 @@ insectsr_fixed <- cbind(rownames(insectsr_fixed), data.frame(insectsr_fixed, row
 colnames(insectsr_fixed)[1] <- "drivers"
 
 #### insect_Abund ####
-fit <- readRDS("metaanalysis_drivers_insect_Abund.rds")
+fit <- readRDS("metadrivers/metaanalysis_drivers_insect_Abund.rds")
 
 #check model
 plot(fit)
