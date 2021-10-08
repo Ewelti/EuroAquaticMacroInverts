@@ -45,6 +45,7 @@ polygon(x=c(stand_SppRich$Q10, stand_SppRich$Q10, stand_SppRich$Q90, stand_SppRi
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd = 1)
 legend(x=-18, y=(6/6*(b-a)+a), legend=("Species richness"), bty="n", cex=1.3)
+legend(x=7, y=(6/6*(b-a)+a), legend=expression(paste("+0.94% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### rarefied Spp Richness #####
 SppRichRare <- subset(response_stan, Response == "spp_rich_rare")
@@ -79,6 +80,7 @@ polygon(x=c(stand_SppRichRare$Q10, stand_SppRichRare$Q10, stand_SppRichRare$Q90,
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(5/6*(b-a)+a), legend=("Rarefied spp richness"), bty="n", cex=1.3)
+legend(x=7, y=(5/6*(b-a)+a), legend=expression(paste("+0.48% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Abundance #####
 abund <- subset(response_stan, Response == "abundance")
@@ -111,6 +113,7 @@ polygon(x=c(stand_abund$Q10, stand_abund$Q10, stand_abund$Q90, stand_abund$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(4/6*(b-a)+a), legend=("Abundance"), bty="n", cex=1.3)
+legend(x=7, y=(4/6*(b-a)+a), legend=expression(paste("+1.13% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Shannon's H #####
 shannonsH <- subset(response_stan, Response == "shannonsH")
@@ -145,6 +148,7 @@ polygon(x=c(stand_shannonsH$Q10, stand_shannonsH$Q10, stand_shannonsH$Q90, stand
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/6*(b-a)+a), legend=("Shannon's H"), bty="n", cex=1.3)
+legend(x=7, y=(3/6*(b-a)+a), legend=expression(paste("-0.07% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Shannon's Evenness #####
 E10 <- subset(response_stan, Response == "E10")
@@ -178,6 +182,7 @@ polygon(x=c(stand_E10$Q10, stand_E10$Q10, stand_E10$Q90, stand_E10$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/6*(b-a)+a), legend=("Shannon's evenness"), bty="n", cex=1.3)
+legend(x=7, y=(2/6*(b-a)+a), legend=expression(paste("-0.5% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Turnover #####
 turnover <- subset(response_stan, Response == "turnover")
@@ -213,6 +218,7 @@ polygon(x=c(stand_turnover$Q10, stand_turnover$Q10, stand_turnover$Q90, stand_tu
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/6*(b-a)+a), legend=("Turnover"), bty="n", cex=1.3)
+legend(x=7, y=(1/6*(b-a)+a), legend=expression(paste("-0.3% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
 box(lwd=2)
@@ -252,6 +258,7 @@ polygon(x=c(stand_FRic$Q10, stand_FRic$Q10, stand_FRic$Q90, stand_FRic$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(6/6*(b-a)+a), legend=("Func. richness"), bty="n", cex=1.3)
+legend(x=7, y=(6/6*(b-a)+a), legend=expression(paste("+1% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Rao's Q #####
 RaoQ <- subset(response_stan, Response == "RaoQ")
@@ -286,6 +293,7 @@ polygon(x=c(stand_RaoQ$Q10, stand_RaoQ$Q10, stand_RaoQ$Q90, stand_RaoQ$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(5/6*(b-a)+a), legend=("Rao's Q"), bty="n", cex=1.3)
+legend(x=7, y=(5/6*(b-a)+a), legend=expression(paste("+0.03% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Functional Redundancy #####
 FRed <- subset(response_stan, Response == "FRed")
@@ -320,6 +328,7 @@ polygon(x=c(stand_FRed$Q10, stand_FRed$Q10, stand_FRed$Q90, stand_FRed$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(4/6*(b-a)+a), legend=("Func. redundancy"), bty="n", cex=1.3)
+legend(x=7, y=(4/6*(b-a)+a), legend=expression(paste("+0.19% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func diverg #####
 FDiv <- subset(response_stan, Response == "FDiv")
@@ -354,6 +363,7 @@ polygon(x=c(stand_FDiv$Q10, stand_FDiv$Q10, stand_FDiv$Q90, stand_FDiv$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/6*(b-a)+a), legend=("Func. divergence"), bty="n", cex=1.3)
+legend(x=7, y=(3/6*(b-a)+a), legend=expression(paste("+0.18% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func evenness #####
 FEve <- subset(response_stan, Response == "FEve")
@@ -388,6 +398,7 @@ polygon(x=c(stand_FEve$Q10, stand_FEve$Q10, stand_FEve$Q90, stand_FEve$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/6*(b-a)+a), legend=("Func. evenness"), bty="n", cex=1.3)
+legend(x=7, y=(2/6*(b-a)+a), legend=expression(paste("-0.51% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func turnover #####
 F_to <- subset(response_stan, Response == "F_to")
@@ -422,6 +433,7 @@ polygon(x=c(stand_F_to$Q10, stand_F_to$Q10, stand_F_to$Q90, stand_F_to$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/6*(b-a)+a), legend=("Func. turnover"), bty="n", cex=1.3)
+legend(x=7, y=(1/6*(b-a)+a), legend=expression(paste("-1.42% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
 box(lwd=2)
@@ -462,6 +474,7 @@ polygon(x=c(stand_alien_SppRich$Q10, stand_alien_SppRich$Q10, stand_alien_SppRic
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(8/8*(b-a)+a), legend=("Alien spp richness"), bty="n", cex=1.3)
+legend(x=7, y=(8/8*(b-a)+a), legend=expression(paste("+3.96% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### alien abund #####
 alien_Abund <- subset(response_stan, Response == "alien_Abund")
@@ -494,6 +507,7 @@ polygon(x=c(stand_alien_Abund$Q10, stand_alien_Abund$Q10, stand_alien_Abund$Q90,
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(7/8*(b-a)+a), legend=("Alien abundance"), bty="n", cex=1.3)
+legend(x=7, y=(7/8*(b-a)+a), legend=expression(paste("+3.51% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### native spp rich #####
 SppRich_nativeSpp <- subset(response_stan, Response == "SppRich_nativeSpp")
@@ -528,6 +542,7 @@ polygon(x=c(stand_SppRich_nativeSpp$Q10, stand_SppRich_nativeSpp$Q10, stand_SppR
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(6/8*(b-a)+a), legend=("Native spp richness"), bty="n", cex=1.3)
+legend(x=7, y=(6/8*(b-a)+a), legend=expression(paste("+0.83% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### native abund #####
 abund_nativeSpp <- subset(response_stan, Response == "abund_nativeSpp")
@@ -562,6 +577,7 @@ polygon(x=c(stand_abund_nativeSpp$Q10, stand_abund_nativeSpp$Q10, stand_abund_na
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(5/8*(b-a)+a), legend=("Native abundance"), bty="n", cex=1.3)
+legend(x=7, y=(5/8*(b-a)+a), legend=expression(paste("+0.63% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### EPT spp rich #####
 EPT_SppRich <- subset(response_stan, Response == "EPT_SppRich")
@@ -596,6 +612,7 @@ polygon(x=c(stand_EPT_SppRich$Q10, stand_EPT_SppRich$Q10, stand_EPT_SppRich$Q90,
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(4/8*(b-a)+a), legend=("EPT spp richness"), bty="n", cex=1.3)
+legend(x=7, y=(4/8*(b-a)+a), legend=expression(paste("+0.42% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### EPT abund #####
 EPT_Abund <- subset(response_stan, Response == "EPT_Abund")
@@ -630,6 +647,7 @@ polygon(x=c(stand_EPT_Abund$Q10, stand_EPT_Abund$Q10, stand_EPT_Abund$Q90, stand
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/8*(b-a)+a), legend=("EPT abundance"), bty="n", cex=1.3)
+legend(x=7, y=(3/8*(b-a)+a), legend=expression(paste("+1.05% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### insect spp rich #####
 insect_SppRich <- subset(response_stan, Response == "insect_SppRich")
@@ -664,6 +682,7 @@ polygon(x=c(stand_insect_SppRich$Q10, stand_insect_SppRich$Q10, stand_insect_Spp
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/8*(b-a)+a), legend=("Insect spp richness"), bty="n", cex=1.3)
+legend(x=7, y=(2/8*(b-a)+a), legend=expression(paste("+0.83% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### insect abund #####
 insect_Abund <- subset(response_stan, Response == "insect_Abund")
@@ -696,6 +715,7 @@ polygon(x=c(stand_insect_Abund$Q10, stand_insect_Abund$Q10, stand_insect_Abund$Q
         y=c((yy-yy/4.5),(yy+yy/4.5),(yy+yy/4.5),(yy-yy/4.6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/8*(b-a)+a), legend=("Insect abundance"), bty="n", cex=1.3)
+legend(x=7, y=(1/8*(b-a)+a), legend=expression(paste("+1.11% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
 box(lwd=2)
