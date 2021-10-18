@@ -5,6 +5,7 @@
 outputs/Sensitivity/*
 outputs/old/*
 outputs/movingaverage_meta/*
+outputs/movingaverage_meta_split/*
 outputs/meta_updated/*
 outputs/metadrivers/*
 outputs/meta_updated/*
