@@ -23,14 +23,15 @@ response_stan_pivot <- response_stan %>%
                                 values_from = "estimate")
 
 #get site metadata
-d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears.csv", header=T)
-d1<- d1[!is.na(d1$site_id_wMissing),]
-siteData <- unique(d1[,c("site_id","study_id","country","season","TaxonomicRes")])
+d1 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d1$site_id <- d1$site
+siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes", "Year_count")])
 response_stan_pivot <- merge(siteData,response_stan_pivot,by="site_id")
 head(response_stan_pivot)
+write.csv(response_stan_pivot,"Stan_trends.csv")
 
 summaryData <- response_stan_pivot %>%
-  group_by(country,study_id,season,TaxonomicRes) %>%
+  group_by(Country,study_id,season,TaxonomicRes,Year_count) %>%
   summarise(medTrends = median(spp_richness),
             nuData = length(spp_richness))
 
@@ -46,6 +47,7 @@ ggplot(summaryData)+
   geom_boxplot(aes(x=season, y =medTrends),size=2)+
   theme_classic()
 
+qplot(Year_count, medTrends, data=summaryData)
 
 #check against gls fits
 gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
