@@ -120,20 +120,6 @@ countryTrends <- do.call(rbind,countryTrends)
 names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaverages.rds")
 
-#check we have all data
-TaskID <- read.csv("outputs/MovingAverage_TaskIDs.csv",as.is=T)
-TaskID$Index <- interaction(TaskID$country,TaskID$StartYear)
-countryTrends$Index <- interaction(countryTrends$country,countryTrends$StartYear)
-
-TaskID$Index[!TaskID$Index %in% countryTrends$Index]
-# no :(
-
-#create new TaskID with missing ones
-TaskID <- subset(TaskID, !Index %in% countryTrends$Index)
-TaskID$TaskID <- 1:nrow(TaskID)
-write.table(TaskID,"outputs/MovingAverage_TaskIDs2.csv",sep=",",row.names=FALSE)
-
-
 ### moving average yr syntheses! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta")
 path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta"
