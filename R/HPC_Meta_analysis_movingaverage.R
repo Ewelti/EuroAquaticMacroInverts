@@ -1,11 +1,14 @@
 #script to combine site-level trends together in a single meta-analysis
 
-### get response for this task ######
-TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_Meta_TaskIDs.csv",as.is=T)
-task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
-
-#and data
+#get data
 response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level_movingaverages.rds")
+
+### get response for this task ######
+TaskID <- unique(response_stan[,c("StartYear","Response")])
+TaskID <- subset(TaskID, Response %in% c("alien_SppRich","SppRich_nativeSpp"))
+TaskID$TaskID <- 1:nrow(TaskID)
+nrow(TaskID)
+task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
 ### get start year for this task #############
 
