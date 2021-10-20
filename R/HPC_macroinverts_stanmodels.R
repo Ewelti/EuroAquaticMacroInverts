@@ -3,7 +3,7 @@ rm(list=ls())
 library(lubridate)
 
 #load data
-d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
+d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
 #make turnover numeric
@@ -11,6 +11,10 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 
 #choose which country for this task
 TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
+
+#run just alien ones again
+TaskID <- TaskID[grepl("alien",TaskID$Response),]
+TaskID$TaskID <- 1:nrow(TaskID)
 
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
@@ -113,7 +117,13 @@ fitStanModel <- function(mydata){
   
 
   #there is missing data, dont run the model
-  if(all(is.na(mydata$Response))){
+  
+  #Response sum
+  positiveData <- subset(mydata, !is.na(mydata$Response)|mydata$Response!=0)
+  sumResponse = sum(positiveData$Response)
+  nuYears = length(unique(positiveData$year_wMissing))
+    
+  if(all(is.na(mydata$Response))|sumResponse==0|nuYears==1){
     
     modelFits <- data.frame(estimate = NA,
                             sd = NA,

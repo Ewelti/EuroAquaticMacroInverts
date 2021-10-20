@@ -3,7 +3,7 @@ rm(list=ls())
 library(lubridate)
 
 #load data
-d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
+d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
 #make turnover numeric
@@ -13,7 +13,7 @@ allYrs$turnover <- as.numeric(allYrs$turnover)
 timeWindow <- 10
 minimumThreshold <- 6
 
-SufficientSites <- lapply(1971:2011, function(x){
+SufficientSites <- lapply(1971:2014, function(x){
   allYrs2 <- subset(allYrs, year_wMissing >= x & year_wMissing < (x+timeWindow))
   siteSummary <- tapply(allYrs2$abundance,allYrs2$site_id,length)
   data.frame(StartYear = x, site_id = names(siteSummary)[siteSummary>=minimumThreshold])
@@ -24,8 +24,8 @@ SufficientSites <- do.call(rbind, SufficientSites)
 SufficientSites$country <- allYrs$country[match(SufficientSites$site_id,allYrs$site_id)]
 SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
 SufficientSites <- rbind(SufficientSites,SufficientSites)
-SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
-                              rep("spp_richness", nrow(SufficientSites)/2))
+SufficientSites$Response <- c(rep("alien_SppRich",nrow(SufficientSites)/2),
+                              rep("SppRich_nativeSpp", nrow(SufficientSites)/2))
 SufficientSites$TaskID <- 1:nrow(SufficientSites)
 
 #write.table(SufficientSites,"outputs/MovingAverage_TaskIDs.csv",sep=",",row.names=FALSE)
