@@ -11,7 +11,6 @@ Analyses:
 -meta-analysis models to get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
 -models with drivers for each metric trend (2 step model)
 -moving window analysis
--models with drivers for each metric each year (1 step model)
 
 HPC analysis: 
 Scripts for the analysis based on the HPC to be run as follows
@@ -21,17 +20,6 @@ R/HPC_Meta-analysis.R - synthesis the site-level data using the output of the pr
 R/HPC_modelchecking.R - examination of the meta-analysis files of the previous step (run locally)
 R/HPC-Meta-analysis_drivers.R - fit driver models to the site-level data (run on HPC)
 
-Meta-analysis response variables which should be transformed:
--all abundance responses, FRIC (log+1 transformed)
--E10 (log+0.01 transformed)
--FDiv (^2 transformed)
-
-Ongoing problem meta-analysis models (temporal--no drivers) observed in model checking:
--turnover
--Func turn
--Alien spp rich
--EPT spp rich
-~EPT abund
 
 
 
