@@ -14,7 +14,7 @@ response_stan <- subset(response_stan, !is.na(estimate))
   
 ### site metadata ######
 
-d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
+d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
 siteData <- unique(d1[,c("site_id","study_id","country")])
 response_stan <- merge(siteData,response_stan,by="site_id")
 
