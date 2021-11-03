@@ -2,13 +2,16 @@
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 
 # attach data
-drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
+#drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
+drivEst <- read.csv("outputs/Driver_horseshoe_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)
 
 options(scipen=999)
 
-tiff(filename = "Drivers_taxonDiv.tiff", width = 12, height = 9, units = 'in', res = 600, compression = 'lzw')
+#tiff(filename = "plots/drivers/Drivers_taxonDiv.tiff", width = 12, height = 9, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/drivers/Drivers_horseshoe_taxonDiv.tiff", width = 12, height = 9, units = 'in', res = 600, compression = 'lzw')
+
 
 layout(mat = matrix(c(1:8), 
                         nrow = 2, 

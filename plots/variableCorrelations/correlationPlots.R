@@ -108,6 +108,40 @@ pairs.panels(dd,
              hist.col = "#00AFBB",
              density = TRUE,  # show density plots
 )
+
+########################################
+##response trend correlations
+DA <- read.csv("Stan_trends.csv", header=T)
+DATA2$turnover <- as.numeric(DATA2$turnover)
+attach(DA)
+head(DA)
+
+##all
+SR <- spp_richness
+RSR <- spp_rich_rare
+ShH <- shannonsH
+Abun <- abundance
+TO <- turnover
+FTO <- F_to
+alienSR <- alien_SppRich
+alienAb <- alien_Abund
+natSR <- SppRich_nativeSpp
+natAb <- abund_nativeSpp
+EPTSR <- EPT_SppRich
+EPTAb <- EPT_Abund
+insSR <- insect_SppRich
+insAb <- insect_Abund
+dd <- cbind.data.frame(SR,RSR,ShH, E10, Abun, TO, FRic, FRed, FDiv, RaoQ, FEve, FTO, alienSR, alienAb, natSR, natAb, EPTSR, EPTAb, insSR, insAb)
+head(dd)
+
+pairs.panels(dd, 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = F,  # show density plots
+		 ellipses=F,
+		 cex.cor =1.5
+)
+
 #######################################
 ##import metadata with sites locations
 # attach data

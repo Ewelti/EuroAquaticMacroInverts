@@ -28,7 +28,7 @@ d1$site_id <- d1$site
 siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes", "Year_count")])
 response_stan_pivot <- merge(siteData,response_stan_pivot,by="site_id")
 head(response_stan_pivot)
-write.csv(response_stan_pivot,"Stan_trends.csv")
+write.csv(response_stan_pivot,"outputs/Stan_trends.csv")
 
 summaryData <- response_stan_pivot %>%
   group_by(Country,study_id,season,TaxonomicRes,Year_count) %>%
