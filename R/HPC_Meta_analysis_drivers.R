@@ -16,14 +16,16 @@ response_stan <- subset(response_stan, !is.na(estimate))
 
 d1 <- read.csv("/data/idiv_ess/Ellen/All_siteLevel_and_glmOutput.csv", header=T) 
 
+#remove slopes for urban and crop and N
+
 siteData <- unique(d1[,c("site","study_id","Country",
                          "ppt_Est", "tmax_Est", 
                          "ppt_mm_12moPrior", "tmax_C_12moPrior", 
                          "strahler_streamOrder","accumulation_atPoint", 
                          "elevation_atPoint","slope_mean", 
-                         "N_Est", "N_mean", 
+                         #"N_Est", "N_mean", 
                          "urban_meanPerc_upstr", "crop_meanPerc_upstr",
-                         "crop_Est", "urban_Est", 
+                         #"crop_Est", "urban_Est", 
                          "dam_impact_score_lessthan100km")])
 
 #change names for consistency elsewhere
@@ -45,7 +47,7 @@ siteData <- scaleVars(siteData)
 ### remove missing covariate data ####
 
 siteData <- siteData[complete.cases(siteData),]
-nrow(siteData)#1626
+nrow(siteData)
 
 ### merge with biodiversity data ####
 
@@ -75,8 +77,8 @@ prior1 = c(set_prior("normal(0,1)", class = "b"))
 #weights? weights(w)
 fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
-              sslope_mean + sN_Est + sN_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
-              scrop_Est + surban_Est + sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
             data = response_stan, iter=5000, chains = 4, prior=prior1,
             control = list(adapt_delta = 0.90,
                            max_treedepth = 12))
@@ -93,8 +95,8 @@ prior1 = c(set_prior("horseshoe(1)", class = "b"))
 
 fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
-              sslope_mean + sN_Est + sN_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
-              scrop_Est + surban_Est + sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
             data = response_stan, iter=5000, chains = 4, prior=prior1,
             control = list(adapt_delta = 0.90,
                            max_treedepth = 12))
