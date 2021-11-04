@@ -157,15 +157,27 @@ ma <- readRDS("outputs/stanTrends_site_level_movingaverages.rds")
 head(ma)
 library(data.table)
 
-subs <- subset(ma, Response = abundance)
+subs <- subset(ma, ma$Response == "abundance")
 DT <- data.table(subs)
-sitecount <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
+sitecount <- DT[, .(site_num_AbundRich = length(unique(site_id))), by = StartYear]
 length(sitecount)
 
-MoAv <- merge(MovAve,sitecount,by="StartYear")
-head(MoAv)
+subs_nat <- subset(ma, ma$Response == "SppRich_nativeSpp")
+DT_nat <- data.table(subs_nat)
+sitecount_nat <- DT_nat[, .(site_num_Native = length(unique(site_id))), by = StartYear]
+sitecount_nat
+
+subs_al <- subset(ma, ma$Response == "alien_SppRich")
+DT_al <- data.table(subs_al)
+sitecount_al <- DT_al[, .(site_num_Alien = length(unique(site_id))), by = StartYear]
+sitecount_al
+
+MoAv2 <- merge(MovAve,sitecount,by="StartYear")
+MoAv3 <- merge(MoAv2,sitecount_nat,by="StartYear")
+MoAv4 <- merge(MoAv3,sitecount_al,by="StartYear")
+head(MoAv4)
 ##
-write.csv(MoAv, "outputs/movingAve_YrEsts.csv")
+write.csv(MoAv4, "outputs/movingAve_YrEsts.csv")
 
 ### moving average yr syntheses from splits by latitude! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split")
