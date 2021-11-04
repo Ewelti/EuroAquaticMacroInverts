@@ -172,9 +172,9 @@ DT_al <- data.table(subs_al)
 sitecount_al <- DT_al[, .(site_num_Alien = length(unique(site_id))), by = StartYear]
 sitecount_al
 
-MoAv2 <- merge(MovAve,sitecount,by="StartYear")
-MoAv3 <- merge(MoAv2,sitecount_nat,by="StartYear")
-MoAv4 <- merge(MoAv3,sitecount_al,by="StartYear")
+MoAv2 <- merge(MovAve,sitecount,by="StartYear", all=T)
+MoAv3 <- merge(MoAv2,sitecount_nat,by="StartYear", all=T)
+MoAv4 <- merge(MoAv3,sitecount_al,by="StartYear", all=T)
 head(MoAv4)
 ##
 write.csv(MoAv4, "outputs/movingAve_YrEsts.csv")
