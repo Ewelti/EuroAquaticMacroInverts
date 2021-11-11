@@ -1,5 +1,5 @@
 ##Set working directory
-#setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 
 # attach data
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
@@ -59,6 +59,7 @@ country
 
 ######################
 ####################
+
 #Create a function to generate a continuous color palette
 ##color for positive values
 pal_pos <- colorRampPalette(c('aliceblue','midnightblue')) #slategray1
@@ -68,10 +69,15 @@ pal_neg <- colorRampPalette(c('red4','mistyrose'))
 #spprich map
 sr_sites <- resp[!is.na(resp$spp_richness),]
 sr_sites <- sr_sites[order(sr_sites$spp_richness),]
+head(sr_sites)
+
+##convert slope of species richness to percent annual change
+ave_SppRich <- 27.28712314 #average spp richness
+sr_sites$spp_richness_p <- (sr_sites$spp_richness/ave_SppRich)*100
 
 #break positive and neg values
-sr_neg <- sr_sites$spp_richness[(1:length(sr_sites$spp_richness))[sr_sites$spp_richness <= 0]]
-sr_pos <- sr_sites$spp_richness[(1:length(sr_sites$spp_richness))[sr_sites$spp_richness > 0]]
+sr_neg <- sr_sites$spp_richness_p[(1:length(sr_sites$spp_richness_p))[sr_sites$spp_richness <= 0]]
+sr_pos <- sr_sites$spp_richness_p[(1:length(sr_sites$spp_richness_p))[sr_sites$spp_richness > 0]]
 
 #This adds a column of color values
 sr_col_neg <- pal_neg(50)[as.numeric(cut(sr_neg,breaks = 50))]
@@ -80,7 +86,7 @@ sr_col_pos <- pal_pos(50)[as.numeric(cut(sr_pos,breaks = 50))]
 unique(sr_col_pos)
 sr_sites$sr_col <- c(sr_col_neg, sr_col_pos)
 
-tiff(filename = "SppRich_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/SppRich_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(0,0,0,0))
 
@@ -103,14 +109,14 @@ bg="aliceblue",border=col2, #bg="lightblue",border="grey70",
   asp = 1,lwd=wv
 )
 
-sr_sites_asc <- sr_sites[order(-sr_sites$spp_richness),]
-points(sr_sites$Longitude_X[sr_sites$spp_richness > 0],sr_sites$Latitude_Y[sr_sites$spp_richness > 0],pch = 20,col = alpha(sr_sites$sr_col[sr_sites$spp_richness > 0],0.6),cex=0.8)
+sr_sites_asc <- sr_sites[order(-sr_sites$spp_richness_p),]
+points(sr_sites$Longitude_X[sr_sites$spp_richness_p > 0],sr_sites$Latitude_Y[sr_sites$spp_richness_p > 0],pch = 20,col = alpha(sr_sites$sr_col[sr_sites$spp_richness_p > 0],0.6),cex=1)
 
-points(sr_sites_asc$Longitude_X[sr_sites_asc$spp_richness <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$spp_richness <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$spp_richness <= 0],0.6),cex=0.8)
+points(sr_sites_asc$Longitude_X[sr_sites_asc$spp_richness_p <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$spp_richness_p <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$spp_richness_p <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$spp_richness), max(sr_sites$spp_richness), by=((max(sr_sites$spp_richness)-min(sr_sites$spp_richness))/7)),digits=1)
+lg <- round(seq(min(sr_sites$spp_richness_p), max(sr_sites$spp_richness_p), by=((max(sr_sites$spp_richness_p)-min(sr_sites$spp_richness_p))/7)),digits=1)
 
-lg2 <- c(round(min(sr_sites$spp_richness),digits=1), "","",0, "","",round(max(sr_sites$spp_richness),digits=1))
+lg2 <- c(round(min(sr_sites$spp_richness_p),digits=1), "","",0, "","",round(max(sr_sites$spp_richness_p),digits=1))
 
 co_leng<-length(unique(sr_sites$sr_col))
 y <- seq(69.8,61.3, by=(-(69.8-61.3)/(co_leng-1)))
@@ -119,7 +125,7 @@ x2 <- rep(-6,co_leng)
 #legend(-9, 72.3,title="",legend=lg,col =c(pal_neg(4),pal_pos(4)),lty=1,lwd=1,bty="n",cex=0.9)
 legend(-9, 72.3,title="",legend=lg2,col =c('midnightblue','white','white','white','white','white','red4'),lty=1,lwd=1,bty="n",cex=1)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
-legend(-10.2,72.7,legend=c("Species Richness"),bty='n')
+#legend(-10.2,72.7,legend=c("% change/yr species richness"),bty='n')
 
 dev.off()
 #######################

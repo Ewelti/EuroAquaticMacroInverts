@@ -2,7 +2,7 @@
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 
 # attach data
-drivEst <- read.csv("outputs/metadrivers/Driver_UNweighted_metaanaly_Ests.csv")
+drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
 #drivEst <- read.csv("outputs/Driver_horseshoe_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)

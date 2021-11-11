@@ -1,16 +1,13 @@
 ##Set working directory
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 
-#load libraries
-library(scales)
-
 # attach data
 MA <- read.csv("outputs/movingAve_YrEsts.csv")
 MA$meanYr <- (MA$StartYear+ 4.5)
 head(MA)
 
-tiff(filename = "MovingAverages.tiff", width = 11, height = 6, units = 'in', res = 600, compression = 'lzw')
-par(mfrow=c(2,1),mar=c(2,4,0.4,0.4))
+tiff(filename = "plots/MovingAverages.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
+par(mfrow=c(2,1),mar=c(2,3,0.2,0.2))
 
 #plot for spp richness
 SR <- subset(MA, Response == "spp_richness")
@@ -25,10 +22,10 @@ SRs <- sr[ which(sr$site_num >=100), ]
 #SRs <- sr[ which(sr$StartYear >=1989), ] # this is min 7 countries
 #SRs <- sr[ which(sr$StartYear >=1980), ] #this is min 5 countries
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-2.2,6), xlim=c(1990,2018))#ylim=c(-0.8,2.55))
-title(ylab="Species richness (% change)", line=2.4,cex.lab=1.3)
-#title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
-polygon(x = c(0, 0, 2040, 2040), y = c(-10, 0, 0, -10), col ="brown2", border = NA)
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-2.1,5.5), xlim=c(1990,2018))#ylim=c(-0.8,2.55))
+title(ylab="Species richness (% change)", line=2,cex.lab=1)
+#title(xlab="Mean year of moving window", line=2,cex.lab=1.3)
+polygon(x = c(0, 0, 2040, 2040), y = c(-10, 0, 0, -10), col ="brown3", border = NA)
 abline(h=0,lty=2)
 polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q2.5,rev(SRs$Q97.5)),col="#00000020", border = NA)
 polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q5,rev(SRs$Q95)), col ="#00000027", border = NA)
@@ -48,9 +45,9 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 SRs <- sr[ which(sr$site_num >=100), ]
 
 plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-11.5,19.5), xlim=c(1990,2018)) #ylim=c(-0.57,0.4))
-title(ylab="Abundance (% change)", line=2.4,cex.lab=1.3)
+title(ylab="Abundance (% change)", line=2,cex.lab=1)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
-polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="brown2", border = NA)
+polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="brown3", border = NA)
 abline(h=0,lty=2)
 polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q2.5,rev(SRs$Q97.5)),col="#00000020", border = NA)
 polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q5,rev(SRs$Q95)), col ="#00000027", border = NA)
@@ -63,7 +60,9 @@ dev.off()
 
 
 ####
-#####
+#####################
+###############################################
+################################################
 
 ####old code#####
 #arrows(SRs$meanYr, SRs$Q2.5, SRs$meanYr, SRs$Q97.5, length=0.05, angle=90, code=0,lwd=1)
