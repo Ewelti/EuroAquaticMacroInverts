@@ -5,9 +5,9 @@ response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level_movingavera
 
 ### get response for this task ######
 TaskID <- unique(response_stan[,c("StartYear","Response")])
-TaskID <- subset(TaskID, Response %in% c("abundance","spp_richness"))
-#subset to 2012 to 2014
-TaskID <- subset(TaskID, StartYear>2011)
+TaskID <- subset(TaskID, Response %in% c("FRed","FRic"))
+#subset to 1990 onwards
+TaskID <- subset(TaskID, StartYear>1989)
 TaskID$TaskID <- 1:nrow(TaskID)
 nrow(TaskID)
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
@@ -25,7 +25,7 @@ response_stan <- subset(response_stan, !is.na(estimate))
   
 ### site metadata ######
 
-d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
+d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
 siteData <- unique(d1[,c("site_id","study_id","country")])
 response_stan <- merge(siteData,response_stan,by="site_id")
 
