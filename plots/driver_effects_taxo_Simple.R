@@ -2,7 +2,7 @@
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
 
 # attach data
-drivEst <- read.csv("outputs/metadrivers/Driver_UNweighted_metaanaly_Ests.csv")
+drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
 #drivEst <- read.csv("outputs/Driver_horseshoe_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)
@@ -28,7 +28,7 @@ plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 sub <- subset(drivEst, Response == "spp_richness")
 est <- sub$Estimate[2:12]
 yy <- c(9,11,10,12,5,4,3,2,8,7,6)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.10,0.12), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.07,0.10), cex=2, bty="n")
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 axis(2, at=yy, labels=c("ppt sl.","tmax sl.",  "ppt mean", "tmax mean",
@@ -80,7 +80,7 @@ abline(h=8.5,lty=2)
 #### shannonsH #####
 sub <- subset(drivEst, Response == "shannonsH")
 est <- sub$Estimate[2:12]
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.01,0.01), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0055,0.0055), cex=2, bty="n")
 title(xlab="Est. on Shannon's H", line=2.4,cex.lab=1.3)
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
@@ -133,7 +133,7 @@ abline(h=8.5,lty=2)
 #### spp_richness_rarefied #####
 sub <- subset(drivEst, Response == "spp_richness_rarefied")
 est <- sub$Estimate[2:12]
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.09,0.07), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.05,0.05), cex=2, bty="n")
 title(xlab="Est. on rarefied spp richness", line=2.4,cex.lab=1.3)
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
@@ -183,7 +183,7 @@ abline(h=8.5,lty=2)
 #### E10 #####
 sub <- subset(drivEst, Response == "E10")
 est <- sub$Estimate[2:12]
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0018,0.0018), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0002,0.0007), cex=2, bty="n")
 title(xlab="Est. on evenness", line=2.4,cex.lab=1.3)
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
@@ -233,7 +233,7 @@ abline(h=8.5,lty=2)
 #### Abundance #####
 sub <- subset(drivEst, Response == "abundance")
 est <- sub$Estimate[2:12]
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.005,0.008), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0025,0.0035), cex=2, bty="n")
 title(xlab="Est. on abundance", line=2.4,cex.lab=1.3)
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
@@ -283,7 +283,7 @@ abline(h=8.5,lty=2)
 #### Turnover #####
 sub <- subset(drivEst, Response == "turnover")
 est <- sub$Estimate[2:12]
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0035,0.0016), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0022,0.0011), cex=2, bty="n")
 title(xlab="Est. on turnover", line=2.4,cex.lab=1.3)
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")

@@ -159,8 +159,13 @@ library(data.table)
 
 subs <- subset(ma, ma$Response == "abundance")
 DT <- data.table(subs)
-sitecount <- DT[, .(site_num_AbundRich = length(unique(site_id))), by = StartYear]
-length(sitecount)
+sitecount_ab <- DT[, .(site_num_Abund = length(unique(site_id))), by = StartYear]
+sitecount_ab
+
+subs_sr <- subset(ma, ma$Response == "spp_richness")
+DT_sr <- data.table(subs_sr)
+sitecount_sr <- DT_sr[, .(site_num_SRich = length(unique(site_id))), by = StartYear]
+sitecount_sr
 
 subs_nat <- subset(ma, ma$Response == "SppRich_nativeSpp")
 DT_nat <- data.table(subs_nat)
@@ -172,7 +177,8 @@ DT_al <- data.table(subs_al)
 sitecount_al <- DT_al[, .(site_num_Alien = length(unique(site_id))), by = StartYear]
 sitecount_al
 
-MoAv2 <- merge(MovAve,sitecount,by="StartYear", all=T)
+MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
+MoAv2 <- merge(MoAv1,sitecount_sr,by="StartYear", all=T)
 MoAv3 <- merge(MoAv2,sitecount_nat,by="StartYear", all=T)
 MoAv4 <- merge(MoAv3,sitecount_al,by="StartYear", all=T)
 head(MoAv4)

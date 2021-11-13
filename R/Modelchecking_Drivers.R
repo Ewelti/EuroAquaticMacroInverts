@@ -276,7 +276,7 @@ FRed_fixed <- cbind(rownames(FRed_fixed), data.frame(FRed_fixed, row.names=NULL)
 colnames(FRed_fixed)[1] <- "drivers"
 
 #### alien_SppRich ####
-fit <- readRDS("driver_unweighted/metaanalysis_unweighted_drivers_alien_SppRich.rds")
+fit <- readRDS("metadrivers/metaanalysis_unweighted_drivers_alien_SppRich.rds")
 
 #check model
 plot(fit)
@@ -364,7 +364,7 @@ nativesr_fixed <- cbind(rownames(nativesr_fixed), data.frame(nativesr_fixed, row
 colnames(nativesr_fixed)[1] <- "drivers"
 
 #### EPT_SppRich ####
-fit <- readRDS("driver_unweighted/metaanalysis_unweighted_drivers_EPT_SppRich.rds")
+fit <- readRDS("metadrivers/metaanalysis_unweighted_drivers_EPT_SppRich.rds")
 
 #check model
 plot(fit)
@@ -386,7 +386,7 @@ EPTsr_fixed <- cbind(rownames(EPTsr_fixed), data.frame(EPTsr_fixed, row.names=NU
 colnames(EPTsr_fixed)[1] <- "drivers"
 
 #### EPT_Abund ####
-fit <- readRDS("driver_unweighted/metaanalysis_unweighted_drivers_EPT_Abund.rds")
+fit <- readRDS("metadrivers/metaanalysis_unweighted_drivers_EPT_Abund.rds")
 
 #check model
 plot(fit)
