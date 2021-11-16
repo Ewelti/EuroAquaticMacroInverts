@@ -177,13 +177,25 @@ DT_al <- data.table(subs_al)
 sitecount_al <- DT_al[, .(site_num_Alien = length(unique(site_id))), by = StartYear]
 sitecount_al
 
+subs_FRic <- subset(ma, ma$Response == "FRic")
+DT_FRic <- data.table(subs_FRic)
+sitecount_FRic <- DT_FRic[, .(site_num_FRic = length(unique(site_id))), by = StartYear]
+sitecount_FRic
+
+subs_FRed <- subset(ma, ma$Response == "FRed")
+DT_FRed <- data.table(subs_FRed)
+sitecount_FRed <- DT_FRed[, .(site_num_FRed = length(unique(site_id))), by = StartYear]
+sitecount_FRed
+
 MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
 MoAv2 <- merge(MoAv1,sitecount_sr,by="StartYear", all=T)
 MoAv3 <- merge(MoAv2,sitecount_nat,by="StartYear", all=T)
 MoAv4 <- merge(MoAv3,sitecount_al,by="StartYear", all=T)
-head(MoAv4)
+MoAv5 <- merge(MoAv4,sitecount_FRic,by="StartYear", all=T)
+MoAv6 <- merge(MoAv5,sitecount_FRed,by="StartYear", all=T)
+head(MoAv6)
 ##
-write.csv(MoAv4, "outputs/movingAve_YrEsts.csv")
+write.csv(MoAv6, "outputs/movingAve_YrEsts.csv")
 
 ### moving average yr syntheses from splits by latitude! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split")
