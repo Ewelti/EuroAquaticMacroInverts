@@ -68,7 +68,7 @@ country
 ####################
 #Create a function to generate a continuous color palette
 pal_ <- colorRampPalette(c("darkred",'aliceblue','midnightblue')) #slategray1
-pal_ <- colorRampPalette(c('yellow', 'seagreen2','dodgerblue4','darkviolet','darkred'))
+pal_ <- colorRampPalette(c('gold', 'seagreen2','dodgerblue4','darkviolet','darkred'))
 
 ################### DAM map #############################
 resp$response <- resp$dam_impact_score_lessthan100km
@@ -85,7 +85,7 @@ par(mar=c(0,0,0,0))
 
 newmap <- getMap(resolution = "high")
 
-col <- rep("white", length(newmap@data$NAME))
+col <- rep("grey70", length(newmap@data$NAME))#"white"
 col[match(ddf$country, newmap@data$NAME)] <- c("black") #or pal instead of c("grey80")
 
 col2 <- rep("#00000000", length(newmap@data$NAME)) #or alpha("white",0) instead of #00000000
@@ -96,7 +96,7 @@ wv<-seq(1, 1, length.out=253)
 wv[58:59] <- c(0)
 
 plot(newmap,col=col,
-bg="white",border=col2, #bg="lightblue",border="grey70",
+bg="aliceblue",border=col2, #bg="lightblue",border="grey70", #bg="white",border=col2,
   xlim = c(-10, 34),
   ylim = c(34, 70),
   asp = 1,lwd=wv
@@ -126,16 +126,18 @@ tiff(filename = "Climate_maps.tiff", width = 11, height = 11, units = 'in', res 
 par(mar=c(0,0,0,0),mfrow=c(2,2))
 ###################ppt_mm_12moPrior map#############################
 resp$response <- resp$ppt_mm_12moPrior
+resp$logresponse <- log10(resp$response)
 sr_sites <- resp[!is.na(resp$response),]
 sr_sites <- sr_sites[order(sr_sites$response),]
 
 #This adds a column of color values
-sr_sites$sr_col <- pal_(50)[as.numeric(cut(sr_sites$response,breaks = 50))]
+sr_sites$sr_col <- pal_(50)[as.numeric(cut(sr_sites$logresponse,breaks = 50))]
+sr_sites$log_sr_col <- pal_(50)[as.numeric(cut(sr_sites$logresponse,breaks = 50))]
 
 par(mar=c(0,0,0,0))
 newmap <- getMap(resolution = "high")
 
-col <- rep("white", length(newmap@data$NAME))
+col <- rep("grey70", length(newmap@data$NAME))
 col[match(ddf$country, newmap@data$NAME)] <- c("black") #or pal instead of c("grey80")
 
 col2 <- rep("#00000000", length(newmap@data$NAME)) #or alpha("white",0) instead of #00000000
@@ -146,15 +148,18 @@ wv<-seq(1, 1, length.out=253)
 wv[58:59] <- c(0)
 
 plot(newmap,col=col,
-bg="white",border=col2, #bg="lightblue",border="grey70",
+bg="aliceblue",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
   ylim = c(34, 70),
   asp = 1,lwd=wv)
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
-points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
+points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$log_sr_col,0.6),cex=1.5)
 
-lg <- round(seq(min(sr_sites$response), max(sr_sites$response), by=((max(sr_sites$response)-min(sr_sites$response))/7)),digits=0)
+lg_log <- round(seq(min(sr_sites$logresponse), max(sr_sites$logresponse), by=((max(sr_sites$logresponse)-min(sr_sites$logresponse))/7)),digits=4)
+
+##inverse log!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+lg <- log10(lg)
 
 co_leng<-length(unique(sr_sites$sr_col))
 y <- seq(69.8,61.3, by=(-(69.8-61.3)/(co_leng-1)))
