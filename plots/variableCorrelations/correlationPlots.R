@@ -214,8 +214,8 @@ urban_slope <- urban_Est
 dam_impact <- dam_impact_score_lessthan100km
 
 drivers <- cbind.data.frame(ppt_slope, tmax_slope, ppt_mean, tmax_mean, 
-              strOrder, accum, elev, slope, N_slope, N_mean, urban_mean, crop_mean,
-              crop_slope, urban_slope, dam_impact)
+              strOrder, accum, elev, slope, urban_mean, crop_mean, dam_impact) #N_slope, N_mean, crop_slope, urban_slope, 
+             
 
 
 pairs.panels(drivers, 

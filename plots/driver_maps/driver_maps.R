@@ -69,11 +69,11 @@ country
 #Create a function to generate a continuous color palette
 pal_ <- colorRampPalette(c("darkred",'aliceblue','midnightblue')) #slategray1
 
-pal_ <- colorRampPalette(c('darkred','gold', 'seagreen2','dodgerblue4','darkviolet'))
+pal_ <- colorRampPalette(c('darkred','gold', 'seagreen1','deepskyblue1','purple'))
 ################### DAM map #############################
 tiff(filename = "plots/driver_maps/Dam_map.tiff", width = 6.8, height = 5.8, units = 'in', res = 600, compression = 'lzw')
 
-pal_ <- colorRampPalette(c('gold', 'seagreen2','dodgerblue4','darkviolet','darkred'))
+pal_ <- colorRampPalette(c('gold', 'seagreen1','deepskyblue1','purple','darkred'))
 resp$response <- resp$dam_impact_score_lessthan100km
 sr_sites <- resp[!is.na(resp$response),]
 sr_sites <- sr_sites[order(sr_sites$response),]
@@ -106,6 +106,9 @@ bg="white",border=col2, #bg="lightblue",border="grey70", #bg="white",border=col2
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
 
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
+
 lg <- round(seq(min(sr_sites$response), max(sr_sites$response), by=((max(sr_sites$response)-min(sr_sites$response))/7)),digits=1)
 
 co_leng<-length(unique(sr_sites$sr_col))
@@ -126,7 +129,7 @@ tiff(filename = "plots/driver_maps/Climate_maps.tiff", width = 11, height = 11, 
 
 par(mar=c(0,0,0,0),mfrow=c(2,2))
 ###################ppt_mm_12moPrior map#############################
-pal_ <- colorRampPalette(c('darkred','gold', 'seagreen2','dodgerblue4','darkviolet'))
+pal_ <- colorRampPalette(c('darkred','gold', 'seagreen1','deepskyblue1','purple'))
 resp$response <- resp$ppt_mm_12moPrior
 resp$logresponse <- log10(resp$response)
 sr_sites <- resp[!is.na(resp$response),]
@@ -152,11 +155,14 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$log_sr_col,0.6),cex=1.5)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 lg_log <- round(seq(min(sr_sites$logresponse), max(sr_sites$logresponse), by=((max(sr_sites$logresponse)-min(sr_sites$logresponse))/7)),digits=6)
 
@@ -169,7 +175,7 @@ x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
 legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.85)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
-legend(-10.2,72.7,legend=c("Mean Precip (mm/yr)"),bty='n')
+legend(-10.2,72.7,legend=c("a) Mean Precip (mm/yr)"),bty='n')
 
 ###################ppt_Est map#############################
 ##color for positive values
@@ -208,8 +214,11 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(-sr_sites$response),]
 points(sr_sites$Longitude_X[sr_sites$response > 0],sr_sites$Latitude_Y[sr_sites$response > 0],pch = 20,col = alpha(sr_sites$sr_col[sr_sites$response > 0],0.6),cex=1.5)
@@ -227,10 +236,10 @@ x2 <- rep(-6,co_leng)
 #legend(-9, 72.3,title="",legend=lg,col =c(pal_neg(4),pal_pos(4)),lty=1,lwd=1,bty="n",cex=0.94)
 legend(-9, 72.3,title="",legend=lg2,col =c('midnightblue','white','white','white','white','white','red4'),lty=1,lwd=1,bty="n",cex=0.94)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
-legend(-10.2,72.7,legend=c("Slope of Precip (mm/yr)"),bty='n')
+legend(-10.2,72.7,legend=c("b) Slope of Precip (mm/yr)"),bty='n')
 
 ###################tmax_C_12moPrior map#############################
-pal_ <- colorRampPalette(c('dodgerblue4','seagreen2','gold','darkred','darkviolet'))
+pal_ <- colorRampPalette(c('deepskyblue1','seagreen1','gold','darkred','purple'))
 resp$response <- resp$tmax_C_12moPrior
 sr_sites <- resp[!is.na(resp$response),]
 sr_sites <- sr_sites[order(sr_sites$response),]
@@ -254,8 +263,11 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
@@ -268,7 +280,7 @@ x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
 legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.85)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
-legend(-10.2,72.7,legend=c("Mean Tmax (°C/yr)"),bty='n')
+legend(-10.2,72.7,legend=c("c) Mean Tmax (°C/yr)"),bty='n')
 
 ###################tmax_Est map#############################
 ##color for positive values
@@ -307,8 +319,11 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(-sr_sites$response),]
 points(sr_sites$Longitude_X[sr_sites$response > 0],sr_sites$Latitude_Y[sr_sites$response > 0],pch = 20,col = alpha(sr_sites$sr_col[sr_sites$response > 0],0.6),cex=1.5)
@@ -326,7 +341,7 @@ x2 <- rep(-6,co_leng)
 #legend(-9, 72.3,title="",legend=lg,col =c(pal_neg(4),pal_pos(4)),lty=1,lwd=1,bty="n",cex=0.9)
 legend(-9, 72.3,title="",legend=lg2,col =c('midnightblue','white','white','white','white','white','red4'),lty=1,lwd=1,bty="n",cex=0.94)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
-legend(-10.2,72.7,legend=c("Slope of Tmax (°C/yr)"),bty='n')
+legend(-10.2,72.7,legend=c("d) Slope of Tmax (°C/yr)"),bty='n')
 
 dev.off()
 #######################
@@ -334,10 +349,10 @@ dev.off()
 
 
 ########################  LAND COVER  #####################
-tiff(filename = "plots/driver_maps/Landcover_maps.tiff", width = 11, height = 6, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/driver_maps/Landcover_maps.tiff", width = 11, height = 5, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(0,0,0,0),mfrow=c(1,2))
-pal_ <- colorRampPalette(c('seagreen2','gold','darkred'))#,'darkviolet'))
+pal_ <- colorRampPalette(c('seagreen1','gold','darkred'))#,'purple'))
 ###################crop_meanPerc_upstr map#############################
 resp$response <- resp$crop_meanPerc_upstr
 sr_sites <- resp[!is.na(resp$response),]
@@ -362,8 +377,11 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
@@ -377,7 +395,7 @@ x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
 legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.7)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
-legend(-10.2,72.7,legend=c("% Crop"),bty='n')
+legend(-10.2,72.7,legend=c("a) % Crop"),bty='n')
 ###############################################################
 ###################urban_meanPerc_upstr map#############################
 
@@ -404,8 +422,11 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
@@ -419,7 +440,7 @@ x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
 legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.7)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
-legend(-10.2,72.7,legend=c("% Urban"),bty='n')
+legend(-10.2,72.7,legend=c("b) % Urban"),bty='n')
 
 dev.off()
 #######################
@@ -433,7 +454,7 @@ dev.off()
 tiff(filename = "plots/driver_maps/StreamCharaterictics_maps.tiff", width = 11, height = 11, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(0,0,0,0),mfrow=c(2,2))
-pal_ <- colorRampPalette(c('gold', 'seagreen2','dodgerblue4','darkviolet','darkred'))
+pal_ <- colorRampPalette(c('gold', 'seagreen1','deepskyblue1','purple','darkred'))
 ###################strahler_streamOrder map#############################
 resp$response <- resp$strahler_streamOrder
 sr_sites <- resp[!is.na(resp$response),]
@@ -458,21 +479,24 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
 
-lg <- round(seq(min(sr_sites$response), max(sr_sites$response), by=((max(sr_sites$response)-min(sr_sites$response))/7)),digits=0)
+lg <- round(seq(min(sr_sites$response), max(sr_sites$response), by=((max(sr_sites$response)-min(sr_sites$response))/9)),digits=0)
 
 co_leng<-length(unique(sr_sites$sr_col))
 y <- seq(69.8,61.3, by=(-(69.8-61.3)/(co_leng-1)))
 x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
-legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.85)
+legend(-8.25, 72.1,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.69)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=11)
-legend(-10.2,72.7,legend=c("Stream Order"),bty='n')
+legend(-10.2,72.9,legend=c("a) Stream Order"),bty='n')
 
 ###################accumulation_atPoint map#############################
 resp$response <- resp$accumulation_atPoint
@@ -500,8 +524,11 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$log_sr_col,0.6),cex=1.5)
@@ -517,7 +544,7 @@ x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
 legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.85)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=5)
-legend(-10.2,72.7,legend=expression(paste("Flow Accumulation (",km^2,")", sep = "")),bty='n')
+legend(-10.2,72.7,legend=expression(paste("b) Flow Accumulation (",km^2,")", sep = "")),bty='n')
 
 ###################elevation_atPoint map#############################
 resp$response <- resp$elevation_atPoint
@@ -543,8 +570,11 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
@@ -557,7 +587,7 @@ x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
 legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.85)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
-legend(-10.2,72.7,legend=c("Elevation (m)"),bty='n')
+legend(-10.2,72.7,legend=c("c) Elevation (m)"),bty='n')
 
 ###################slope_mean map#############################
 resp$response <- resp$slope_mean
@@ -583,8 +613,11 @@ wv[58:59] <- c(0)
 plot(newmap,col=col,
 bg="white",border=col2, #bg="lightblue",border="grey70",
   xlim = c(-10, 34),
-  ylim = c(30, 70),
+  ylim = c(35, 70),
   asp = 1,lwd=wv)
+
+polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
+        col = "white", border = "white")
 
 sr_sites_asc <- sr_sites[order(sr_sites$response),]
 points(sr_sites_asc$Longitude_X,sr_sites_asc$Latitude_Y,pch = 20,col = alpha(sr_sites_asc$sr_col,0.6),cex=1.5)
@@ -598,13 +631,17 @@ x <- rep(-8,co_leng)
 x2 <- rep(-6,co_leng)
 legend(-9, 72.3,title="",legend=lg,col =pal_(8),lty=1,lwd=1,bty="n",cex=0.85)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=4)
-legend(-10.2,72.7,legend=c("Slope (%)"),bty='n')
+legend(-10.2,72.7,legend=c("d) Slope (%)"),bty='n')
 
 dev.off()
 #######################
 
 #######################
 ##########################
+############################################################################
+####################################
+#########################
+#######################
 
 
 ########################  INORGANIC N  #####################

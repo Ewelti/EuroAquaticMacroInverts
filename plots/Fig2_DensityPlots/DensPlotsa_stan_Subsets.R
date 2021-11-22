@@ -46,7 +46,7 @@ polygon(x=c(stand_alien_SppRich$Q5, stand_alien_SppRich$Q5, stand_alien_SppRich$
 polygon(x=c(stand_alien_SppRich$Q10, stand_alien_SppRich$Q10, stand_alien_SppRich$Q90, stand_alien_SppRich$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-26, y=(4/4*(b-a)+a), legend=("a) Alien richness"), bty="n", cex=1.3)
+legend(x=-26, y=(4/4*(b-a)+a), legend=("a) Non-native richness"), bty="n", cex=1.3)
 legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+3.96% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### alien abund #####
@@ -79,7 +79,7 @@ polygon(x=c(stand_alien_Abund$Q5, stand_alien_Abund$Q5, stand_alien_Abund$Q95, s
 polygon(x=c(stand_alien_Abund$Q10, stand_alien_Abund$Q10, stand_alien_Abund$Q90, stand_alien_Abund$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-26, y=(3/4*(b-a)+a), legend=("b) Alien abundance"), bty="n", cex=1.3)
+legend(x=-26, y=(3/4*(b-a)+a), legend=("b) Non-native abundance"), bty="n", cex=1.3)
 legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+3.51% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### native spp rich #####

@@ -46,7 +46,7 @@ polygon(x=c(stand_shannonsH$Q5, stand_shannonsH$Q5, stand_shannonsH$Q95, stand_s
 polygon(x=c(stand_shannonsH$Q10, stand_shannonsH$Q10, stand_shannonsH$Q90, stand_shannonsH$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(4/4*(b-a)+a), legend=("Shannon's H"), bty="n", cex=1.3)
+legend(x=-18, y=(4/4*(b-a)+a), legend=("a) Shannon's H"), bty="n", cex=1.3)
 legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("-0.07% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### rarefied Spp Richness #####
@@ -79,7 +79,7 @@ polygon(x=c(stand_SppRichRare$Q5, stand_SppRichRare$Q5, stand_SppRichRare$Q95, s
 polygon(x=c(stand_SppRichRare$Q10, stand_SppRichRare$Q10, stand_SppRichRare$Q90, stand_SppRichRare$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(3/4*(b-a)+a), legend=("Rarefied spp richness"), bty="n", cex=1.3)
+legend(x=-18, y=(3/4*(b-a)+a), legend=("b) Rarefied spp richness"), bty="n", cex=1.3)
 legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.48% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func diverg #####
@@ -113,7 +113,7 @@ polygon(x=c(stand_FDiv$Q5, stand_FDiv$Q5, stand_FDiv$Q95, stand_FDiv$Q95),
 polygon(x=c(stand_FDiv$Q10, stand_FDiv$Q10, stand_FDiv$Q90, stand_FDiv$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(2/4*(b-a)+a), legend=("Func. divergence"), bty="n", cex=1.3)
+legend(x=-18, y=(2/4*(b-a)+a), legend=("c) Func. divergence"), bty="n", cex=1.3)
 legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+0.18% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Rao's Q #####
@@ -148,7 +148,7 @@ polygon(x=c(stand_RaoQ$Q5, stand_RaoQ$Q5, stand_RaoQ$Q95, stand_RaoQ$Q95),
 polygon(x=c(stand_RaoQ$Q10, stand_RaoQ$Q10, stand_RaoQ$Q90, stand_RaoQ$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(1/4*(b-a)+a), legend=("Rao's Q"), bty="n", cex=1.3)
+legend(x=-18, y=(1/4*(b-a)+a), legend=("d) Rao's Q"), bty="n", cex=1.3)
 legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+0.03% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
