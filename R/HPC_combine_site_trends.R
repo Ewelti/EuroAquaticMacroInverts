@@ -251,10 +251,30 @@ trendsFiles <- gsub("fixef_seasonDiff_","", files)
 trendsFiles <- gsub(".rds","", trendsFiles)
 names(dat_list) <- trendsFiles
 sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
-sens <- cbind(season, sens)
+sens1 <- cbind(season, sens)
 
-saveRDS(sens,file="sensitiv_seasonDiff.rds")
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff_nonNative")
+path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff_nonNative"
 
+firstfile <- readRDS("fixef_seasonDiff_abund_nativeSpp.rds")
+num_files <- length(list.files(path))
+n.res <- 1:num_files
+labs <- rownames(firstfile)
+season <- rep(labs,length(n.res))
+
+files = list.files(path = path, pattern = '\\.rds$')
+dat_list = lapply(files, function (x) data.table(readRDS(x)))
+trendsFiles <- gsub("fixef_seasonDiff_","", files)
+trendsFiles <- gsub(".rds","", trendsFiles)
+names(dat_list) <- trendsFiles
+sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
+sens2 <- cbind(season, sens)
+
+senss <- rbind(sens1, sens2)
+
+saveRDS(senss,file="sensitiv_seasonDiff.rds")
+
+############################################
 ## seasonTrends
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends")
 path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends"
@@ -271,9 +291,28 @@ trendsFiles <- gsub("fixef_seasonTrends_","", files)
 trendsFiles <- gsub(".rds","", trendsFiles)
 names(dat_list) <- trendsFiles
 sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
-sens <- cbind(season, sens)
+sens1 <- cbind(season, sens)
 
-saveRDS(sens,file="sensitiv_seasonTrends.rds")
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends_nonNative")
+path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends_nonNative"
+
+firstfile <- readRDS("fixef_seasonTrends_abund_nativeSpp.rds")
+num_files <- length(list.files(path))
+n.res <- 1:num_files
+labs <- rownames(firstfile)
+season <- rep(labs,length(n.res))
+
+files = list.files(path = path, pattern = '\\.rds$')
+dat_list = lapply(files, function (x) data.table(readRDS(x)))
+trendsFiles <- gsub("fixef_seasonTrends_","", files)
+trendsFiles <- gsub(".rds","", trendsFiles)
+names(dat_list) <- trendsFiles
+sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
+sens2 <- cbind(season, sens)
+
+senss <- rbind(sens1, sens2)
+
+saveRDS(senss,file="sensitiv_seasonTrends.rds")
 
 ## taxonresDiff
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff")
@@ -291,9 +330,28 @@ trendsFiles <- gsub("fixef_taxonresDiff_","", files)
 trendsFiles <- gsub(".rds","", trendsFiles)
 names(dat_list) <- trendsFiles
 sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
-sens <- cbind(taxonres, sens)
+sens1 <- cbind(taxonres, sens)
 
-saveRDS(sens,file="sensitiv_taxonresDiff.rds")
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff_nonNative")
+path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff_nonNative"
+
+firstfile <- readRDS("fixef_taxonresDiff_abund_nativeSpp.rds")
+num_files <- length(list.files(path))
+n.res <- 1:num_files
+labs <- rownames(firstfile)
+taxonres <- rep(labs,length(n.res))
+
+files = list.files(path = path, pattern = '\\.rds$')
+dat_list = lapply(files, function (x) data.table(readRDS(x)))
+trendsFiles <- gsub("fixef_taxonresDiff_","", files)
+trendsFiles <- gsub(".rds","", trendsFiles)
+names(dat_list) <- trendsFiles
+sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
+sens2 <- cbind(taxonres, sens)
+
+senss <- rbind(sens1, sens2)
+
+saveRDS(senss,file="sensitiv_taxonresDiff.rds")
 
 ## taxonresTrends
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends")
@@ -311,9 +369,28 @@ trendsFiles <- gsub("fixef_taxonresTrends_","", files)
 trendsFiles <- gsub(".rds","", trendsFiles)
 names(dat_list) <- trendsFiles
 sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
-sens <- cbind(taxonres, sens)
+sens1 <- cbind(taxonres, sens)
 
-saveRDS(sens,file="sensitiv_taxonresTrends.rds")
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends_nonNative")
+path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends_nonNative"
+
+firstfile <- readRDS("fixef_taxonresTrends_abund_nativeSpp.rds")
+num_files <- length(list.files(path))
+n.res <- 1:num_files
+labs <- rownames(firstfile)
+taxonres <- rep(labs,length(n.res))
+
+files = list.files(path = path, pattern = '\\.rds$')
+dat_list = lapply(files, function (x) data.table(readRDS(x)))
+trendsFiles <- gsub("fixef_taxonresDiff_","", files)
+trendsFiles <- gsub(".rds","", trendsFiles)
+names(dat_list) <- trendsFiles
+sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
+sens2 <- cbind(taxonres, sens)
+
+senss <- rbind(sens1, sens2)
+
+saveRDS(senss,file="sensitiv_taxonresTrends.rds")
 
 ### country level trends ####
 
