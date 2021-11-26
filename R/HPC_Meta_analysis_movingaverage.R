@@ -5,7 +5,7 @@ response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level_movingavera
 
 ### get response for this task ######
 TaskID <- unique(response_stan[,c("StartYear","Response")])
-TaskID <- subset(TaskID, Response %in% c("FRed","FRic"))
+TaskID <- subset(TaskID, Response %in% c("turnover"))
 #subset to 1990 onwards
 TaskID <- subset(TaskID, StartYear>1989)
 TaskID$TaskID <- 1:nrow(TaskID)
