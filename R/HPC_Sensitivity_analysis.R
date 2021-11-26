@@ -4,7 +4,8 @@
 
 #we should restrict this to a few responses!!
 
-TaskID <- read.csv("/data/idiv_ess/Ellen/Sensitivity_TaskIDs.csv",as.is=T)
+TaskID <- read.csv("/data/idiv_ess/Ellen/ResponseTrends_TaskIDs.csv",as.is=T)
+TaskID <- subset(TaskID,!duplicated(Response))
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 myResponse <- TaskID$Response[which(TaskID$TaskID==task.id)]
 
@@ -16,7 +17,7 @@ response_stan <- subset(response_stan, !is.na(estimate))
 
 ### site metadata ######
 
-d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
+d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
 d1<- d1[!is.na(d1$site_id_wMissing),]
 siteData <- unique(d1[,c("site_id","study_id","country","season","TaxonomicRes")])
 response_stan <- merge(siteData,response_stan,by="site_id")
@@ -24,6 +25,7 @@ response_stan <- merge(siteData,response_stan,by="site_id")
 ### prepare for brms ####
 
 library(brms)
+library(rstan)
 
 #examine response
 #hist(response_stan$estimate)
@@ -35,7 +37,7 @@ summary(response_stan$w)
 
 # try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
 cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-rstan_options(auto_write = TRUE)
+rstan_options(auto_write = FALSE)
 options(mc.cores = cpus_per_task)
 
 #define priors - default mostly ok but set it for b
@@ -57,12 +59,31 @@ fit1 <- brm(estimate|weights(w) ~ season + (1|study_id) + (1|country),
 fixef(fit1)
 saveRDS(fixef(fit1), file=paste0("fixef_seasonDiff_",myResponse,".rds"))
 
+#differences with respect to spring
+#unweighted
+fit1 <- brm(estimate ~ season + (1|study_id) + (1|country),
+            data = response_stan, iter=4000, chains = 4,
+            prior = prior1)
+
+#print output
+fixef(fit1)
+saveRDS(fixef(fit1), file=paste0("fixef_seasonDiff_unweighted_",myResponse,".rds"))
+
 #with intercept removed - each coefficient represents the mean trend per season
 fit1 <- brm(estimate|weights(w) ~ -1 + season + (1|study_id) + (1|country),
             data = response_stan, iter=4000, chains = 4,
             prior = prior1)          
           
 saveRDS(fixef(fit1), file=paste0("fixef_seasonTrends_",myResponse,".rds"))
+
+
+#with intercept removed - each coefficient represents the mean trend per season
+#unweighted
+fit1 <- brm(estimate ~ -1 + season + (1|study_id) + (1|country),
+            data = response_stan, iter=4000, chains = 4,
+            prior = prior1)          
+
+saveRDS(fixef(fit1), file=paste0("fixef_seasonTrends_unweighted_",myResponse,".rds"))
 
 ### run taxonomic resolution model ####
 
@@ -79,6 +100,17 @@ fit1 <- brm(estimate|weights(w) ~ TaxonomicRes + (1|study_id) + (1|country),
 fixef(fit1)
 saveRDS(fixef(fit1), file=paste0("fixef_taxonresDiff_",myResponse,".rds"))
 
+#difference in trends with respect to species
+#unweighted
+fit1 <- brm(estimate ~ TaxonomicRes + (1|study_id) + (1|country),
+            data = response_stan, iter=4000, chains = 4,
+            prior = prior1)
+
+#print output
+fixef(fit1)
+saveRDS(fixef(fit1), file=paste0("fixef_taxonresDiff_unweighted",myResponse,".rds"))
+
+
 #trends for each taxonomic group
 fit1 <- brm(estimate|weights(w) ~ -1 + TaxonomicRes + (1|study_id) + (1|country),
             data = response_stan, iter=4000, chains = 4,
@@ -87,6 +119,16 @@ fit1 <- brm(estimate|weights(w) ~ -1 + TaxonomicRes + (1|study_id) + (1|country)
 #print output
 fixef(fit1)
 saveRDS(fixef(fit1), file=paste0("fixef_taxonresTrends_",myResponse,".rds"))
+
+#trends for each taxonomic group
+#unweighted
+fit1 <- brm(estimate ~ -1 + TaxonomicRes + (1|study_id) + (1|country),
+            data = response_stan, iter=4000, chains = 4,
+            prior = prior1)
+
+#print output
+fixef(fit1)
+saveRDS(fixef(fit1), file=paste0("fixef_taxonresTrends_unweighted_",myResponse,".rds"))
 
 ### spatial autocorrelation ####
 
