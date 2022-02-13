@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
 drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
@@ -35,7 +35,7 @@ plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.03,0.03), yl
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 axis(2, at=yy, lwd = 0, lwd.ticks = 0, labels=c("str. order", "accum.", "elevation", "slope"), las=1,cex.axis=1.3)
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
-legend("topleft", legend=("a) Species richness"), bty="n", cex=1.3)
+legend("topleft", legend=("a) Taxon richness"), bty="n", cex=1.3)
 mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])

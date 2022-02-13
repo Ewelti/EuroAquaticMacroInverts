@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
@@ -79,7 +79,7 @@ polygon(x=c(stand_SppRichRare$Q5, stand_SppRichRare$Q5, stand_SppRichRare$Q95, s
 polygon(x=c(stand_SppRichRare$Q10, stand_SppRichRare$Q10, stand_SppRichRare$Q90, stand_SppRichRare$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(3/4*(b-a)+a), legend=("b) Rarefied spp richness"), bty="n", cex=1.3)
+legend(x=-18, y=(3/4*(b-a)+a), legend=("b) Rarefied taxon richness"), bty="n", cex=1.3)
 legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.48% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func diverg #####

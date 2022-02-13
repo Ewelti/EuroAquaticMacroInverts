@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
@@ -9,7 +9,7 @@ length(unique(response_stan$site_id))
 
 Ests <- read.csv("outputs/Yr_metaanaly_Ests.csv")
 
-tiff(filename = "plots/SlopeDistributions.tiff", width = 10, height = 6, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig2_DensityPlots/SlopeDistributions.tiff", width = 10, height = 6, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,2))
 
@@ -46,7 +46,7 @@ polygon(x=c(stand_SppRich$Q5, stand_SppRich$Q5, stand_SppRich$Q95, stand_SppRich
 polygon(x=c(stand_SppRich$Q10, stand_SppRich$Q10, stand_SppRich$Q90, stand_SppRich$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd = 1)
-legend(x=-18, y=(4/4*(b-a)+a), legend=("a) Species richness"), bty="n", cex=1.3)
+legend(x=-18, y=(4/4*(b-a)+a), legend=("a) Taxon richness"), bty="n", cex=1.3)
 legend(x=5, y=(4/4*(b-a)+a), legend=expression(paste("+0.94% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Abundance #####
