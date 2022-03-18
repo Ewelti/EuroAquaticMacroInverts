@@ -46,7 +46,7 @@ polygon(x=c(stand_SppRich$Q5, stand_SppRich$Q5, stand_SppRich$Q95, stand_SppRich
 polygon(x=c(stand_SppRich$Q10, stand_SppRich$Q10, stand_SppRich$Q90, stand_SppRich$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd = 1)
-legend(x=-18, y=(4/4*(b-a)+a), legend=("a) Taxon richness"), bty="n", cex=1.3)
+legend(x=-18, y=(4/4*(b-a)+a), legend=("a, Taxon richness"), bty="n", cex=1.3)
 legend(x=5, y=(4/4*(b-a)+a), legend=expression(paste("+0.94% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Abundance #####
@@ -77,7 +77,7 @@ polygon(x=c(stand_abund$Q5, stand_abund$Q5, stand_abund$Q95, stand_abund$Q95),
 polygon(x=c(stand_abund$Q10, stand_abund$Q10, stand_abund$Q90, stand_abund$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(3/4*(b-a)+a), legend=("b) Abundance"), bty="n", cex=1.3)
+legend(x=-18, y=(3/4*(b-a)+a), legend=("b, Abundance"), bty="n", cex=1.3)
 legend(x=5, y=(3/4*(b-a)+a), legend=expression(paste("+1.13% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Shannon's Evenness #####
@@ -111,7 +111,7 @@ polygon(x=c(stand_E10$Q5, stand_E10$Q5, stand_E10$Q95, stand_E10$Q95),
 polygon(x=c(stand_E10$Q10, stand_E10$Q10, stand_E10$Q90, stand_E10$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(2/4*(b-a)+a), legend=("c) Evenness"), bty="n", cex=1.3)
+legend(x=-18, y=(2/4*(b-a)+a), legend=("c, Evenness"), bty="n", cex=1.3)
 legend(x=5, y=(2/4*(b-a)+a), legend=expression(paste("-0.5% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Turnover #####
@@ -147,7 +147,7 @@ polygon(x=c(stand_turnover$Q5, stand_turnover$Q5, stand_turnover$Q95, stand_turn
 polygon(x=c(stand_turnover$Q10, stand_turnover$Q10, stand_turnover$Q90, stand_turnover$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(1/4*(b-a)+a), legend=("d) Turnover"), bty="n", cex=1.3)
+legend(x=-18, y=(1/4*(b-a)+a), legend=("d, Turnover"), bty="n", cex=1.3)
 legend(x=5, y=(1/4*(b-a)+a), legend=expression(paste("-0.3% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
@@ -186,7 +186,7 @@ polygon(x=c(stand_FRic$Q5, stand_FRic$Q5, stand_FRic$Q95, stand_FRic$Q95),
 polygon(x=c(stand_FRic$Q10, stand_FRic$Q10, stand_FRic$Q90, stand_FRic$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(4/4*(b-a)+a), legend=("e) Func. richness"), bty="n", cex=1.3)
+legend(x=-18, y=(4/4*(b-a)+a), legend=("e, Func. richness"), bty="n", cex=1.3)
 legend(x=5, y=(4/4*(b-a)+a), legend=expression(paste("+1% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Functional Redundancy #####
@@ -218,7 +218,7 @@ polygon(x=c(stand_FRed$Q5, stand_FRed$Q5, stand_FRed$Q95, stand_FRed$Q95),
 polygon(x=c(stand_FRed$Q10, stand_FRed$Q10, stand_FRed$Q90, stand_FRed$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(3/4*(b-a)+a), legend=("f) Func. redundancy"), bty="n", cex=1.3)
+legend(x=-18, y=(3/4*(b-a)+a), legend=("f, Func. redundancy"), bty="n", cex=1.3)
 legend(x=5, y=(3/4*(b-a)+a), legend=expression(paste("+0.19% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func evenness #####
@@ -253,7 +253,7 @@ polygon(x=c(stand_FEve$Q5, stand_FEve$Q5, stand_FEve$Q95, stand_FEve$Q95),
 polygon(x=c(stand_FEve$Q10, stand_FEve$Q10, stand_FEve$Q90, stand_FEve$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(2/4*(b-a)+a), legend=("g) Func. evenness"), bty="n", cex=1.3)
+legend(x=-18, y=(2/4*(b-a)+a), legend=("g, Func. evenness"), bty="n", cex=1.3)
 legend(x=5, y=(2/4*(b-a)+a), legend=expression(paste("-0.51% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func turnover #####
@@ -286,7 +286,7 @@ polygon(x=c(stand_F_to$Q5, stand_F_to$Q5, stand_F_to$Q95, stand_F_to$Q95),
 polygon(x=c(stand_F_to$Q10, stand_F_to$Q10, stand_F_to$Q90, stand_F_to$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-18, y=(1/4*(b-a)+a), legend=("h) Func. turnover"), bty="n", cex=1.3)
+legend(x=-18, y=(1/4*(b-a)+a), legend=("h, Func. turnover"), bty="n", cex=1.3)
 legend(x=5, y=(1/4*(b-a)+a), legend=expression(paste("-1.41% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##

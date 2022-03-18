@@ -1,6 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data")
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/")
+setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/")
 
 # load libraries
 #install.packages("psych")
@@ -148,6 +147,10 @@ pairs.panels(dd,
 sites <- read.csv("All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
 head(sites)
 attach(sites)
+
+ff <- lm(tmax_Est~elevation_atPoint)
+summary (ff)
+plot(tmax_Est~elevation_atPoint)
 
 climate <- cbind.data.frame(aet_Est,ppt_Est,tmax_Est,tmin_Est,aet_mm_12moPrior, ppt_mm_12moPrior, tmax_C_12moPrior, tmin_C_12moPrior)
 head(climate)

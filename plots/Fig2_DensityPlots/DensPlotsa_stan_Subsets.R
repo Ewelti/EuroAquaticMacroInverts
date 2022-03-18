@@ -46,7 +46,7 @@ polygon(x=c(stand_alien_SppRich$Q5, stand_alien_SppRich$Q5, stand_alien_SppRich$
 polygon(x=c(stand_alien_SppRich$Q10, stand_alien_SppRich$Q10, stand_alien_SppRich$Q90, stand_alien_SppRich$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-24, y=(4/4*(b-a)+a), legend=("a) Non-native richness"), bty="n", cex=1.3)
+legend(x=-24, y=(4/4*(b-a)+a), legend=("a, Non-native richness"), bty="n", cex=1.3)
 legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+3.96% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### native spp rich #####
@@ -81,7 +81,7 @@ polygon(x=c(stand_SppRich_nativeSpp$Q5, stand_SppRich_nativeSpp$Q5, stand_SppRic
 polygon(x=c(stand_SppRich_nativeSpp$Q10, stand_SppRich_nativeSpp$Q10, stand_SppRich_nativeSpp$Q90, stand_SppRich_nativeSpp$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-24, y=(3/4*(b-a)+a), legend=("c) Native richness"), bty="n", cex=1.3)
+legend(x=-24, y=(3/4*(b-a)+a), legend=("c, Native richness"), bty="n", cex=1.3)
 legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.83% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### EPT spp rich #####
@@ -117,7 +117,7 @@ polygon(x=c(stand_EPT_SppRich$Q5, stand_EPT_SppRich$Q5, stand_EPT_SppRich$Q95, s
 polygon(x=c(stand_EPT_SppRich$Q10, stand_EPT_SppRich$Q10, stand_EPT_SppRich$Q90, stand_EPT_SppRich$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-24, y=(2/4*(b-a)+a), legend=("e) EPT richness"), bty="n", cex=1.3)
+legend(x=-24, y=(2/4*(b-a)+a), legend=("e, EPT richness"), bty="n", cex=1.3)
 legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+0.42% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### insect spp rich #####
@@ -152,7 +152,7 @@ polygon(x=c(stand_insect_SppRich$Q5, stand_insect_SppRich$Q5, stand_insect_SppRi
 polygon(x=c(stand_insect_SppRich$Q10, stand_insect_SppRich$Q10, stand_insect_SppRich$Q90, stand_insect_SppRich$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-24, y=(1/4*(b-a)+a), legend=("g) Insect richness"), bty="n", cex=1.3)
+legend(x=-24, y=(1/4*(b-a)+a), legend=("g, Insect richness"), bty="n", cex=1.3)
 legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+0.83% ",y^-1,, sep = "")), bty="n", cex=1.3)
 ##
 box(lwd=2,col="white")
@@ -168,6 +168,7 @@ d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10))*-3
 b <- (max(d$y)+(max(d$y)/10))*1
 plot(d, main="",ylab="",xlab="",cex.lab=2,xlim=c(-20,20),ylim=c(a,b),col="white",yaxt='n', yaxs="i",xaxt='n')
+title(xlab=expression(paste("% change y"^"-1")), line=2.4,cex.lab=1.3)
 #axis(2, at=0, labels="Alien ab", las=1,cex.axis=1.3)
 ##
 polygon(c(d$x[d$x >= 0 ], 0),
@@ -189,7 +190,7 @@ polygon(x=c(stand_alien_Abund$Q5, stand_alien_Abund$Q5, stand_alien_Abund$Q95, s
 polygon(x=c(stand_alien_Abund$Q10, stand_alien_Abund$Q10, stand_alien_Abund$Q90, stand_alien_Abund$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-24, y=(4/4*(b-a)+a), legend=("b) Non-native abundance"), bty="n", cex=1.3)
+legend(x=-24, y=(4/4*(b-a)+a), legend=("b, Non-native abundance"), bty="n", cex=1.3)
 legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+3.51% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### native abund #####
@@ -224,7 +225,7 @@ polygon(x=c(stand_abund_nativeSpp$Q5, stand_abund_nativeSpp$Q5, stand_abund_nati
 polygon(x=c(stand_abund_nativeSpp$Q10, stand_abund_nativeSpp$Q10, stand_abund_nativeSpp$Q90, stand_abund_nativeSpp$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-24, y=(3/4*(b-a)+a), legend=("d) Native abundance"), bty="n", cex=1.3)
+legend(x=-24, y=(3/4*(b-a)+a), legend=("d, Native abundance"), bty="n", cex=1.3)
 legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.63% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### EPT abund #####
@@ -259,7 +260,7 @@ polygon(x=c(stand_EPT_Abund$Q5, stand_EPT_Abund$Q5, stand_EPT_Abund$Q95, stand_E
 polygon(x=c(stand_EPT_Abund$Q10, stand_EPT_Abund$Q10, stand_EPT_Abund$Q90, stand_EPT_Abund$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
-legend(x=-24, y=(2/4*(b-a)+a), legend=("f) EPT abundance"), bty="n", cex=1.3)
+legend(x=-24, y=(2/4*(b-a)+a), legend=("f, EPT abundance"), bty="n", cex=1.3)
 legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+1.05% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 
@@ -293,7 +294,7 @@ polygon(x=c(stand_insect_Abund$Q5, stand_insect_Abund$Q5, stand_insect_Abund$Q95
 polygon(x=c(stand_insect_Abund$Q10, stand_insect_Abund$Q10, stand_insect_Abund$Q90, stand_insect_Abund$Q90),
         y=c((yy-yy/4.5),(yy+yy/4.5),(yy+yy/4.5),(yy-yy/4.6)),
         col = 1,border = 0,lwd =1)
-legend(x=-24, y=(1/4*(b-a)+a), legend=("h) Insect abundance"), bty="n", cex=1.3)
+legend(x=-24, y=(1/4*(b-a)+a), legend=("h, Insect abundance"), bty="n", cex=1.3)
 legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+1.11% ",y^-1,, sep = "")), bty="n", cex=1.3)
 ##
 box(lwd=2,col="white")

@@ -6,7 +6,7 @@ MA <- read.csv("outputs/movingAve_YrEsts.csv")
 MA$meanYr <- (MA$StartYear+ 4.5)
 head(MA)
 
-tiff(filename = "plots/MovingAverages_extra.tiff", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig3_movingWindow/MovingAverages_extra.tiff", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
 par(mfrow=c(2,2),mar=c(2,4,0.2,0.2))
 
 #### Shannon's Evenness #####
