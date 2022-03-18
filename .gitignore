@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+raw-data*
 outputs/Sensitivity/*
 outputs/old/*
 outputs/movingaverage_meta/*
