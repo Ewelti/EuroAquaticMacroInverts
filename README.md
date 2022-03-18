@@ -22,13 +22,15 @@ Additional files provide task IDs for running models and model estimates.
 ## R folder
 ### Analyses:
 
--calculate trends of biodiversity metrics for each of the 1816 sites
+Calculation of trends of biodiversity metrics for each of the 1816 sites
 
--meta-analysis models to get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
+Meta-analysis models to get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
 
--models with drivers for each metric trend (2 step model)
+Models with drivers for each metric trend (2 step model)
 
--moving window analysis
+Moving window analysis
+
+Sensitivity analysis
 
 ### HPC analysis: 
 
