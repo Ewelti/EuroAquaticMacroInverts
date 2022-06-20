@@ -25,7 +25,8 @@ response_stan_pivot <- response_stan %>%
 #get site metadata
 d1 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
 d1$site_id <- d1$site
-siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes", "Year_count")])
+head(d1)
+siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes", "Year_count", "Starting_year","Ending_year")])
 response_stan_pivot <- merge(siteData,response_stan_pivot,by="site_id")
 head(response_stan_pivot)
 #write.csv(response_stan_pivot,"outputs/Stan_trends.csv")
@@ -111,6 +112,22 @@ fr_mo = lm(response_stan_pivot$FRic~response_stan_pivot$Year_count)
 summary(fr_mo)
 fre_mo = lm(response_stan_pivot$FRed~response_stan_pivot$Year_count)
 summary(fre_mo)
+
+par(mfrow=c(2,2))
+plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$spp_richness,xlab="Starting year", ylab="Taxon richness estimate")
+plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$abundance,xlab="Starting year", ylab="Abundance estimate")
+plot(x=response_stan_pivot$Ending_year,y=response_stan_pivot$spp_richness,xlab="Ending year", ylab="Taxon richness estimate")
+plot(x=response_stan_pivot$Ending_year,y=response_stan_pivot$abundance,xlab="Ending year", ylab="Abundance estimate")
+
+tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Starting_year)
+summary(tr_mo)
+ab_mo = lm(response_stan_pivot$abundance~response_stan_pivot$Starting_year)
+summary(ab_mo)
+
+tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Ending_year)
+summary(tr_mo)
+ab_mo = lm(response_stan_pivot$abundance~response_stan_pivot$Ending_year)
+summary(ab_mo)
 
 ### meta-analysis ####
 
