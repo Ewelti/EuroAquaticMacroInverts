@@ -28,7 +28,7 @@ d1$site_id <- d1$site
 siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes", "Year_count")])
 response_stan_pivot <- merge(siteData,response_stan_pivot,by="site_id")
 head(response_stan_pivot)
-write.csv(response_stan_pivot,"outputs/Stan_trends.csv")
+#write.csv(response_stan_pivot,"outputs/Stan_trends.csv")
 
 summaryData <- response_stan_pivot %>%
   group_by(Country,study_id,season,TaxonomicRes,Year_count) %>%
@@ -75,6 +75,42 @@ qplot(spp_rich_rare, SppRichRare_Est, data=all)
 qplot(spp_richness, SppRich_Est, data=all)
 qplot(SppRich_nativeSpp, nativeSppRich_Est, data=all)
 qplot(turnover, TurnO_Est, data=all)
+
+#check effect of time series length on estimates
+dim(response_stan_pivot)
+qplot(Year_count, abund_nativeSpp, data=response_stan_pivot)
+qplot(Year_count, abundance, data=response_stan_pivot)
+qplot(Year_count, alien_Abund, data=response_stan_pivot)
+qplot(Year_count, alien_SppRich, data=response_stan_pivot)
+qplot(Year_count, insect_Abund, data=response_stan_pivot)
+qplot(Year_count, insect_SppRich, data=response_stan_pivot)
+qplot(Year_count, EPT_Abund, data=response_stan_pivot)
+qplot(Year_count, EPT_SppRich, data=response_stan_pivot)
+
+qplot(Year_count, F_to, data=response_stan_pivot)
+qplot(Year_count, FDiv, data=response_stan_pivot)
+qplot(Year_count, FEve, data=response_stan_pivot)
+qplot(Year_count, FRic, data=response_stan_pivot)
+qplot(Year_count, RaoQ, data=response_stan_pivot)
+
+qplot(Year_count, shannonsH, data=response_stan_pivot)
+qplot(Year_count, spp_rich_rare, data=response_stan_pivot)
+qplot(Year_count, spp_richness, data=response_stan_pivot)
+qplot(Year_count, SppRich_nativeSpp, data=response_stan_pivot)
+qplot(Year_count, turnover, data=response_stan_pivot)
+
+par(mfrow=c(1,2))
+plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$spp_richness,xlab="Years sampled", ylab="Taxon richness estimate")
+plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$abundance,xlab="Years sampled", ylab="Abundance estimate")
+
+tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Year_count)
+summary(tr_mo)
+ab_mo = lm(response_stan_pivot$abundance~response_stan_pivot$Year_count)
+summary(ab_mo)
+fr_mo = lm(response_stan_pivot$FRic~response_stan_pivot$Year_count)
+summary(fr_mo)
+fre_mo = lm(response_stan_pivot$FRed~response_stan_pivot$Year_count)
+summary(fre_mo)
 
 ### meta-analysis ####
 
