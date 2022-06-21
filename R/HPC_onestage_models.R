@@ -3,7 +3,7 @@ rm(list=ls())
 library(lubridate)
 
 #load data
-d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
+d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
 #make turnover numeric
