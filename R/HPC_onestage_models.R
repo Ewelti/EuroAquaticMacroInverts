@@ -74,6 +74,7 @@ fit1 <- brm(Response ~ cYear + cday_of_year +
               ar(time = iYear, gr = site_id, p = 1, cov=FALSE),
             data = mydata, 
             iter=5000, 
+            thin=2,
             chains = 4, 
             prior = prior1,
             control = list(adapt_delta = 0.90, max_treedepth = 12))
