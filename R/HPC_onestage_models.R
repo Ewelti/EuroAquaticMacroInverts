@@ -77,7 +77,8 @@ fit1 <- brm(Response ~ cYear + cday_of_year +
             thin=2,
             chains = 4, 
             prior = prior1,
-            control = list(adapt_delta = 0.90, max_treedepth = 12))
+            control = list(adapt_delta = 0.90, max_treedepth = 12),
+            save_pars=save_pars(group=FALSE))
 
 ### save output ####
 saveRDS(fit1,file=paste0("onestage_",myResponse,".rds"))
