@@ -21,7 +21,7 @@ yearcount <- aggregate(year ~ site_id, data = sites_later, FUN = length)
 head(yearcount)
 
 #subset for sites with more years
-siteslater_long <- yearcount[ which(yearcount$year > 14), ]
+siteslater_long <- yearcount[which(yearcount$year > 14), ]
 head(siteslater_long)
 nrow(siteslater_long)
 
@@ -35,7 +35,7 @@ head(allYrs)
 timeWindow <- 10
 minimumThreshold <- 6
 
-SufficientSites <- lapply(1990:2014, function(x){
+SufficientSites <- lapply(2000:2014, function(x){
   allYrs2 <- subset(allYrs, year_wMissing >= x & year_wMissing < (x+timeWindow))
   siteSummary <- tapply(allYrs2$abundance,allYrs2$site_id,length)
   data.frame(StartYear = x, site_id = names(siteSummary)[siteSummary>=minimumThreshold])
