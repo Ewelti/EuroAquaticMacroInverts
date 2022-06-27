@@ -3,7 +3,7 @@ rm(list=ls())
 library(lubridate)
 
 #load data
-d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears.csv", header=T) 
+d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
 allYrs <- d1[!is.na(d1$site_id_wMissing),]
 
 #make turnover numeric
@@ -74,9 +74,11 @@ fit1 <- brm(Response ~ cYear + cday_of_year +
               ar(time = iYear, gr = site_id, p = 1, cov=FALSE),
             data = mydata, 
             iter=5000, 
+            thin=2,
             chains = 4, 
             prior = prior1,
-            control = list(adapt_delta = 0.90, max_treedepth = 12))
+            control = list(adapt_delta = 0.90, max_treedepth = 12),
+            save_pars=save_pars(group=FALSE))
 
 ### save output ####
 saveRDS(fit1,file=paste0("onestage_",myResponse,".rds"))
