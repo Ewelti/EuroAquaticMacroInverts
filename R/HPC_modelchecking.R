@@ -102,7 +102,9 @@ qplot(Year_count, turnover, data=response_stan_pivot)
 
 par(mfrow=c(1,2))
 plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$spp_richness,xlab="Years sampled", ylab="Taxon richness estimate")
+abline(h=0)
 plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$abundance,xlab="Years sampled", ylab="Abundance estimate")
+abline(h=0)
 
 tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Year_count)
 summary(tr_mo)
