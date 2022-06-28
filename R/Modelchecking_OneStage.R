@@ -19,7 +19,6 @@ library(loo)
 
 ##################################################################
 #### spp_richness ####
-#fit <- readRDS("onestage_unweighted_spp_richness.rds")
 fit <- readRDS("onestage_spp_richness.rds")
 loo_R2(fit)
 
@@ -38,19 +37,18 @@ colnames(Count_sr) <- "SppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-sr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-sr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-sr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-sr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-sr_fixed <- list(Response="spp_richness", sr_fixed_995[,1:4], sr_fixed_975[,3:4],
-                 sr_fixed_95[,3:4],sr_fixed_90[,3:4])
+sr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+sr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+sr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+sr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+sr_fixed <- list(Response="spp_richness", sr_fixed_995, sr_fixed_975[3:4],
+                 sr_fixed_95[3:4],sr_fixed_90[3:4])
 sr_fixed <-data.frame(lapply(sr_fixed, function(x) t(data.frame(x))))
 sr_fixed 
 
 #### spp_rich_rare ####
-#fit <- readRDS("onestage_unweighted_spp_rich_rare.rds")
 fit <- readRDS("onestage_spp_rich_rare.rds")
-
+summary(fit)
 #prob of trend
 srr_prob <- getTrendProbability(fit)
 srr_prob <- data.frame(Response="spp_richness_rarefied", srr_prob[,1:2])
@@ -68,17 +66,16 @@ colnames(Count_srr) <- "SppRichRarefied"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-srr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-srr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-srr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-srr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-srr_fixed <- list(Response="spp_richness_rarefied", srr_fixed_995[,1:4], srr_fixed_975[,3:4],
-                  srr_fixed_95[,3:4],srr_fixed_90[,3:4])
+srr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+srr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+srr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+srr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+srr_fixed <- list(Response="spp_richness_rarefied", srr_fixed_995, srr_fixed_975[3:4],
+                  srr_fixed_95[3:4],srr_fixed_90[3:4])
 srr_fixed <-data.frame(lapply(srr_fixed, function(x) t(data.frame(x))))
 srr_fixed
 
 #### shannonsH ####
-#fit <- readRDS("onestage_unweighted_shannonsH.rds")
 fit <- readRDS("onestage_shannonsH.rds")
 
 #prob of trend
@@ -98,17 +95,16 @@ colnames(Count_shH) <- "ShannonsH"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-shH_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-shH_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-shH_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-shH_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-shH_fixed <- list(Response="shannonsH", shH_fixed_995[,1:4], shH_fixed_975[,3:4],
-                  shH_fixed_95[,3:4],shH_fixed_90[,3:4])
+shH_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+shH_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+shH_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+shH_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+shH_fixed <- list(Response="shannonsH", shH_fixed_995, shH_fixed_975[3:4],
+                  shH_fixed_95[3:4],shH_fixed_90[3:4])
 shH_fixed <-data.frame(lapply(shH_fixed, function(x) t(data.frame(x))))
 shH_fixed
 
 #### E10 ####
-#fit <- readRDS("onestage_unweighted_E10.rds")
 fit <- readRDS("onestage_E10.rds")
 
 #prob of trend
@@ -126,17 +122,16 @@ colnames(Count_e10) <- "E10"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-e10_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-e10_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-e10_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-e10_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-e10_fixed <- list(Response="E10", e10_fixed_995[,1:4], e10_fixed_975[,3:4],
-                  e10_fixed_95[,3:4],e10_fixed_90[,3:4])
+e10_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+e10_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+e10_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+e10_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+e10_fixed <- list(Response="E10", e10_fixed_995, e10_fixed_975[3:4],
+                  e10_fixed_95[3:4],e10_fixed_90[3:4])
 e10_fixed <-data.frame(lapply(e10_fixed, function(x) t(data.frame(x))))
 e10_fixed
 
 #### abundance ####
-#fit <- readRDS("onestage_unweighted_abundance.rds")
 fit <- readRDS("onestage_abundance.rds")
 
 #prob of trend
@@ -154,17 +149,16 @@ colnames(Count_ab) <- "Abundance"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-abund_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-abund_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-abund_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-abund_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-abund_fixed <- list(Response="abundance", abund_fixed_995[,1:4], abund_fixed_975[,3:4],
-                    abund_fixed_95[,3:4],abund_fixed_90[,3:4])
+abund_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+abund_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+abund_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+abund_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+abund_fixed <- list(Response="abundance", abund_fixed_995, abund_fixed_975[3:4],
+                    abund_fixed_95[3:4],abund_fixed_90[3:4])
 abund_fixed <-data.frame(lapply(abund_fixed, function(x) t(data.frame(x))))
 abund_fixed
 
 #### turnover ####
-#fit <- readRDS("onestage_unweighted_turnover.rds") 
 fit <- readRDS("onestage_turnover.rds")
 
 #prob of trend
@@ -182,17 +176,16 @@ colnames(Count_turn) <- "turnover"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-turn_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-turn_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-turn_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-turn_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-turn_fixed <- list(Response="turnover", turn_fixed_995[,1:4], turn_fixed_975[,3:4],
-                   turn_fixed_95[,3:4],turn_fixed_90[,3:4])
+turn_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+turn_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+turn_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+turn_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+turn_fixed <- list(Response="turnover", turn_fixed_995, turn_fixed_975[3:4],
+                   turn_fixed_95[3:4],turn_fixed_90[3:4])
 turn_fixed <-data.frame(lapply(turn_fixed, function(x) t(data.frame(x))))
 turn_fixed
 
 #### F_to ####
-#fit <- readRDS("onestage_unweighted_F_to.rds")
 fit <- readRDS("onestage_F_to.rds")
 
 #prob of trend
@@ -210,17 +203,16 @@ colnames(Count_fto) <- "func_turnover"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fto_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-fto_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-fto_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-fto_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-fto_fixed <- list(Response="func_turnover", fto_fixed_995[,1:4], fto_fixed_975[,3:4],
-                  fto_fixed_95[,3:4],fto_fixed_90[,3:4])
+fto_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+fto_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+fto_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+fto_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+fto_fixed <- list(Response="func_turnover", fto_fixed_995, fto_fixed_975[3:4],
+                  fto_fixed_95[3:4],fto_fixed_90[3:4])
 fto_fixed <-data.frame(lapply(fto_fixed, function(x) t(data.frame(x))))
 fto_fixed
 
 #### FRic ####
-#fit <- readRDS("onestage_unweighted_FRic.rds")
 fit <- readRDS("onestage_FRic.rds")
 
 #prob of trend
@@ -238,17 +230,16 @@ colnames(Count_fric) <- "func_rich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fric_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-fric_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-fric_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-fric_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-fric_fixed <- list(Response="func_rich", fric_fixed_995[,1:4], fric_fixed_975[,3:4],
-                   fric_fixed_95[,3:4],fric_fixed_90[,3:4])
+fric_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+fric_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+fric_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+fric_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+fric_fixed <- list(Response="func_rich", fric_fixed_995, fric_fixed_975[3:4],
+                   fric_fixed_95[3:4],fric_fixed_90[3:4])
 fric_fixed <-data.frame(lapply(fric_fixed, function(x) t(data.frame(x))))
 fric_fixed
 
 #### FEve ####
-#fit <- readRDS("onestage_unweighted_FEve.rds")
 fit <- readRDS("onestage_FEve.rds")
 
 #prob of trend
@@ -266,17 +257,16 @@ colnames(Count_feve) <- "func_even"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-feve_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-feve_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-feve_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-feve_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-feve_fixed <- list(Response="func_even", feve_fixed_995[,1:4], feve_fixed_975[,3:4],
-                   feve_fixed_95[,3:4],feve_fixed_90[,3:4])
+feve_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+feve_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+feve_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+feve_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+feve_fixed <- list(Response="func_even", feve_fixed_995, feve_fixed_975[3:4],
+                   feve_fixed_95[3:4],feve_fixed_90[3:4])
 feve_fixed <-data.frame(lapply(feve_fixed, function(x) t(data.frame(x))))
 feve_fixed
 
 #### FDiv ####
-#fit <- readRDS("onestage_unweighted_FDiv.rds")
 fit <- readRDS("onestage_FDiv.rds")
 
 #prob of trend
@@ -294,17 +284,16 @@ colnames(Count_fdiv) <- "func_diverg"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-fdiv_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-fdiv_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-fdiv_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-fdiv_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-fdiv_fixed <- list(Response="func_diverg", fdiv_fixed_995[,1:4], fdiv_fixed_975[,3:4],
-                   fdiv_fixed_95[,3:4],fdiv_fixed_90[,3:4])
+fdiv_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+fdiv_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+fdiv_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+fdiv_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+fdiv_fixed <- list(Response="func_diverg", fdiv_fixed_995, fdiv_fixed_975[3:4],
+                   fdiv_fixed_95[3:4],fdiv_fixed_90[3:4])
 fdiv_fixed <-data.frame(lapply(fdiv_fixed, function(x) t(data.frame(x))))
 fdiv_fixed
 
 #### RaoQ ####
-#fit <- readRDS("onestage_unweighted_RaoQ.rds")
 fit <- readRDS("onestage_RaoQ.rds")
 
 #prob of trend
@@ -322,17 +311,16 @@ colnames(Count_raoq) <- "RaoQ"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-raoq_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-raoq_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-raoq_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-raoq_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-raoq_fixed <- list(Response="RaoQ", raoq_fixed_995[,1:4], raoq_fixed_975[,3:4],
-                   raoq_fixed_95[,3:4],raoq_fixed_90[,3:4])
+raoq_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+raoq_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+raoq_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+raoq_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+raoq_fixed <- list(Response="RaoQ", raoq_fixed_995, raoq_fixed_975[3:4],
+                   raoq_fixed_95[3:4],raoq_fixed_90[3:4])
 raoq_fixed <-data.frame(lapply(raoq_fixed, function(x) t(data.frame(x))))
 raoq_fixed
 
 #### FRed ####
-#fit <- readRDS("onestage_unweighted_FRed.rds")
 fit <- readRDS("onestage_FRed.rds")
 
 #prob of trend
@@ -350,18 +338,17 @@ colnames(Count_FRed) <- "FRed"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-FRed_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-FRed_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-FRed_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-FRed_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-FRed_fixed <- list(Response="FRed", FRed_fixed_995[,1:4], FRed_fixed_975[,3:4],
-                   FRed_fixed_95[,3:4],FRed_fixed_90[,3:4])
+FRed_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+FRed_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+FRed_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+FRed_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+FRed_fixed <- list(Response="FRed", FRed_fixed_995, FRed_fixed_975[3:4],
+                   FRed_fixed_95[3:4],FRed_fixed_90[3:4])
 FRed_fixed <-data.frame(lapply(FRed_fixed, function(x) t(data.frame(x))))
 FRed_fixed
 
 #### alien_SppRich ####
-fit <- readRDS("onestage_unweighted_alien_SppRich.rds")
-#fit <- readRDS("onestage_alien_SppRich.rds")
+fit <- readRDS("onestage_alien_SppRich.rds")
 
 #prob of trend
 aliensr_prob <- getTrendProbability(fit)
@@ -378,17 +365,16 @@ colnames(Count_aliensr) <- "alien_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-aliensr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-aliensr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-aliensr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-aliensr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-aliensr_fixed <- list(Response="alien_SppRich_unweighted", aliensr_fixed_995[,1:4], aliensr_fixed_975[,3:4],
-                      aliensr_fixed_95[,3:4],aliensr_fixed_90[,3:4])
+aliensr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+aliensr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+aliensr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+aliensr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+aliensr_fixed <- list(Response="alien_SppRich_unweighted", aliensr_fixed_995, aliensr_fixed_975[3:4],
+                      aliensr_fixed_95[3:4],aliensr_fixed_90[3:4])
 aliensr_fixed <-data.frame(lapply(aliensr_fixed, function(x) t(data.frame(x))))
 aliensr_fixed
 
 #### alien_Abund ####
-#fit <- readRDS("onestage_unweighted_alien_Abund.rds")
 fit <- readRDS("onestage_alien_Abund.rds")
 
 #prob of trend
@@ -406,17 +392,16 @@ colnames(Count_alienab) <- "alien_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-alienab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-alienab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-alienab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-alienab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-alienab_fixed <- list(Response="alien_abund", alienab_fixed_995[,1:4], alienab_fixed_975[,3:4],
-                      alienab_fixed_95[,3:4],alienab_fixed_90[,3:4])
+alienab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+alienab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+alienab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+alienab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+alienab_fixed <- list(Response="alien_abund", alienab_fixed_995, alienab_fixed_975[3:4],
+                      alienab_fixed_95[3:4],alienab_fixed_90[3:4])
 alienab_fixed <-data.frame(lapply(alienab_fixed, function(x) t(data.frame(x))))
 alienab_fixed
 
 #### abund_nativeSpp ####
-#fit <- readRDS("onestage_unweighted_abund_nativeSpp.rds")
 fit <- readRDS("onestage_abund_nativeSpp.rds")
 
 #prob of trend
@@ -434,17 +419,16 @@ colnames(Count_nativeab) <- "native_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-nativeab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-nativeab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-nativeab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-nativeab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-nativeab_fixed <- list(Response="native_abund", nativeab_fixed_995[,1:4], nativeab_fixed_975[,3:4],
-                       nativeab_fixed_95[,3:4],nativeab_fixed_90[,3:4])
+nativeab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+nativeab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+nativeab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+nativeab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+nativeab_fixed <- list(Response="native_abund", nativeab_fixed_995, nativeab_fixed_975[3:4],
+                       nativeab_fixed_95[3:4],nativeab_fixed_90[3:4])
 nativeab_fixed <-data.frame(lapply(nativeab_fixed, function(x) t(data.frame(x))))
 nativeab_fixed
 
 #### SppRich_nativeSpp ####
-#fit <- readRDS("onestage_unweighted_SppRich_nativeSpp.rds")
 fit <- readRDS("onestage_SppRich_nativeSpp.rds")
 
 #prob of trend
@@ -462,18 +446,17 @@ colnames(Count_nativesr) <- "native_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-nativesr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-nativesr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-nativesr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-nativesr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-nativesr_fixed <- list(Response="native_SppRich", nativesr_fixed_995[,1:4], nativesr_fixed_975[,3:4],
-                       nativesr_fixed_95[,3:4],nativesr_fixed_90[,3:4])
+nativesr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+nativesr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+nativesr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+nativesr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+nativesr_fixed <- list(Response="native_SppRich", nativesr_fixed_995, nativesr_fixed_975[3:4],
+                       nativesr_fixed_95[3:4],nativesr_fixed_90[3:4])
 nativesr_fixed <-data.frame(lapply(nativesr_fixed, function(x) t(data.frame(x))))
 nativesr_fixed
 
 #### EPT_SppRich ####
-fit <- readRDS("onestage_unweighted_EPT_SppRich.rds")
-#fit <- readRDS("onestage_EPT_SppRich.rds")
+fit <- readRDS("onestage_EPT_SppRich.rds")
 
 #prob of trend
 EPTsr_prob <- getTrendProbability(fit)
@@ -490,18 +473,17 @@ colnames(Count_EPTsr) <- "EPT_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-EPTsr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-EPTsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-EPTsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-EPTsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-EPTsr_fixed <- list(Response="EPT_SppRich_unweighted", EPTsr_fixed_995[,1:4], EPTsr_fixed_975[,3:4],
-                    EPTsr_fixed_95[,3:4],EPTsr_fixed_90[,3:4])
+EPTsr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+EPTsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+EPTsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+EPTsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+EPTsr_fixed <- list(Response="EPT_SppRich_unweighted", EPTsr_fixed_995, EPTsr_fixed_975[3:4],
+                    EPTsr_fixed_95[3:4],EPTsr_fixed_90[3:4])
 EPTsr_fixed <-data.frame(lapply(EPTsr_fixed, function(x) t(data.frame(x))))
 EPTsr_fixed
 
 #### EPT_Abund ####
-fit <- readRDS("onestage_unweighted_EPT_Abund.rds")
-#fit <- readRDS("onestage_EPT_Abund.rds")
+fit <- readRDS("onestage_EPT_Abund.rds")
 
 #prob of trend
 EPTab_prob <- getTrendProbability(fit)
@@ -518,17 +500,16 @@ colnames(Count_EPTab) <- "EPT_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-EPTab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-EPTab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-EPTab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-EPTab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-EPTab_fixed <- list(Response="EPT_abund_unweighted", EPTab_fixed_995[,1:4], EPTab_fixed_975[,3:4],
-                    EPTab_fixed_95[,3:4],EPTab_fixed_90[,3:4])
+EPTab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+EPTab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+EPTab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+EPTab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+EPTab_fixed <- list(Response="EPT_abund_unweighted", EPTab_fixed_995, EPTab_fixed_975[3:4],
+                    EPTab_fixed_95[3:4],EPTab_fixed_90[3:4])
 EPTab_fixed <-data.frame(lapply(EPTab_fixed, function(x) t(data.frame(x))))
 EPTab_fixed
 
 #### insect_SppRich ####
-#fit <- readRDS("onestage_unweighted_insect_SppRich.rds")
 fit <- readRDS("onestage_insect_SppRich.rds")
 
 #prob of trend
@@ -546,17 +527,16 @@ colnames(Count_insectsr) <- "insect_sppRich"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-insectsr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-insectsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-insectsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-insectsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-insectsr_fixed <- list(Response="insect_SppRich", insectsr_fixed_995[,1:4], insectsr_fixed_975[,3:4],
-                       insectsr_fixed_95[,3:4],insectsr_fixed_90[,3:4])
+insectsr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+insectsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+insectsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+insectsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+insectsr_fixed <- list(Response="insect_SppRich", insectsr_fixed_995, insectsr_fixed_975[3:4],
+                       insectsr_fixed_95[3:4],insectsr_fixed_90[3:4])
 insectsr_fixed <-data.frame(lapply(insectsr_fixed, function(x) t(data.frame(x))))
 insectsr_fixed
 
 #### insect_Abund ####
-#fit <- readRDS("onestage_unweighted_insect_Abund.rds")
 fit <- readRDS("onestage_insect_Abund.rds")
 
 #prob of trend
@@ -574,36 +554,36 @@ colnames(Count_insectab) <- "insect_abund"
 pp_check(fit, nsamples = 100)
 
 #pull out fixed effects
-insectab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-insectab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-insectab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-insectab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-insectab_fixed <- list(Response="insect_abund", insectab_fixed_995[,1:4], insectab_fixed_975[,3:4],
-                       insectab_fixed_95[,3:4],insectab_fixed_90[,3:4])
+insectab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
+insectab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
+insectab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
+insectab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
+insectab_fixed <- list(Response="insect_abund", insectab_fixed_995, insectab_fixed_975[3:4],
+                       insectab_fixed_95[3:4],insectab_fixed_90[3:4])
 insectab_fixed <-data.frame(lapply(insectab_fixed, function(x) t(data.frame(x))))
 insectab_fixed
 
 #### assemble all model estimates from meta-analysis models #####
 
-Yr_metaanaly_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixed, turn_fixed, 
+Yr_OneStage_Ests <- rbind(srr_fixed, shH_fixed, e10_fixed, abund_fixed, turn_fixed, 
                            fto_fixed, fric_fixed, feve_fixed, fdiv_fixed, raoq_fixed, FRed_fixed, aliensr_fixed,
                            alienab_fixed, nativesr_fixed, nativeab_fixed, EPTsr_fixed, EPTab_fixed,
-                           insectsr_fixed, insectab_fixed)
-write.csv(Yr_metaanaly_Ests, "Yr_metaanaly_Ests.csv")
+                           insectsr_fixed, insectab_fixed) #sr_fixed, 
+write.csv(Yr_OneStage_Ests, "Yr_OneStage_Ests.csv")
 
 #### assemble all probabilities of increases/decreases from meta-analysis models #####
 
-Yr_metaanaly_probs <- rbind(sr_prob, srr_prob, shH_prob, e10_prob, ab_prob, turn_prob, 
+Yr_OneStage_probs <- rbind(sr_prob, srr_prob, shH_prob, e10_prob, ab_prob, turn_prob, 
                             fto_prob, fric_prob, feve_prob, fdiv_prob, raoq_prob, FRed_prob, aliensr_prob,
                             alienab_prob, nativesr_prob, nativeab_prob, EPTsr_prob, EPTab_prob,
                             insectsr_prob, insectab_prob)
-write.csv(Yr_metaanaly_probs, "Yr_metaanaly_probabilities.csv")
+write.csv(Yr_OneStage_probs, "Yr_OneStage_probabilities.csv")
 
 #### assemble model counts from Parento k diagnostic values from meta-analysis models #####
 
-Yr_metaanaly_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Count_ab, Count_turn, Count_fto,
+Yr_OneStage_parento <- cbind(Count_sr, Count_srr, Count_shH, Count_e10, Count_ab, Count_turn, Count_fto,
                               Count_fric, Count_feve, Count_fdiv, Count_raoq, Count_FRed, Count_aliensr,
                               Count_alienab, Count_nativesr, Count_nativeab, Count_EPTsr, Count_EPTab,
                               Count_insectsr, Count_insectab)
-rownames(Yr_metaanaly_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
-write.csv(Yr_metaanaly_parento, "Yr_meta_parento_ModelCounts.csv")
+rownames(Yr_OneStage_parento) <- c("good[-Inf, 0.5]","ok[0.5, 0.7]","bad[0.7, 1]","verybad[1, Inf]")
+write.csv(Yr_OneStage_parento, "Yr_OneStage_parento_ModelCounts.csv")
