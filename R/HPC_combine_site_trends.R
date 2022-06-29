@@ -22,7 +22,6 @@ countryTrends <- do.call(rbind,countryTrends)
 names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level.rds")
 
-
 #check we have all data
 
 #get lists of tasks
@@ -119,6 +118,10 @@ countryTrends <- lapply(trendsFiles,function(x){
 countryTrends <- do.call(rbind,countryTrends)
 names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaverages.rds")
+
+### site-level MA higher threshold ####
+
+#some missing - check
 
 ### moving average yr syntheses! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta")
