@@ -1,11 +1,11 @@
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+#setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 #
 rm(list=ls())
 
 library(lubridate)
 
 ##attach data
-sites <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) # change file name according to the time series to be analyzed
+sites <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) # change file name according to the time series to be analyzed
 #delete missing data rows
 DATA2 <- sites[!is.na(sites$site_id_wMissing),]
 
@@ -23,7 +23,7 @@ head(yearcount)
 #subset for sites with more years
 siteslater_long <- yearcount[which(yearcount$year > 14), ]
 head(siteslater_long)
-nrow(siteslater_long)
+nrow(siteslater_long)#556
 
 #subset full dataset for sites with at least 15yrs of data in 2000 or later
 library(data.table)
@@ -45,17 +45,14 @@ SufficientSites <- lapply(2000:2014, function(x){
 SufficientSites <- do.call(rbind, SufficientSites)
 SufficientSites$country <- allYrs$country[match(SufficientSites$site_id,allYrs$site_id)]
 SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
-#SufficientSites <- rbind(SufficientSites,SufficientSites,SufficientSites)
-##E10, FEve, F_to
-SufficientSites$Response <- c(rep("turnover",nrow(SufficientSites)))
-
+SufficientSites <- rbind(SufficientSites,SufficientSites,SufficientSites)
 #SufficientSites$Response <- c(rep("E10",nrow(SufficientSites)/3),
 #                              rep("FEve", nrow(SufficientSites)/3),
 #                              rep("F_to", nrow(SufficientSites)/3))
 #SufficientSites$Response <- c(rep("FRic",nrow(SufficientSites)/2),
 #                             rep("FRed", nrow(SufficientSites)/2))
-#SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
-#                              rep("spp_richness", nrow(SufficientSites)/2))
+SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
+                              rep("spp_richness", nrow(SufficientSites)/2))
 SufficientSites$TaskID <- 1:nrow(SufficientSites)
 
 #write.table(SufficientSites,"outputs/MovingAverage_TaskIDs.csv",sep=",",row.names=FALSE)
@@ -63,9 +60,12 @@ SufficientSites$TaskID <- 1:nrow(SufficientSites)
 #get task id
 #TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs.csv",as.is=T)
 TaskID <- SufficientSites
-nrow(TaskID)#748
+nrow(TaskID)#312
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
+#convert allYrs back to data frame
+allYrs <- as.data.frame(allYrs)
+  
 ### country ###
 myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
 allYrs <- subset(allYrs,country==myCountry)
@@ -194,6 +194,7 @@ trends <- lapply(allsites, function(x){
 trends <- data.frame(do.call(rbind, trends))
 trends$siteID <- allsites
 
+saveRDS(trends, file=paste0("trendsHTMV__",myResponse,"__",myCountry,"__",StartYear,".RDS"))
 
 
 
