@@ -13,7 +13,7 @@ DATA2 <- sites[!is.na(sites$site_id_wMissing),]
 DATA2$turnover <- as.numeric(DATA2$turnover)
 
 #subset by year
-sites_later <- DATA2[ which(DATA2$year > 1999), ]
+sites_later <- subset(DATA2,year > 1999)
 head(sites_later)
 
 #count number of sampling years per site
@@ -21,15 +21,13 @@ yearcount <- aggregate(year ~ site_id, data = sites_later, FUN = length)
 head(yearcount)
 
 #subset for sites with more years
-siteslater_long <- yearcount[which(yearcount$year > 14), ]
+siteslater_long <- yearcount[which(yearcount$year > 14),]
 head(siteslater_long)
 nrow(siteslater_long)#556
 
 #subset full dataset for sites with at least 15yrs of data in 2000 or later
-library(data.table)
-allYrs <- setDT(sites_later, key = 'site_id')[J(siteslater_long)]
+allYrs <- subset(sites_later, site_id %in% siteslater_long$site_id)
 head(allYrs)
-
 
 #to create the TaskID's
 timeWindow <- 10
@@ -55,16 +53,13 @@ SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
                               rep("spp_richness", nrow(SufficientSites)/2))
 SufficientSites$TaskID <- 1:nrow(SufficientSites)
 
-#write.table(SufficientSites,"outputs/MovingAverage_TaskIDs.csv",sep=",",row.names=FALSE)
+#write.table(SufficientSites,"outputs/MovingAverageHigherThreshold_TaskIDs.csv",sep=",",row.names=FALSE)
 
 #get task id
 #TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs.csv",as.is=T)
 TaskID <- SufficientSites
-nrow(TaskID)#312
+nrow(TaskID)#468
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
-
-#convert allYrs back to data frame
-allYrs <- as.data.frame(allYrs)
   
 ### country ###
 myCountry <- TaskID$country[which(TaskID$TaskID==task.id)]
