@@ -274,8 +274,7 @@ senss <- rbind(sens1, sens2)
 
 saveRDS(senss,file="sensitiv_seasonDiff.rds")
 
-############################################
-## seasonTrends
+### seasonTrends #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends")
 path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends"
 
