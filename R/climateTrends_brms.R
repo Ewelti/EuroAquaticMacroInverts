@@ -38,11 +38,11 @@ hist(allYrs$tmax_C_12moPrior)
 site100000001<-allYrs[which(allYrs$site_id=="100000001"),]
 
 #simplest model:
-fit1 <- brm(ppt_mm_12moPrior ~ cYear, data = site100000001,family = poisson())
+fit1 <- brm(ppt_mm_12moPrior ~ cYear, data = site100000001,family = gaussian())
 modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
 
 #see what the default priors are
-get_prior(ppt_mm_12moPrior ~ cYear, data = site100000001, family = poisson())
+get_prior(ppt_mm_12moPrior ~ cYear, data = site100000001, family = gaussian())
 
 #set priors now
 prior1 = c(set_prior("normal(0,0.5)", class = "ar"), #I don't know what/if to change here
