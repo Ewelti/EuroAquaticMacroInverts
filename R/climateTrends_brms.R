@@ -60,12 +60,12 @@ trends <- NULL
 for(i in unique(allYrs$site_id)){
   tryCatch({
   sub <- allYrs[allYrs$site_id == i, ]
-  fit1 <- brm(ppt_mm_12moPrior ~ cYear + ar(time = iYear, p = 1),data = sub, family = gaussian())
+  fit1 <- brm(ppt_mm_12moPrior ~ cYear, data = sub, family = gaussian())
   trend.i <- fixef(fit1, pars="cYear")[1, c(1,2)]
   trend.i <- data.frame(site_id = i, 
                         t(trend.i))
   trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
-    }, error=function(e){cat(unique(sub$site),conditionMessage(e), "\n")})
+    }, error=function(e){cat(unique(sub$site_id),conditionMessage(e), "\n")})
 } ; rm(i)
 
 #order site results
