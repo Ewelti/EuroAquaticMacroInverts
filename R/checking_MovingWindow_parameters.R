@@ -1,6 +1,7 @@
 #### set working directory
 setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
 
+###############################################
 #### import data and library
 ma_ests <- read.csv("movingAve_YrEsts.csv")
 head(ma_ests)
@@ -17,7 +18,7 @@ sr <- ma[ma$Response == "spp_richness",]
 library(data.table)
 
 ##########################################
-## check changes in error over time
+## check changes in estimate error over time
 
 ab_est$MeanYear <- as.numeric(ab_est$StartYear) + 4.5
 ab_est_mw <- ab_est[ab_est$MeanYear > 1994,]
@@ -39,7 +40,8 @@ ylab="Estimated error of taxon richness trend", xlab="Mean year of moving window
 points (sr_est_mw$Est.Error ~sr_est_mw$MeanYear, type="l")
 
 #######################################
-## check the proportion of sites with positive versus negative trends over time
+#### check the proportion of sites with 
+#### positive versus negative trends over time
 
 ab_pos <- ab[ab$estimate > 0,]
 ab_neg <- ab[ab$estimate < 0,]
@@ -82,4 +84,70 @@ ylab="# sites with positive/negative trends in Abundance", xlab="Mean year of mo
 points (count_sign_mw$ab_posnegR ~count_sign_mw$MeanYear, type="l")
 abline(h=1, lty=2, col="grey60")
 ###############################################################################
+
+#### check average number of years sampled per time series
+#### in each year of the moving window analysis
+
+## attach data
+DATA1_list <- read.csv("All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T)
+allYrs <- DATA1_list[!is.na(DATA1_list$site_id_wMissing),]
+attach(allYrs)
+head(allYrs)
+
+#### loop to count years in moving window analysis
+
+#######WARNING: takes a few hours to run
+
+years <- 1968:2016
+count <- NULL
+for(i in unique(allYrs$site_id)){
+for(j in unique(years)) {
+  tryCatch({
+	
+	timespan <- 10 #window length
+
+      allYrsS <- subset(allYrs, year_wMissing >= j) #restrict to time period of interest
+      allYrsS <- subset(allYrsS, year_wMissing < (j+timespan))
+
+ 	study_periods <- tapply(allYrsS$year_wMissing,allYrsS$site_id, #restrict to studies with sufficient data in this time period - 6 years
+                          function(x)length(unique(x)))
+  	allYrsS <- subset(allYrsS, site_id %in% 
+                      names(study_periods)[study_periods>=6])
+
+	sub <- allYrsS[allYrsS$site_id == i, ]
+	count.i <- nrow(sub) 
+
+    	count.i <- data.frame(site = i, startyear = j,count.i)
+    	count <- rbind(count, count.i) ; rm(count.i, sub)
+
+  }, error=function(e){cat(unique(sub$site),conditionMessage(e), "\n")})
+}} ; rm(i,j)
+
+####
+count_nz <- count[count$count.i > 0,]
+head(count_nz)
+
+write.csv(count_nz, "yearcount_sitelevel_MovingWindow.csv")
+count_nz <- read.csv("yearcount_sitelevel_MovingWindow.csv")
+
+####
+## get mean number of years sampled per site/time series 
+## with each moving window period
+
+mean_yr_count <- aggregate(count_nz$count.i, list(count_nz$startyear), FUN = mean)
+colnames(mean_yr_count) <- c("startyear", "count.i")
+head(mean_yr_count)
+
+## plot # mean years sampled over moving window years
+
+mean_yr_count$MeanYear <- as.numeric(mean_yr_count$startyear) + 4.5
+mean_yr_count_mw <- mean_yr_count[mean_yr_count$MeanYear > 1994,]
+
+plot(mean_yr_count_mw$count.i ~mean_yr_count_mw$MeanYear, ylim=c(6,9),xlim= c(1994,2019), pch=19,
+ylab="Mean number of sampled years", xlab="Mean year of moving window")
+points (mean_yr_count_mw$count.i ~mean_yr_count_mw$MeanYear, type="l")
+
+#########################################
+
+
 
