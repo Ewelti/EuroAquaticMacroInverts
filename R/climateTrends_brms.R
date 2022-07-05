@@ -78,7 +78,37 @@ head(tmax_df)
 nrow(tmax_df)
 ##############################################
 
+#dianas attempt
 
+trends <- NULL
+
+for(i in unique(allYrs$site_id)){
+  
+    #subset dataset to focal site
+    sub <- allYrs[allYrs$site_id == i, ]
+    
+    #remove NAs
+    sub <- subset(sub, !is.na(ppt_mm_12moPrior))
+    
+    #define model -only needed on first run - after that we call the file
+    #prior1 = c(set_prior("normal(0,10)", class = "b"))
+    #myCode <- make_stancode(ppt_mm_12moPrior ~ cYear, data = sub, 
+    #                        prior = prior1, save_model = "climate_stan_model")
+    
+    #define data
+    myData <- make_standata(ppt_mm_12moPrior ~ cYear, data = sub)
+    myData$meanResponse <- round(median(sub$ppt_mm_12moPrior), 1)
+    myData$sdResponse <- max(round(mad(sub$ppt_mm_12moPrior), 1), 2.5)
+    
+    #run model
+    fi1 <-stan('climate_stan_model.stan', 
+                       data = myData, chains = 4,iter = 1000)
+    
+    trend.i <- fixef(fit1, pars="cYear")[1,1]
+    trend.i <- data.frame(site_id = i, trend = trend.i)
+    trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+    
+}
 
 
 
