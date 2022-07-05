@@ -6,7 +6,6 @@ data {
   vector[N] Y;  // response variable
   int<lower=1> K;  // number of population-level effects
   matrix[N, K] X;  // population-level design matrix
-  int prior_only;  // should the likelihood be ignored?
   real meanResponse; //mean value of data
   real sdResponse; //sd value of data
 }
@@ -33,11 +32,7 @@ transformed parameters {
 }
 model {
   // likelihood including constants
-  if (!prior_only) {
     target += normal_id_glm_lpdf(Y | Xc, Intercept, b, sigma);
-  }
-  // priors including constants
-  target += lprior;
 }
 generated quantities {
   // actual population-level intercept
