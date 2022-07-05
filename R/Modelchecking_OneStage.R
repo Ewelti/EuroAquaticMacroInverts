@@ -369,7 +369,7 @@ aliensr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
 aliensr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
 aliensr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
 aliensr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
-aliensr_fixed <- list(Response="alien_SppRich_unweighted", aliensr_fixed_995, aliensr_fixed_975[3:4],
+aliensr_fixed <- list(Response="alien_SppRich", aliensr_fixed_995, aliensr_fixed_975[3:4],
                       aliensr_fixed_95[3:4],aliensr_fixed_90[3:4])
 aliensr_fixed <-data.frame(lapply(aliensr_fixed, function(x) t(data.frame(x))))
 aliensr_fixed
@@ -477,7 +477,7 @@ EPTsr_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
 EPTsr_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
 EPTsr_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
 EPTsr_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
-EPTsr_fixed <- list(Response="EPT_SppRich_unweighted", EPTsr_fixed_995, EPTsr_fixed_975[3:4],
+EPTsr_fixed <- list(Response="EPT_SppRich", EPTsr_fixed_995, EPTsr_fixed_975[3:4],
                     EPTsr_fixed_95[3:4],EPTsr_fixed_90[3:4])
 EPTsr_fixed <-data.frame(lapply(EPTsr_fixed, function(x) t(data.frame(x))))
 EPTsr_fixed
@@ -504,7 +504,7 @@ EPTab_fixed_995 <- fixef(fit, probs = c(0.005, 0.995))[2,]
 EPTab_fixed_975 <- fixef(fit, probs = c(0.025, 0.975))[2,]
 EPTab_fixed_95 <- fixef(fit, probs = c(0.05, 0.95))[2,]
 EPTab_fixed_90 <- fixef(fit, probs = c(0.1, 0.9))[2,]
-EPTab_fixed <- list(Response="EPT_abund_unweighted", EPTab_fixed_995, EPTab_fixed_975[3:4],
+EPTab_fixed <- list(Response="EPT_abund", EPTab_fixed_995, EPTab_fixed_975[3:4],
                     EPTab_fixed_95[3:4],EPTab_fixed_90[3:4])
 EPTab_fixed <-data.frame(lapply(EPTab_fixed, function(x) t(data.frame(x))))
 EPTab_fixed
@@ -565,10 +565,10 @@ insectab_fixed
 
 #### assemble all model estimates from meta-analysis models #####
 
-Yr_OneStage_Ests <- rbind(srr_fixed, shH_fixed, e10_fixed, abund_fixed, turn_fixed, 
+Yr_OneStage_Ests <- rbind(sr_fixed, srr_fixed, shH_fixed, e10_fixed, abund_fixed, turn_fixed, 
                            fto_fixed, fric_fixed, feve_fixed, fdiv_fixed, raoq_fixed, FRed_fixed, aliensr_fixed,
                            alienab_fixed, nativesr_fixed, nativeab_fixed, EPTsr_fixed, EPTab_fixed,
-                           insectsr_fixed, insectab_fixed) #sr_fixed, 
+                           insectsr_fixed, insectab_fixed)
 write.csv(Yr_OneStage_Ests, "Yr_OneStage_Ests.csv")
 
 #### assemble all probabilities of increases/decreases from meta-analysis models #####
