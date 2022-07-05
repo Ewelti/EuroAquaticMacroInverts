@@ -37,6 +37,19 @@ hist(allYrs$tmax_C_12moPrior)
 #fit trend model to a single time-series
 site100000001<-allYrs[which(allYrs$site_id=="100000001"),]
 
+myD <- make_standata(ppt_mm_12moPrior ~ cYear, data = site100000001)
+myD$meanResponse <- round(median(site100000001$ppt_mm_12moPrior), 1)
+myD$sdResponse <- max(round(mad(site100000001$ppt_mm_12moPrior), 1), 2.5)
+fit1 <-stan('climate_stan_model.stan', 
+            data = myD, chains = 4,iter = 1000)
+trend.i <- (extract(fit1, pars="b[1]",permuted = FALSE))
+trend.i <- as.matrix(fit1, pars = c("b[1]"))
+head(trend.i)
+fit_summary <- summary(fit1, pars = c("b[1]"))$summary
+trend.i <- fit_summary[,1]
+
+print(mu_tau_summary)
+
 #simplest model:
 fit1 <- brm(ppt_mm_12moPrior ~ cYear, data = site100000001,family = gaussian())
 modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
@@ -104,7 +117,8 @@ for(i in unique(allYrs$site_id)){
     fit1 <-stan('climate_stan_model.stan', 
                        data = myData, chains = 4,iter = 1000)
     
-    trend.i <- fixef(fit1, pars="cYear")[1,1]
+    fit_summary <- summary(fit1, pars = c("b[1]"))$summary
+    trend.i <- fit_summary[,1]
     trend.i <- data.frame(site_id = i, trend = trend.i)
     trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
     
