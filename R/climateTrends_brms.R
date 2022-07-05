@@ -48,50 +48,9 @@ head(trend.i)
 fit_summary <- summary(fit1, pars = c("b[1]"))$summary
 trend.i <- fit_summary[,1]
 
-print(mu_tau_summary)
-
-#simplest model:
-fit1 <- brm(ppt_mm_12moPrior ~ cYear, data = site100000001,family = gaussian())
-modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
-
-#see what the default priors are
-get_prior(ppt_mm_12moPrior ~ cYear, data = site100000001, family = gaussian())
-
-#set priors now
-prior1 = c(set_prior("normal(0,0.5)", class = "ar"), #I don't know what/if to change here
-          set_prior("normal(0,5)", class = "b"))
-
-#including autocorrelation (of the residuals)
-fit1 <- brm(ppt_mm_12moPrior ~ cYear + ar(time = iYear, p = 1),data = site100000001, family = gaussian())
-summary(fit1)
-modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
-
-
-#######################################
-#### loop to run precip trends for all sites
-trends <- NULL
-for(i in unique(allYrs$site_id)){
-  tryCatch({
-  sub <- allYrs[allYrs$site_id == i, ]
-  fit1 <- brm(ppt_mm_12moPrior ~ cYear, data = sub, family = gaussian())
-  trend.i <- fixef(fit1, pars="cYear")[1, c(1,2)]
-  trend.i <- data.frame(site_id = i, 
-                        t(trend.i))
-  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
-    }, error=function(e){cat(unique(sub$site_id),conditionMessage(e), "\n")})
-} ; rm(i)
-
-#order site results
-tmax_df <- trends[order(trends$site_id),]
-
-#rename gls output
-xn <- c("ppt_site", "ppt_Est", "ppt_Error")
-    colnames(tmax_df) <- xn
-head(tmax_df)
-nrow(tmax_df)
 ##############################################
 
-#dianas attempt
+##### Precipitation trends
 
 trends <- NULL
 
@@ -124,47 +83,15 @@ for(i in unique(allYrs$site_id)){
     
 }
 
+#order site results
+ppt_df <- trends[order(trends$site_id),]
+head(ppt_df)
 
+#rename output variables
+xn <- c("site", "ppt_Est")
+colnames(ppt_df) <- xn
+nrow(ppt_df)
+
+write.csv(ppt_df, "precipitation_trends.csv")
 
 ######################################################
-
-# try using a function to run model
-fitStanModel <- function(mydata){
-    myformula <- bf(ppt_mm_12moPrior ~ cYear + ar(time = iYear, p = 1))
-  
-  	#fit model
-  	fit1 <- brm(myformula, data = mydata, family = gaussian(), prior = prior1, refresh = 0)
-  
-  		#extract model fits
-  		modelSummary <- fixef(fit1, pars="cYear")[1, c(1,2)]
-  		return(modelSummary)
-}
-
-#apply function to an example dataset
-e <- fitStanModel(allYrs[which(allYrs$site_id=="100000001"),])
-
-
-#loop that always crashes
-for(i in unique(allYrs$site_id)){
-  tryCatch({
-    sub <- allYrs[allYrs$site_id == i, ]
-    trend.i <- fitStanModel(sub)
-    trend.i <- data.frame(site = i, 
-                        t(trend.i))
-   write.table(trend.i, file="precip_brms_trends.txt", 
-              append=TRUE, row.names=FALSE, sep=",") 
-  }, error=function(e){cat(unique(sub$site),conditionMessage(e), "\n")})
-} ; rm(i)
-
-#write to a text file during model fitting - to see where it is going wrong
-
-for(i in unique(allYrs$site_id)){
-  sub <- allYrs[allYrs$site_id == i, ]
-  trend.i <- fitStanModel(sub)
-  trend.i <- data.frame(site = i, 
-                        t(trend.i))
-  write.table(trend.i, file="sppRich_modelOutput.txt", 
-              append=TRUE, row.names=FALSE, sep=",") 
-}
-############################################################
-
