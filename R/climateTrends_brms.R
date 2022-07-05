@@ -101,7 +101,7 @@ for(i in unique(allYrs$site_id)){
     myData$sdResponse <- max(round(mad(sub$ppt_mm_12moPrior), 1), 2.5)
     
     #run model
-    fi1 <-stan('climate_stan_model.stan', 
+    fit1 <-stan('climate_stan_model.stan', 
                        data = myData, chains = 4,iter = 1000)
     
     trend.i <- fixef(fit1, pars="cYear")[1,1]
