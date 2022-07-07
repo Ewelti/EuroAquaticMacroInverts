@@ -95,3 +95,52 @@ nrow(ppt_df)
 write.csv(ppt_df, "precipitation_trends.csv")
 
 ######################################################
+##### Temperature trends
+
+trends <- NULL
+
+for(i in unique(allYrs$site_id)){
+  tryCatch({
+  
+  #subset dataset to focal site
+  sub <- allYrs[allYrs$site_id == i, ]
+  
+  #remove NAs
+  sub <- subset(sub, !is.na(tmax_C_12moPrior))
+  
+  #define model -only needed on first run - after that we call the file
+  #prior1 = c(set_prior("normal(0,10)", class = "b"))
+  #myCode <- make_stancode(tmax_C_12moPrior ~ cYear, data = sub, 
+  #                        prior = prior1, save_model = "climate_stan_model")
+  
+  #define data
+  myData <- make_standata(tmax_C_12moPrior ~ cYear, data = sub)
+  myData$meanResponse <- round(median(sub$tmax_C_12moPrior), 1)
+  myData$sdResponse <- max(round(mad(sub$tmax_C_12moPrior), 1), 2.5)
+  
+  #run model
+  fit1 <-stan('climate_stan_model.stan', 
+              data = myData, chains = 4,iter = 1000)
+  
+  fit_summary <- summary(fit1, pars = c("b[1]"))$summary
+  trend.i <- fit_summary[,1]
+  trend.i <- data.frame(site_id = i, trend = trend.i)
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+  
+  }, error=function(e){cat(unique(sub$site_id),conditionMessage(e), "\n")})
+  
+}
+
+#order site results
+tmax_df <- trends[order(trends$site_id),]
+head(tmax_df)
+
+
+#rename output variables
+xn <- c("site", "tmax_Est")
+colnames(tmax_df) <- xn
+nrow(tmax_df)
+
+write.csv(tmax_df, "temperature_trends.csv")
+
+#################################################################
