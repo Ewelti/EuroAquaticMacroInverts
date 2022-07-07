@@ -98,10 +98,10 @@ write.csv(ppt_df, "precipitation_trends.csv")
 
 trends <- NULL
 
-for(i in 1:length(unique(allYrs$site_id))){
+for(i in unique(allYrs$site_id)){
   
   #subset dataset to focal site
-  sub <- allYrs[allYrs$site_id == sort(unique(allYrs$site_id))[1], ]
+  sub <- allYrs[allYrs$site_id == i, ]
   
   #remove NAs
   sub <- subset(sub, !is.na(tmax_C_12moPrior))
@@ -129,7 +129,7 @@ for(i in 1:length(unique(allYrs$site_id))){
 
 #order site results
 tmax_df <- trends[order(trends$site_id),]
-head(ppt_df)
+head(tmax_df)
 
 #rename output variables
 xn <- c("site", "tmax_Est")
