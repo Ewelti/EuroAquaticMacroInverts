@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
+setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 #install.packages("brms")
 # if (!require(devtools)) {
@@ -17,7 +17,7 @@ rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
 
 #load data
-allYrs <- read.csv("All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T)
+allYrs <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T)
 head(allYrs)
 
 ##############################make more date variables
@@ -73,7 +73,7 @@ for(i in unique(allYrs$site_id)){
     myData$sdResponse <- max(round(mad(sub$ppt_mm_12moPrior), 1), 2.5)
     
     #run model
-    fit1 <-stan('climate_stan_model.stan', 
+    fit1 <-stan('outputs/climate_stan_model.stan', 
                        data = myData, chains = 4,iter = 1000)
     
     fit_summary <- summary(fit1, pars = c("b[1]"))$summary
@@ -94,4 +94,46 @@ nrow(ppt_df)
 
 write.csv(ppt_df, "precipitation_trends.csv")
 
-######################################################
+### temperature
+
+trends <- NULL
+
+for(i in 1:length(unique(allYrs$site_id))){
+  
+  #subset dataset to focal site
+  sub <- allYrs[allYrs$site_id == sort(unique(allYrs$site_id))[1], ]
+  
+  #remove NAs
+  sub <- subset(sub, !is.na(tmax_C_12moPrior))
+  
+  #define model -only needed on first run - after that we call the file
+  #prior1 = c(set_prior("normal(0,1)", class = "b"))
+  #myCode <- make_stancode(tmax_C_12moPrior ~ cYear, data = sub, 
+  #                        prior = prior1, save_model = "climate_stan_model")
+  
+  #define data
+  myData <- make_standata(tmax_C_12moPrior ~ cYear, data = sub)
+  myData$meanResponse <- round(median(sub$tmax_C_12moPrior), 1)
+  myData$sdResponse <- max(round(mad(sub$tmax_C_12moPrior), 1), 2.5)
+  
+  #run model
+  fit1 <-stan('outputs/climate_stan_model.stan', 
+              data = myData, chains = 4,iter = 1000)
+  
+  fit_summary <- summary(fit1, pars = c("b[1]"))$summary
+  trend.i <- fit_summary[,1]
+  trend.i <- data.frame(site_id = i, trend = trend.i)
+  trends <- rbind(trends, trend.i) ; rm(trend.i, sub)
+  
+}
+
+#order site results
+ppt_df <- trends[order(trends$site_id),]
+head(ppt_df)
+
+#rename output variables
+xn <- c("site", "ppt_Est")
+colnames(ppt_df) <- xn
+nrow(ppt_df)
+
+write.csv(ppt_df, "precipitation_trends.csv")
