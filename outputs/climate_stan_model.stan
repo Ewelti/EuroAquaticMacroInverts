@@ -25,7 +25,7 @@ parameters {
 }
 transformed parameters {
   real lprior = 0;  // prior contributions to the log posterior
-  lprior += normal_lpdf(b | 0,10);
+  lprior += normal_lpdf(b | 0,1);
   lprior += student_t_lpdf(Intercept | 3, meanResponse, sdResponse);
   lprior += student_t_lpdf(sigma | 3, 0, sdResponse)
     - 1 * student_t_lccdf(0 | 3, 0, sdResponse);
