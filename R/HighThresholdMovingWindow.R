@@ -43,7 +43,7 @@ SufficientSites <- lapply(2000:2014, function(x){
 SufficientSites <- do.call(rbind, SufficientSites)
 SufficientSites$country <- allYrs$country[match(SufficientSites$site_id,allYrs$site_id)]
 SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
-SufficientSites <- rbind(SufficientSites,SufficientSites,SufficientSites)
+SufficientSites <- rbind(SufficientSites,SufficientSites)
 #SufficientSites$Response <- c(rep("E10",nrow(SufficientSites)/3),
 #                              rep("FEve", nrow(SufficientSites)/3),
 #                              rep("F_to", nrow(SufficientSites)/3))
