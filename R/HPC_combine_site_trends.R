@@ -121,7 +121,15 @@ saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaverages.rds")
 
 ### site-level MA higher threshold ####
 
-#some missing - check
+TaskIDs <- read.csv("outputs/MovingAverageHigherThreshold_TaskIDs.csv")
+originalTasks <- paste(TaskIDs$Response, TaskIDs$country, TaskIDs$StartYear, sep="__")
+
+modelFiles <- list.files("~/Dropbox/Collabs/Ellen/Ellen_HTMV/17929722")
+modelTasks <- gsub("trendsHTMV__", "", modelFiles)
+modelTasks <- gsub(".RDS", "", modelTasks)
+
+originalTasks[!originalTasks %in% modelTasks]
+#all ran!!
 
 ### moving average yr syntheses! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta")
