@@ -56,7 +56,6 @@ SufficientSites$TaskID <- 1:nrow(SufficientSites)
 #write.table(SufficientSites,"outputs/MovingAverageHigherThreshold_TaskIDs.csv",sep=",",row.names=FALSE)
 
 #get task id
-#TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs.csv",as.is=T)
 TaskID <- SufficientSites
 nrow(TaskID)#468
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
