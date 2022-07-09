@@ -43,14 +43,14 @@ SufficientSites <- lapply(2000:2014, function(x){
 SufficientSites <- do.call(rbind, SufficientSites)
 SufficientSites$country <- allYrs$country[match(SufficientSites$site_id,allYrs$site_id)]
 SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
-SufficientSites <- rbind(SufficientSites,SufficientSites)
-#SufficientSites$Response <- c(rep("E10",nrow(SufficientSites)/3),
-#                              rep("FEve", nrow(SufficientSites)/3),
-#                              rep("F_to", nrow(SufficientSites)/3))
-#SufficientSites$Response <- c(rep("FRic",nrow(SufficientSites)/2),
-#                             rep("FRed", nrow(SufficientSites)/2))
-SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
-                              rep("spp_richness", nrow(SufficientSites)/2))
+SufficientSites <- rbind(SufficientSites,SufficientSites,SufficientSites)
+
+#SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
+#                              rep("spp_richness", nrow(SufficientSites)/2))
+SufficientSites$Response <- c(rep("simpsonsD",nrow(SufficientSites)/3),
+                              rep("shannonsH", nrow(SufficientSites)/3),
+                              rep("evennessJ", nrow(SufficientSites)/3))
+
 SufficientSites$TaskID <- 1:nrow(SufficientSites)
 
 #write.table(SufficientSites,"outputs/MovingAverageHigherThreshold_TaskIDs.csv",sep=",",row.names=FALSE)
