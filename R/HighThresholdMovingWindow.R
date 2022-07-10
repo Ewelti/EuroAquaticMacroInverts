@@ -47,9 +47,14 @@ SufficientSites <- rbind(SufficientSites,SufficientSites,SufficientSites)
 
 #SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
 #                              rep("spp_richness", nrow(SufficientSites)/2))
-SufficientSites$Response <- c(rep("simpsonsD",nrow(SufficientSites)/3),
-                              rep("shannonsH", nrow(SufficientSites)/3),
-                              rep("evennessJ", nrow(SufficientSites)/3))
+
+#SufficientSites$Response <- c(rep("simpsonsD",nrow(SufficientSites)/3),
+#                              rep("shannonsH", nrow(SufficientSites)/3),
+#                              rep("evennessJ", nrow(SufficientSites)/3))
+
+SufficientSites$Response <- c(rep("spp_rich_rare",nrow(SufficientSites)/3),
+                              rep("FRic", nrow(SufficientSites)/3),
+                              rep("FRed", nrow(SufficientSites)/3))
 
 SufficientSites$TaskID <- 1:nrow(SufficientSites)
 
