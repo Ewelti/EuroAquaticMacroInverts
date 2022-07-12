@@ -129,7 +129,27 @@ modelFiles <- list.files("~/Dropbox/Collabs/Ellen/Ellen_HTMV")
 modelTasks <- gsub("trendsHTMV__", "", modelFiles)
 modelTasks <- gsub(".RDS", "", modelTasks)
 modelResponse <- sapply(modelTasks, function(x) strsplit(x,"__")[[1]][1])
-table(modelResponse)
+table(modelResponse)#all present!!
+
+#combine all
+countryTrends <- lapply(modelFiles,function(x){
+  
+  temp <- readRDS(paste("~/Dropbox/Collabs/Ellen/Ellen_HTMV",x,sep="/"))
+  
+  #add on response from file name
+  if(nrow(temp)>0){
+    temp$Response <- strsplit(as.character(x),"__")[[1]][2]
+    temp$StartYear <- strsplit(as.character(x),"__")[[1]][4]
+    temp$StartYear <- gsub(".RDS","",temp$StartYear)
+    #temp$country <- strsplit(as.character(x),"__")[[1]][3]
+  }
+  return(temp)
+  
+})
+
+countryTrends <- do.call(rbind,countryTrends)
+names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
+saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaveragesHTMV.rds")
 
 ### moving average yr syntheses! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta")
