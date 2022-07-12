@@ -57,5 +57,4 @@ fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
                            max_treedepth = 12))
 
 ### save output ####
-
 saveRDS(fit1,file=paste0("metaanalysis_movingaverage_higherthreshold",myResponse,"_",myStartYear,".rds"))
