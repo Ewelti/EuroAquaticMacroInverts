@@ -15,6 +15,7 @@ head(ma)
 ab <- ma[ma$Response == "abundance",]
 sr <- ma[ma$Response == "spp_richness",]
 
+install.packages("data.table")
 library(data.table)
 
 ##########################################
@@ -129,6 +130,15 @@ head(count_nz)
 
 write.csv(count_nz, "yearcount_sitelevel_MovingWindow.csv")
 count_nz <- read.csv("yearcount_sitelevel_MovingWindow.csv")
+
+
+###########################################################
+count_nz$myr <- as.numeric(count_nz$startyear) + 4.5
+count_nz_cut <- count_nz[count_nz$startyear > 1994,]
+
+boxplot(count_nz_cut$count.i ~count_nz_cut$myr, ylab="Sampling Years", xlab="Mean year of moving window")
+
+
 
 ####
 ## get mean number of years sampled per site/time series 
