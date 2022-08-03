@@ -45,114 +45,136 @@ prior1 = c(set_prior("normal(0,10)", class = "b"))
 
 ### run season model ####
 
-#set spring as the reference level
-response_stan$season <- factor(response_stan$season,
-                               levels = c("spring","summer",
-                                          "fall","winter","No Match"))
-
-#differences with respect to spring
-fit1 <- brm(estimate|weights(w) ~ season + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = 4,
-            prior = prior1)
-
-#print output
-fixef(fit1)
-saveRDS(fixef(fit1), file=paste0("fixef_seasonDiff_",myResponse,".rds"))
-
-#differences with respect to spring
-#unweighted
-fit1 <- brm(estimate ~ season + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = 4,
-            prior = prior1)
-
-#print output
-fixef(fit1)
-saveRDS(fixef(fit1), file=paste0("fixef_seasonDiff_unweighted_",myResponse,".rds"))
-
-#with intercept removed - each coefficient represents the mean trend per season
-fit1 <- brm(estimate|weights(w) ~ -1 + season + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = 4,
-            prior = prior1)          
-          
-saveRDS(fixef(fit1), file=paste0("fixef_seasonTrends_",myResponse,".rds"))
-
-
-#with intercept removed - each coefficient represents the mean trend per season
-#unweighted
-fit1 <- brm(estimate ~ -1 + season + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = 4,
-            prior = prior1)          
-
-saveRDS(fixef(fit1), file=paste0("fixef_seasonTrends_unweighted_",myResponse,".rds"))
+# #set spring as the reference level
+# response_stan$season <- factor(response_stan$season,
+#                                levels = c("spring","summer",
+#                                           "fall","winter","No Match"))
+# 
+# #differences with respect to spring
+# fit1 <- brm(estimate|weights(w) ~ season + (1|study_id) + (1|country),
+#             data = response_stan, iter=4000, chains = 4,
+#             prior = prior1)
+# 
+# #print output
+# fixef(fit1)
+# saveRDS(fixef(fit1), file=paste0("fixef_seasonDiff_",myResponse,".rds"))
+# 
+# #differences with respect to spring
+# #unweighted
+# fit1 <- brm(estimate ~ season + (1|study_id) + (1|country),
+#             data = response_stan, iter=4000, chains = 4,
+#             prior = prior1)
+# 
+# #print output
+# fixef(fit1)
+# saveRDS(fixef(fit1), file=paste0("fixef_seasonDiff_unweighted_",myResponse,".rds"))
+# 
+# #with intercept removed - each coefficient represents the mean trend per season
+# fit1 <- brm(estimate|weights(w) ~ -1 + season + (1|study_id) + (1|country),
+#             data = response_stan, iter=4000, chains = 4,
+#             prior = prior1)          
+#           
+# saveRDS(fixef(fit1), file=paste0("fixef_seasonTrends_",myResponse,".rds"))
+# 
+# 
+# #with intercept removed - each coefficient represents the mean trend per season
+# #unweighted
+# fit1 <- brm(estimate ~ -1 + season + (1|study_id) + (1|country),
+#             data = response_stan, iter=4000, chains = 4,
+#             prior = prior1)          
+# 
+# saveRDS(fixef(fit1), file=paste0("fixef_seasonTrends_unweighted_",myResponse,".rds"))
 
 ### run taxonomic resolution model ####
 
-#set species as the default level 
-response_stan$TaxonomicRes <- factor(response_stan$TaxonomicRes,
-                                     levels = c("species","genus","family"))
-
-#difference in trends with respect to species
-fit1 <- brm(estimate|weights(w) ~ TaxonomicRes + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = 4,
-            prior = prior1)
-
-#print output
-fixef(fit1)
-saveRDS(fixef(fit1), file=paste0("fixef_taxonresDiff_",myResponse,".rds"))
-
-#difference in trends with respect to species
-#unweighted
-fit1 <- brm(estimate ~ TaxonomicRes + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = 4,
-            prior = prior1)
-
-#print output
-fixef(fit1)
-saveRDS(fixef(fit1), file=paste0("fixef_taxonresDiff_unweighted",myResponse,".rds"))
-
-
-#trends for each taxonomic group
-fit1 <- brm(estimate|weights(w) ~ -1 + TaxonomicRes + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = 4,
-            prior = prior1)
-
-#print output
-fixef(fit1)
-saveRDS(fixef(fit1), file=paste0("fixef_taxonresTrends_",myResponse,".rds"))
-
-#trends for each taxonomic group
-#unweighted
-fit1 <- brm(estimate ~ -1 + TaxonomicRes + (1|study_id) + (1|country),
-            data = response_stan, iter=4000, chains = 4,
-            prior = prior1)
-
-#print output
-fixef(fit1)
-saveRDS(fixef(fit1), file=paste0("fixef_taxonresTrends_unweighted_",myResponse,".rds"))
-
-### spatial autocorrelation ####
-
-#or use provided distance matrix??
-
-# distance <- as.matrix(dist(response_stan[,c("Longitude_X","Latitude_Y")]))
-# K <- nrow(sr)
-# W <- array(0, c(K, K))
-# W[distance == 1] <- 1 	
+# #set species as the default level 
+# response_stan$TaxonomicRes <- factor(response_stan$TaxonomicRes,
+#                                      levels = c("species","genus","family"))
 # 
-# #lets fiddle with priors later
+# #difference in trends with respect to species
+# fit1 <- brm(estimate|weights(w) ~ TaxonomicRes + (1|study_id) + (1|country),
+#             data = response_stan, iter=4000, chains = 4,
+#             prior = prior1)
 # 
-# #compare models with and without spatial autocorrelation
-# fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + car(W, type="icar"),
-#             data = response_stan, data2 = list(W = W),
-#             iter=4000, chains = n.chains)
-# fit1 <- add_criterion(fit1, "waic")
+# #print output
+# fixef(fit1)
+# saveRDS(fixef(fit1), file=paste0("fixef_taxonresDiff_",myResponse,".rds"))
 # 
-# fit2 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
-#             data = response_stan, data2 = list(W = W),
-#             iter=4000, chains = n.chains)
-# fit2 <- add_criterion(fit2, "waic")
+# #difference in trends with respect to species
+# #unweighted
+# fit1 <- brm(estimate ~ TaxonomicRes + (1|study_id) + (1|country),
+#             data = response_stan, iter=4000, chains = 4,
+#             prior = prior1)
 # 
-# loo(fit1, fit2, cores = getOption("mc.cores", 1))
-# loo_compare(fit1, fit2, criterion = "waic")
+# #print output
+# fixef(fit1)
+# saveRDS(fixef(fit1), file=paste0("fixef_taxonresDiff_unweighted",myResponse,".rds"))
+# 
+# 
+# #trends for each taxonomic group
+# fit1 <- brm(estimate|weights(w) ~ -1 + TaxonomicRes + (1|study_id) + (1|country),
+#             data = response_stan, iter=4000, chains = 4,
+#             prior = prior1)
+# 
+# #print output
+# fixef(fit1)
+# saveRDS(fixef(fit1), file=paste0("fixef_taxonresTrends_",myResponse,".rds"))
+# 
+# #trends for each taxonomic group
+# #unweighted
+# fit1 <- brm(estimate ~ -1 + TaxonomicRes + (1|study_id) + (1|country),
+#             data = response_stan, iter=4000, chains = 4,
+#             prior = prior1)
+# 
+# #print output
+# fixef(fit1)
+# saveRDS(fixef(fit1), file=paste0("fixef_taxonresTrends_unweighted_",myResponse,".rds"))
 
-### end ####
+### taxonomic subsets #######
+
+#weighted
+
+#species
+fit1_sp <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
+            data = subset(response_stan, TaxonomicRes=="species"), 
+            iter=4000, chains = 4,
+            prior = prior1)
+saveRDS(fixef(fit1_sp), file=paste0("fixef_taxonresSpecies_",myResponse,".rds"))
+
+#genus
+fit1_g <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
+               data = subset(response_stan, TaxonomicRes=="genus"), 
+               iter=4000, chains = 4,
+               prior = prior1)
+saveRDS(fixef(fit1_g), file=paste0("fixef_taxonresGenus_",myResponse,".rds"))
+
+#family
+fit1_f <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
+              data = subset(response_stan, TaxonomicRes=="family"), 
+              iter=4000, chains = 4,
+              prior = prior1)
+saveRDS(fixef(fit1_f), file=paste0("fixef_taxonresFamily_",myResponse,".rds"))
+
+#as above but unweighted
+#species
+fit1_sp <- brm(estimate ~ 1 + (1|study_id) + (1|country),
+               data = subset(response_stan, TaxonomicRes=="species"), 
+               iter=4000, chains = 4,
+               prior = prior1)
+saveRDS(fixef(fit1_sp), file=paste0("fixef_taxonresSpecies_unweighted_",myResponse,".rds"))
+
+#genus
+fit1_g <- brm(estimate ~ 1 + (1|study_id) + (1|country),
+              data = subset(response_stan, TaxonomicRes=="genus"), 
+              iter=4000, chains = 4,
+              prior = prior1)
+saveRDS(fixef(fit1_g), file=paste0("fixef_taxonresGenus_unweighted_",myResponse,".rds"))
+
+#family
+fit1_f <- brm(estimate ~ 1 + (1|study_id) + (1|country),
+              data = subset(response_stan, TaxonomicRes=="family"), 
+              iter=4000, chains = 4,
+              prior = prior1)
+saveRDS(fixef(fit1_f), file=paste0("fixef_taxonresFamily_unweighted_",myResponse,".rds"))
+
+
