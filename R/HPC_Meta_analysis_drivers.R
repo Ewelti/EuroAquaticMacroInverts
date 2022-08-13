@@ -81,31 +81,11 @@ fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPr
               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
             data = response_stan, iter=5000, chains = 4, prior=prior1,
-            control = list(adapt_delta = 0.90,
-                           max_treedepth = 12))
+            control = list(adapt_delta = 0.90, max_treedepth = 12))
 
 #### save output ####
 
 saveRDS(fit1,file=paste0("metaanalysis_unweighted_drivers_",myResponse,".rds"))
-
-### prior check ###
-
-#also model with narrower prior - the horseshoe prior
-
-prior1 = c(set_prior("horseshoe(1)", class = "b"))
-
-fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
-              sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
-              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
-              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
-            data = response_stan, iter=5000, chains = 4, prior=prior1,
-            control = list(adapt_delta = 0.90,
-                           max_treedepth = 12))
-
-#### save output ####
-
-saveRDS(fit1,file=paste0("metaanalysis_unweighted_drivers_horseshoe_",myResponse,".rds"))
-
 
 #weighted
 
@@ -114,14 +94,13 @@ fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stm
               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
             data = response_stan, iter=5000, chains = 4, prior=prior1,
-            control = list(adapt_delta = 0.90,
-                           max_treedepth = 12))
+            control = list(adapt_delta = 0.90, max_treedepth = 12))
 
 #### save output ####
 
 saveRDS(fit1,file=paste0("metaanalysis_drivers_",myResponse,".rds"))
 
-### prior check ###
+### prior check 1 ###
 
 #also model with narrower prior - the horseshoe prior
 
@@ -132,11 +111,26 @@ fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stm
               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
             data = response_stan, iter=5000, chains = 4, prior=prior1,
-            control = list(adapt_delta = 0.90,
-                           max_treedepth = 12))
+            control = list(adapt_delta = 0.90, max_treedepth = 12))
 
 #### save output ####
 
 saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_",myResponse,".rds"))
 
+### prior check 2 ###
+
+#also model with narrower prior - the lasso prior
+
+prior1 = c(set_prior("lasso()", class = "b"))
+
+fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+              sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
+              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+            data = response_stan, iter=5000, chains = 4, prior=prior1,
+            control = list(adapt_delta = 0.90, max_treedepth = 12))
+
+#### save output ####
+
+saveRDS(fit1,file=paste0("metaanalysis_drivers_lasso_",myResponse,".rds"))
 
