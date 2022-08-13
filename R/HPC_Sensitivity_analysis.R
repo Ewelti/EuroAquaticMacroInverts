@@ -137,44 +137,38 @@ prior1 = c(set_prior("normal(0,10)", class = "b"))
 #species
 fit1_sp <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
             data = subset(response_stan, TaxonomicRes=="species"), 
-            iter=4000, chains = 4,
-            prior = prior1)
+            iter=4000, chains = 4)
 saveRDS(fixef(fit1_sp), file=paste0("fixef_taxonresSpecies_",myResponse,".rds"))
 
 #genus
 fit1_g <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
                data = subset(response_stan, TaxonomicRes=="genus"), 
-               iter=4000, chains = 4,
-               prior = prior1)
+               iter=4000, chains = 4)
 saveRDS(fixef(fit1_g), file=paste0("fixef_taxonresGenus_",myResponse,".rds"))
 
 #family
 fit1_f <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
               data = subset(response_stan, TaxonomicRes=="family"), 
-              iter=4000, chains = 4,
-              prior = prior1)
+              iter=4000, chains = 4)
 saveRDS(fixef(fit1_f), file=paste0("fixef_taxonresFamily_",myResponse,".rds"))
 
 #as above but unweighted
 #species
 fit1_sp <- brm(estimate ~ 1 + (1|study_id) + (1|country),
                data = subset(response_stan, TaxonomicRes=="species"), 
-               iter=4000, chains = 4,
-               prior = prior1)
+               iter=4000, chains = 4)
 saveRDS(fixef(fit1_sp), file=paste0("fixef_taxonresSpecies_unweighted_",myResponse,".rds"))
 
 #genus
 fit1_g <- brm(estimate ~ 1 + (1|study_id) + (1|country),
               data = subset(response_stan, TaxonomicRes=="genus"), 
-              iter=4000, chains = 4,
-              prior = prior1)
+              iter=4000, chains = 4)
 saveRDS(fixef(fit1_g), file=paste0("fixef_taxonresGenus_unweighted_",myResponse,".rds"))
 
 #family
 fit1_f <- brm(estimate ~ 1 + (1|study_id) + (1|country),
               data = subset(response_stan, TaxonomicRes=="family"), 
-              iter=4000, chains = 4,
-              prior = prior1)
+              iter=4000, chains = 4)
 saveRDS(fixef(fit1_f), file=paste0("fixef_taxonresFamily_unweighted_",myResponse,".rds"))
 
 
