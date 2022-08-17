@@ -1,13 +1,24 @@
 ##Set working directory
 setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
-#install.packages("brms")
-# if (!require(devtools)) {
-#   install.packages("devtools")
-# }
-#install.packages("rlang")
-#install.packages("RcppParallel")
-#install.packages("RcppEigen")
+install.packages("StanHeaders", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+
+remove.packages("rstan")
+if (file.exists(".RData")) file.remove(".RData")
+
+install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE)
+install.packages("pkgconfig")
+example(stan_model, package = "rstan", run.dontrun = TRUE)
+
+install.packages("brms")
+if (!require(devtools)) {
+   install.packages("devtools")
+ }
+install.packages("rlang")
+install.packages("RcppParallel")
+install.packages("RcppEigen")
+install.packages("Rcpp")
+install.packages("httpuv")
 
 library(rstan)
 library(brms)
