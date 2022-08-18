@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
 drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
@@ -227,7 +227,7 @@ sub <- subset(drivEst, Response == "RaoQ")
 est1 <- sub$Estimate[2:5]
 est2 <- sub$Estimate[10:12]
 est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.05,0.07), ylim=c(1.7,9.4), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.076,0.103), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("d, Rao's Q"), bty="n", cex=1.3)

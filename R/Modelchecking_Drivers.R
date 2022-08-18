@@ -1,6 +1,6 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs")
-setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/outputs")
+#setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
 
 ### meta-analysis drivers ####
 
@@ -8,6 +8,7 @@ getwd()
 library(rstan)
 library(brms)
 library(loo)
+install.packages("labeling")
 
 #### spp_richness ####
 fit <- readRDS("metadrivers/metaanalysis_drivers_spp_richness.rds")
@@ -16,7 +17,7 @@ bayes_R2(fit, resp = c("tmax_Est","tmax_C_12moPrior")) #this does not change wit
 summary(fit)
 
 #check model
-plot(fit)
+#plot(fit)
 sr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 sr_loo
 sr_parento <- as.list(pareto_k_table(sr_loo))
@@ -38,7 +39,7 @@ colnames(sr_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_spp_rich_rare.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 srr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 srr_loo
 srr_parento <- as.list(pareto_k_table(srr_loo))
@@ -60,7 +61,7 @@ colnames(srr_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_shannonsH.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 shH_loo <- loo(fit, cores = getOption("mc.cores", 1))
 shH_loo
 shH_parento <- as.list(pareto_k_table(shH_loo))
@@ -82,7 +83,7 @@ colnames(shH_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_E10.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 e10_loo <- loo(fit, cores = getOption("mc.cores", 1))
 e10_loo
 e10_parento <- as.list(pareto_k_table(e10_loo))
@@ -104,7 +105,7 @@ colnames(e10_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_abundance.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 ab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 ab_loo
 ab_parento <- as.list(pareto_k_table(ab_loo))
@@ -126,7 +127,7 @@ colnames(abund_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_turnover.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 turn_loo <- loo(fit, cores = getOption("mc.cores", 1))
 turn_loo
 turn_parento <- as.list(pareto_k_table(turn_loo))
@@ -148,7 +149,7 @@ colnames(turn_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_F_to.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 fto_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fto_loo
 fto_parento <- as.list(pareto_k_table(fto_loo))
@@ -170,7 +171,7 @@ colnames(fto_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_FRic.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 fric_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fric_loo
 fric_parento <- as.list(pareto_k_table(fric_loo))
@@ -192,7 +193,7 @@ colnames(fric_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_FEve.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 feve_loo <- loo(fit, cores = getOption("mc.cores", 1))
 feve_loo
 feve_parento <- as.list(pareto_k_table(feve_loo))
@@ -214,7 +215,7 @@ colnames(feve_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_FDiv.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 fdiv_loo <- loo(fit, cores = getOption("mc.cores", 1))
 fdiv_loo
 fdiv_parento <- as.list(pareto_k_table(fdiv_loo))
@@ -236,7 +237,7 @@ colnames(fdiv_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_RaoQ.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 raoq_loo <- loo(fit, cores = getOption("mc.cores", 1))
 raoq_loo
 raoq_parento <- as.list(pareto_k_table(raoq_loo))
@@ -258,7 +259,7 @@ colnames(raoq_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_FRed.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 FRed_loo <- loo(fit, cores = getOption("mc.cores", 1))
 FRed_loo
 FRed_parento <- as.list(pareto_k_table(FRed_loo))
@@ -280,7 +281,7 @@ colnames(FRed_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_unweighted_drivers_alien_SppRich.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 aliensr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 aliensr_loo
 aliensr_parento <- as.list(pareto_k_table(aliensr_loo))
@@ -302,7 +303,7 @@ colnames(aliensr_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_alien_Abund.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 alienab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 alienab_loo
 alienab_parento <- as.list(pareto_k_table(alienab_loo))
@@ -324,7 +325,7 @@ colnames(alienab_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_abund_nativeSpp.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 nativeab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 nativeab_loo
 nativeab_parento <- as.list(pareto_k_table(nativeab_loo))
@@ -346,7 +347,7 @@ colnames(nativeab_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_SppRich_nativeSpp.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 nativesr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 nativesr_loo
 nativesr_parento <- as.list(pareto_k_table(nativesr_loo))
@@ -368,7 +369,7 @@ colnames(nativesr_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_unweighted_drivers_EPT_SppRich.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 EPTsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 EPTsr_loo
 EPTsr_parento <- as.list(pareto_k_table(EPTsr_loo))
@@ -390,7 +391,7 @@ colnames(EPTsr_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_unweighted_drivers_EPT_Abund.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 EPTab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 EPTab_loo
 EPTab_parento <- as.list(pareto_k_table(EPTab_loo))
@@ -412,7 +413,7 @@ colnames(EPTab_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_insect_SppRich.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 insectsr_loo <- loo(fit, cores = getOption("mc.cores", 1))
 insectsr_loo
 insectsr_parento <- as.list(pareto_k_table(insectsr_loo))
@@ -434,7 +435,7 @@ colnames(insectsr_fixed)[1] <- "drivers"
 fit <- readRDS("metadrivers/metaanalysis_drivers_insect_Abund.rds")
 
 #check model
-plot(fit)
+#plot(fit)
 insectab_loo <- loo(fit, cores = getOption("mc.cores", 1))
 insectab_loo
 insectab_parento <- as.list(pareto_k_table(insectab_loo))

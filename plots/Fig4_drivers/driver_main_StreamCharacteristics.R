@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
 drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
@@ -29,7 +29,7 @@ plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 sub <- subset(drivEst, Response == "spp_richness")
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.03,0.03), ylim=c(0.8,4.8),cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.03,0.047), ylim=c(0.8,4.8),cex=2, bty="n")
 #polygon(x=c(-100,-100,0,0),
 #        y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
@@ -211,7 +211,7 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg[1,] ~ mm_neg[2,], pch="l",cex=2,col="firebrick2")
+points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
 points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)

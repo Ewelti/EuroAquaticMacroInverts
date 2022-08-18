@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
 drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
@@ -31,7 +31,7 @@ est1 <- sub$Estimate[2:5]
 est2 <- sub$Estimate[10:12]
 est <- c(est1,est2)
 yy <- c(5,7,6,8,3,2,4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.07,0.10), ylim=c(1.7,9.4),cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.07,0.12), ylim=c(1.7,9.4),cex=2, bty="n")
 #polygon(x=c(-100,-100,0,0),
 #        y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
@@ -165,7 +165,7 @@ sub <- subset(drivEst, Response == "abundance")
 est1 <- sub$Estimate[2:5]
 est2 <- sub$Estimate[10:12]
 est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0025,0.0035), ylim=c(1.7,9.4), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0039,0.0035), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("b, Abundance"), bty="n", cex=1.3)
