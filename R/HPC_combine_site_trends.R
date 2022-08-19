@@ -282,6 +282,32 @@ write.csv(MoAv1, "outputs/HighThresholdMovingAve_YrEsts.csv")
 
 ##############################################
 
+#### Combine HT moving window trends
+trendsDir <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/HTMV"
+
+trendsFiles <- list.files(trendsDir)[grepl(".RDS",list.files(trendsDir))]
+
+head(trendsFiles[1])
+
+HTMWsiteTrends <- lapply(trendsFiles,function(x){
+  
+  temp <- data.frame(readRDS(paste(trendsDir,x,sep="/")))
+  
+  #add on response from file name
+  temp$Response <- strsplit(as.character(x),"__")[[1]][2]
+  temp$Country <- strsplit(as.character(x),"__")[[1]][3]
+  temp$year <- strsplit(as.character(x),"__")[[1]][4]
+  temp$year <- gsub(".RDS","",temp$year)
+  return(temp)
+  
+})
+
+HTMWsiteTrends <- do.call(rbind,HTMWsiteTrends)
+dim(HTMWsiteTrends)
+saveRDS(HTMWsiteTrends,file="HTMWsiteTrends.rds")
+
+#####################################################
+
 ### moving average yr syntheses from splits by latitude! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split")
 path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split"
