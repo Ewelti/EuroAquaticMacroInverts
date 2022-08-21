@@ -1,5 +1,5 @@
-#### set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
+##Set working directory
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
 
 ###############################################
 #### import data and library
@@ -15,7 +15,7 @@ head(ma)
 ab <- ma[ma$Response == "abundance",]
 sr <- ma[ma$Response == "spp_richness",]
 
-install.packages("data.table")
+#install.packages("data.table")
 library(data.table)
 
 ##########################################

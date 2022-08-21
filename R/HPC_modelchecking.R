@@ -1,3 +1,6 @@
+##Set working directory
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
+
 #### function to extract posterior distribution of the trends ####
 
 getTrendProbability <- function(fit){
