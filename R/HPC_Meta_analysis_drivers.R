@@ -89,7 +89,7 @@ saveRDS(fit1,file=paste0("metaanalysis_unweighted_drivers_",myResponse,".rds"))
 
 #weighted
 
-fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
@@ -106,7 +106,7 @@ saveRDS(fit1,file=paste0("metaanalysis_drivers_",myResponse,".rds"))
 
 prior1 = c(set_prior("horseshoe(1)", class = "b"))
 
-fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
@@ -123,7 +123,7 @@ saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_",myResponse,".rds"))
 
 prior1 = c(set_prior("lasso()", class = "b"))
 
-fit1 <- brm(estimate|weights(w) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
