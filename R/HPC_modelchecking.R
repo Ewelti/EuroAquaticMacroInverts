@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 #### function to extract posterior distribution of the trends ####
 
@@ -9,7 +9,6 @@ getTrendProbability <- function(fit){
 }
 
 ### end of functions ############################################
-
 
 ### site-level trends ####
 
@@ -103,11 +102,20 @@ qplot(Year_count, spp_richness, data=response_stan_pivot)
 qplot(Year_count, SppRich_nativeSpp, data=response_stan_pivot)
 qplot(Year_count, turnover, data=response_stan_pivot)
 
-par(mfrow=c(1,2))
+## effect of years sampled on trend estimates
+par(mfrow=c(2,2),mar=c(4,4,0.4,0.4))
 plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$spp_richness,xlab="Years sampled", ylab="Taxon richness estimate")
-abline(h=0)
+abline(h=0, col="grey70", lty=2)
+abline(lm(response_stan_pivot$spp_richness~response_stan_pivot$Year_count),col=2)
 plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$abundance,xlab="Years sampled", ylab="Abundance estimate")
-abline(h=0)
+abline(h=0, col="grey70", lty=2)
+abline(lm(response_stan_pivot$abundance~response_stan_pivot$Year_count),col=2)
+plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$FRic,xlab="Years sampled", ylab="Functional richness estimate")
+abline(h=0, col="grey70", lty=2)
+abline(lm(response_stan_pivot$abundance~response_stan_pivot$Year_count),col=2)
+plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$abundance,xlab="Years sampled", ylab="Functional redundancy estimate")
+abline(h=0, col="grey70", lty=2)
+abline(lm(response_stan_pivot$abundance~response_stan_pivot$Year_count),col=2)
 
 tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Year_count)
 summary(tr_mo)
@@ -118,11 +126,20 @@ summary(fr_mo)
 fre_mo = lm(response_stan_pivot$FRed~response_stan_pivot$Year_count)
 summary(fre_mo)
 
-par(mfrow=c(2,2))
+## effect of start year on trend estimates
+par(mfrow=c(2,2),mar=c(4,4,0.4,0.4))
 plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$spp_richness,xlab="Starting year", ylab="Taxon richness estimate")
+abline(h=0, col="grey70", lty=2)
+abline(lm(response_stan_pivot$spp_richness~response_stan_pivot$Starting_year),col=2)
 plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$abundance,xlab="Starting year", ylab="Abundance estimate")
-plot(x=response_stan_pivot$Ending_year,y=response_stan_pivot$spp_richness,xlab="Ending year", ylab="Taxon richness estimate")
-plot(x=response_stan_pivot$Ending_year,y=response_stan_pivot$abundance,xlab="Ending year", ylab="Abundance estimate")
+abline(h=0, col="grey70", lty=2)
+abline(lm(response_stan_pivot$abundance~response_stan_pivot$Starting_year),col=2)
+plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$FRic,xlab="Starting year", ylab="Functional richness estimate")
+abline(h=0, col="grey70", lty=2)
+abline(lm(response_stan_pivot$abundance~response_stan_pivot$Starting_year),col=2)
+plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$abundance,xlab="Starting year", ylab="Functional redundancy estimate")
+abline(h=0, col="grey70", lty=2)
+abline(lm(response_stan_pivot$abundance~response_stan_pivot$Starting_year),col=2)
 
 tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Starting_year)
 summary(tr_mo)
