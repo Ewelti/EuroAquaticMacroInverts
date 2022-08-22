@@ -11,7 +11,6 @@ options(scipen=999)
 
 ##save plot
 tiff(filename = "plots/Fig4_drivers/Drivers_main.tiff", width = 7.8, height = 5, units = 'in', res = 600, compression = 'lzw')
-#tiff(filename = "plots/drivers/Drivers_horseshoe.tiff", width = 12, height = 9, units = 'in', res = 600, compression = 'lzw')
 
 ##layout
 layout(mat = matrix(c(1:10), 
@@ -27,11 +26,10 @@ plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 
 #### Spp Richness #####
 sub <- subset(drivEst, Response == "spp_richness")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
 yy <- c(5,7,6,8,3,2,4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.07,0.12), ylim=c(1.7,9.4),cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 #polygon(x=c(-100,-100,0,0),
 #        y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
@@ -96,10 +94,9 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### Func Richness #####
 sub <- subset(drivEst, Response == "func_rich")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0028,0.0035), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 axis(2, at=yy, lwd = 0, lwd.ticks = 0, labels=c("ppt sl.","tmax sl.",  "ppt mean", "tmax mean",
 				#"str. order", "accum.", "elevation", "slope",
@@ -162,10 +159,9 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### Abundance #####
 sub <- subset(drivEst, Response == "abundance")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0039,0.0035), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("b, Abundance"), bty="n", cex=1.3)
@@ -225,10 +221,9 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### func_fred #####
 sub <- subset(drivEst, Response == "FRed")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.00065,0.00035), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("f, Func. redundancy"), bty="n", cex=1.3)
@@ -288,10 +283,9 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### E10 #####
 sub <- subset(drivEst, Response == "E10")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0002,0.0007), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("c, Evenness"), bty="n", cex=1.3)
@@ -351,10 +345,9 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### func_even #####
 sub <- subset(drivEst, Response == "func_even")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0012,0.0005), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("g, Func. evenness"), bty="n", cex=1.3)
@@ -415,10 +408,9 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### Turnover #####
 sub <- subset(drivEst, Response == "turnover")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0022,0.0011), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("d, Turnover"), bty="n", cex=1.3)
@@ -477,10 +469,9 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### func_turnover #####
 sub <- subset(drivEst, Response == "func_turnover")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.006,0.006), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4), cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("h, Func. turnover"), bty="n", cex=1.3)
