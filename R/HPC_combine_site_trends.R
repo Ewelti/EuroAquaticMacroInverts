@@ -346,8 +346,9 @@ sensTrends <- lapply(sensFiles,function(x){
   
   #rename files to get rid of "_"
   x <- gsub("unweighted_","unweighted", x)
-  x <- gsub("spp_richness","sppRich", x)
-  x <- gsub("spp_rich_rare","sppRichRare", x)
+  x <- gsub("spp_richness","SppRich", x)
+  x <- gsub("spp_rich_rare","SppRichRare", x)
+  x <- gsub("SppRich_nativeSpp","SppRichNativeSpp", x)
   x <- gsub("abund_nativeSpp","abundNativeSpp", x)
   x <- gsub("alien_Abund","alienAbund", x)
   x <- gsub("alien_SppRich","alienSppRich", x)
