@@ -332,6 +332,45 @@ dim(HTMWsiteTrends)
 saveRDS(HTMWsiteTrends,file="HTMWsiteTrends.rds")
 
 #####################################################
+##############################################
+
+#### Combine trends for sensitivity analysis splitting the dataset by taxonomic resolution
+sensDir <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/split_taxon_sensitivity"
+
+sensFiles <- list.files(sensDir)[grepl(".rds",list.files(sensDir))]
+head(sensFiles[1])
+
+sensTrends <- lapply(sensFiles,function(x){
+  
+  temp <- data.frame(readRDS(paste(sensDir,x,sep="/")))
+  
+  #rename files to get rid of "_"
+  x <- gsub("unweighted_","unweighted", x)
+  x <- gsub("spp_richness","sppRich", x)
+  x <- gsub("spp_rich_rare","sppRichRare", x)
+  x <- gsub("abund_nativeSpp","abundNativeSpp", x)
+  x <- gsub("alien_Abund","alienAbund", x)
+  x <- gsub("alien_SppRich","alienSppRich", x)
+  x <- gsub("EPT_Abund","EPTAbund", x)
+  x <- gsub("EPT_SppRich","EPTSppRich", x)
+  x <- gsub("F_to","Fto", x)
+  x <- gsub("insect_Abund","insectAbund", x)
+  x <- gsub("insect_SppRich","insectSppRich", x)
+
+  #add on response from file name
+  temp$resolution <- strsplit(as.character(x),"_")[[1]][2]
+  temp$resolution <- gsub("taxonres","",temp$resolution)
+  temp$response <- strsplit(as.character(x),"_")[[1]][3]
+  temp$response <- gsub(".rds","",temp$response)
+  return(temp)
+  
+})
+
+sensTrends <- do.call(rbind,sensTrends)
+head(sensTrends)
+write.csv(sensTrends,file="SplitSensitivityTrends.csv")
+
+#####################################################
 
 ### moving average yr syntheses from splits by latitude! #####
 setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split")
