@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
 MA <- read.csv("outputs/movingAve_YrEsts.csv")
@@ -19,10 +19,10 @@ names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
 #SRs <- sr[ which(sr$site_num >=100), ]
-SRs <- sr[ which(sr$StartYear >1989), ] # this is min 7 countries
+SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ] # this is min 7 countries
 #SRs <- sr[ which(sr$StartYear >=1980), ] #this is min 5 countries
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1.8,4.1), xlim=c(1994.5,2018.5))#ylim=c(-0.8,2.55))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1.8,4.1), xlim=c(1994.5,2015.5))#ylim=c(-0.8,2.55))
 title(ylab=expression(paste("Taxon richness (% y"^"-1", ")")), line=2,cex.lab=1.4)
 #title(xlab="Mean year of moving window", line=2,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -44,9 +44,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear >1989), ] # this is min 7 countries
+SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-5.5,5.3), xlim=c(1994.5,2018.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-5.5,5.3), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Abundance (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -67,9 +67,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear >=1989), ] # this is min 7 countries
+SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-8,6), xlim=c(1994.5,2018.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-8.5,6), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Functional richness (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -91,9 +91,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear >=1989), ] # this is min 7 countries
+SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-5.5,1.7), xlim=c(1994.5,2018.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-3,1.7), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Functional redundancy (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)

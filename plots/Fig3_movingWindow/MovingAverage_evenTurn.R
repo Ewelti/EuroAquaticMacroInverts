@@ -1,10 +1,11 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
 MA <- read.csv("outputs/movingAve_YrEsts.csv")
 MA$meanYr <- (MA$StartYear+ 4.5)
 head(MA)
+unique(MA$Response)
 
 tiff(filename = "plots/Fig3_movingWindow/MovingAverages_extra.tiff", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
 par(mfrow=c(2,2),mar=c(2,4,0.2,0.2))
@@ -18,10 +19,10 @@ names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
 #SRs <- sr[ which(sr$site_num >=100), ]
-SRs <- sr[ which(sr$StartYear >1989), ] # this is min 7 countries
+SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 #SRs <- sr[ which(sr$StartYear >=1980), ] #this is min 5 countries
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-2.5,2.5), xlim=c(1994.5,2018.5))#ylim=c(-0.8,2.55))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-2,1.2), xlim=c(1994.5,2015.5))#ylim=c(-0.8,2.55))
 title(ylab=expression(paste("Shannon's evenness (% y"^"-1", ")")), line=2,cex.lab=1.4)
 #title(xlab="Mean year of moving window", line=2,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -45,9 +46,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear >1989), ] # this is min 7 countries
+SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-5.5,5.3), xlim=c(1994.5,2018.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-7,5), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Turnover (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -69,9 +70,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear >=1989), ] # this is min 7 countries
+SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-12,4), xlim=c(1994.5,2018.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-5.5,3), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Functional evenness(% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -92,9 +93,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear >=1989), ] # this is min 7 countries
+SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-6,5), xlim=c(1994.5,2018.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-6,5), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Functional turnover (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
