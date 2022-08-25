@@ -152,8 +152,8 @@ names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaveragesHTMV.rds")
 
 ### moving average yr syntheses! #####
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/movingaverage_meta")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/movingaverage_meta"
 
 require(data.table)
 library(brms)
@@ -182,11 +182,12 @@ dat_list = lapply(files, function(x){
 MovAve <- do.call(rbind.data.frame, dat_list)
 head(MovAve)
 ##
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 ma <- readRDS("outputs/stanTrends_site_level_movingaverages.rds")
 head(ma)
 library(data.table)
+unique(ma$Response)
 
 subs <- subset(ma, ma$Response == "abundance")
 DT <- data.table(subs)
@@ -218,13 +219,37 @@ DT_FRed <- data.table(subs_FRed)
 sitecount_FRed <- DT_FRed[, .(site_num_FRed = length(unique(site_id))), by = StartYear]
 sitecount_FRed
 
+subs_e10 <- subset(ma, ma$Response == "E10")
+DT_e10 <- data.table(subs_e10)
+sitecount_e10 <- DT_e10[, .(site_num_e10  = length(unique(site_id))), by = StartYear]
+sitecount_e10
+
+subs_fto <- subset(ma, ma$Response == "F_to")
+DT_fto <- data.table(subs_fto)
+sitecount_fto <- DT_fto[, .(site_num_fto = length(unique(site_id))), by = StartYear]
+sitecount_fto
+
+subs_fe <- subset(ma, ma$Response == "FEve")
+DT_fe <- data.table(subs_fe)
+sitecount_fe <- DT_fe[, .(site_num_fe = length(unique(site_id))), by = StartYear]
+sitecount_fe
+
+subs_to <- subset(ma, ma$Response == "turnover")
+DT_to <- data.table(subs_to)
+sitecount_to <- DT_to[, .(site_num_to = length(unique(site_id))), by = StartYear]
+sitecount_to
+
 MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
 MoAv2 <- merge(MoAv1,sitecount_sr,by="StartYear", all=T)
 MoAv3 <- merge(MoAv2,sitecount_nat,by="StartYear", all=T)
 MoAv4 <- merge(MoAv3,sitecount_al,by="StartYear", all=T)
 MoAv5 <- merge(MoAv4,sitecount_FRic,by="StartYear", all=T)
 MoAv6 <- merge(MoAv5,sitecount_FRed,by="StartYear", all=T)
-head(MoAv6)
+MoAv7 <- merge(MoAv6,sitecount_e10,by="StartYear", all=T)
+MoAv8 <- merge(MoAv7,sitecount_fto,by="StartYear", all=T)
+MoAv9 <- merge(MoAv8,sitecount_fe,by="StartYear", all=T)
+MoAv10 <- merge(MoAv9,sitecount_to,by="StartYear", all=T)
+head(MoAv10)
 ##
 write.csv(MoAv6, "outputs/movingAve_YrEsts.csv")
 
@@ -305,6 +330,46 @@ HTMWsiteTrends <- lapply(trendsFiles,function(x){
 HTMWsiteTrends <- do.call(rbind,HTMWsiteTrends)
 dim(HTMWsiteTrends)
 saveRDS(HTMWsiteTrends,file="HTMWsiteTrends.rds")
+
+#####################################################
+##############################################
+
+#### Combine trends for sensitivity analysis splitting the dataset by taxonomic resolution
+sensDir <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/split_taxon_sensitivity"
+
+sensFiles <- list.files(sensDir)[grepl(".rds",list.files(sensDir))]
+head(sensFiles[1])
+
+sensTrends <- lapply(sensFiles,function(x){
+  
+  temp <- data.frame(readRDS(paste(sensDir,x,sep="/")))
+  
+  #rename files to get rid of "_"
+  x <- gsub("unweighted_","unweighted", x)
+  x <- gsub("spp_richness","SppRich", x)
+  x <- gsub("spp_rich_rare","SppRichRare", x)
+  x <- gsub("SppRich_nativeSpp","SppRichNativeSpp", x)
+  x <- gsub("abund_nativeSpp","abundNativeSpp", x)
+  x <- gsub("alien_Abund","alienAbund", x)
+  x <- gsub("alien_SppRich","alienSppRich", x)
+  x <- gsub("EPT_Abund","EPTAbund", x)
+  x <- gsub("EPT_SppRich","EPTSppRich", x)
+  x <- gsub("F_to","Fto", x)
+  x <- gsub("insect_Abund","insectAbund", x)
+  x <- gsub("insect_SppRich","insectSppRich", x)
+
+  #add on response from file name
+  temp$resolution <- strsplit(as.character(x),"_")[[1]][2]
+  temp$resolution <- gsub("taxonres","",temp$resolution)
+  temp$response <- strsplit(as.character(x),"_")[[1]][3]
+  temp$response <- gsub(".rds","",temp$response)
+  return(temp)
+  
+})
+
+sensTrends <- do.call(rbind,sensTrends)
+head(sensTrends)
+write.csv(sensTrends,file="SplitSensitivityTrends.csv")
 
 #####################################################
 

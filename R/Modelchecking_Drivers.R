@@ -8,7 +8,6 @@ getwd()
 library(rstan)
 library(brms)
 library(loo)
-install.packages("labeling")
 
 #### spp_richness ####
 fit <- readRDS("metadrivers/metaanalysis_drivers_spp_richness.rds")
