@@ -48,9 +48,12 @@ fit1 <- brm(estimate|se(sd) ~ 1 + (1|study_id) + (1|country),
             control = list(adapt_delta = 0.90,
                            max_treedepth = 12))
 
+
 ### save output ####
 
 saveRDS(fit1,file=paste0("metaanalysis_",myResponse,".rds"))
+
+summary(fit1)
 
 # # unweighted model 
 # 
