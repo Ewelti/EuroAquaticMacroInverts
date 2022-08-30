@@ -36,7 +36,7 @@ library(brms)
 
 ### decide on priors ####
 
-prior1 = c(set_prior("normal(0,5)", class = "Intercept"))
+prior1 = c(set_prior("normal(0,3)", class = "Intercept"))
 
 #examine response
 #hist(response_stan$estimate)
@@ -52,10 +52,9 @@ rstan_options(auto_write = FALSE)
 options(mc.cores = cpus_per_task)
 
 #define priors
-fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
-            data = response_stan, iter=3000, inits = 0,
+fit1 <- brm(estimate|se(sd) ~ 1 + (1|study_id) + (1|country),
+            data = response_stan, iter=3000, init = 0,
             chains = 4, prior = prior1,
-            init = "0",
             control = list(adapt_delta = 0.90, 
                            max_treedepth = 12))
 
