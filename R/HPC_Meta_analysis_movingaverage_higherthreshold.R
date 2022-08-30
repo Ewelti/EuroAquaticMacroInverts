@@ -49,7 +49,7 @@ rstan_options(auto_write = FALSE)
 options(mc.cores = cpus_per_task)
 
 #define priors
-fit1 <- brm(estimate|weights(w) ~ 1 + (1|study_id) + (1|country),
+fit1 <- brm(estimate|se(sd) ~ 1 + (1|study_id) + (1|country),
             data = response_stan, iter=3000, inits = 0,
             chains = 4, prior = prior1,
             init = "0",
