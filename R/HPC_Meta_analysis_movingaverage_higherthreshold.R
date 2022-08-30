@@ -33,7 +33,7 @@ library(brms)
 
 ### decide on priors ####
 
-prior1 = c(set_prior("normal(0,5)", class = "Intercept"))
+prior1 = c(set_prior("normal(0,3)", class = "Intercept"))
 
 #examine response
 #hist(response_stan$estimate)
