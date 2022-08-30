@@ -52,7 +52,6 @@ options(mc.cores = cpus_per_task)
 fit1 <- brm(estimate|se(sd) ~ 1 + (1|study_id) + (1|country),
             data = response_stan, iter=3000, init = 0,
             chains = 4, prior = prior1,
-            init = "0",
             control = list(adapt_delta = 0.90, 
                            max_treedepth = 12))
 
