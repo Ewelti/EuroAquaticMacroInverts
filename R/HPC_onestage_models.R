@@ -58,6 +58,10 @@ mydata$iYear <- mydata$year_wMissing - min(mydata$year_wMissing)+1
   
 #scale day of year
 mydata$cday_of_year <- (mydata$day_of_year - mean(mydata$day_of_year))/sd(mydata$day_of_year)
+
+#decade
+floor_decade    = function(value){ return(value - value %% 10) }  
+mydata$decade <- floor_decade(mydata$year)
   
 # try to get SLURM_CPUS_PER_TASK from submit script, otherwise fall back to 1
 cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
@@ -67,7 +71,31 @@ options(mc.cores = cpus_per_task)
 #decide on priors
 prior1 = c(set_prior("normal(0,5)", class = "Intercept"))
 
-fit1 <- brm(Response ~ cYear + cday_of_year + 
+# fit1 <- brm(Response ~ cYear + cday_of_year + 
+#               (1 + cYear|site_id) + 
+#               (1 + cYear|study_id) + 
+#               (1 + cYear|country) + 
+#               ar(time = iYear, gr = site_id, p = 1, cov=FALSE),
+#             data = mydata, 
+#             iter=5000, 
+#             thin=2,
+#             chains = 4, 
+#             prior = prior1,
+#             control = list(adapt_delta = 0.90, max_treedepth = 12),
+#             save_pars=save_pars(group=FALSE))
+# 
+# ### save output ####
+# saveRDS(fit1,file=paste0("onestage_",myResponse,".rds"))
+
+### interaction with decade ####
+
+#subset to data 1990 onwards
+mydata <- subset(mydata, decade>=1990 & decade<2020)
+#make decade a factor
+mydata$decade_factor <- factor(mydata$decade)
+levels(mydata$decade_factor)
+
+fit1 <- brm(Response ~ cYear * decade_factor + cday_of_year + 
               (1 + cYear|site_id) + 
               (1 + cYear|study_id) + 
               (1 + cYear|country) + 
@@ -80,5 +108,4 @@ fit1 <- brm(Response ~ cYear + cday_of_year +
             control = list(adapt_delta = 0.90, max_treedepth = 12),
             save_pars=save_pars(group=FALSE))
 
-### save output ####
-saveRDS(fit1,file=paste0("onestage_",myResponse,".rds"))
+saveRDS(fixef(fit1),file=paste0("onestage_decadeEffect_",myResponse,".rds"))
