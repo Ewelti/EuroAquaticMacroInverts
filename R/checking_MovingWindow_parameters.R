@@ -23,22 +23,23 @@ library(data.table)
 
 ab_est$MeanYear <- as.numeric(ab_est$StartYear) + 4.5
 ab_est_mw <- ab_est[ab_est$MeanYear > 1994,]
+ab_est_mw <- ab_est_mw[ab_est_mw$MeanYear < 2016,]
 head(ab_est_mw)
 
 sr_est$MeanYear <- as.numeric(sr_est$StartYear) + 4.5
 sr_est_mw <- sr_est[sr_est$MeanYear > 1994,]
+sr_est_mw <- sr_est_mw[sr_est_mw$MeanYear < 2016,]
 
 par(mfrow=c(1,2))
-
-max(ab_est_mw$Est.Error)
-plot(ab_est_mw$Est.Error ~ab_est_mw$MeanYear, ylim=c(0,0.025),xlim= c(1994,2019), pch=19,
-ylab="Estimated error of abundance trend", xlab="Mean year of moving window")
-points (ab_est_mw$Est.Error ~ab_est_mw$MeanYear, type="l")
-
 max(sr_est_mw$Est.Error)
-plot(sr_est_mw$Est.Error ~sr_est_mw$MeanYear, ylim=c(0,0.35),xlim= c(1994,2019), pch=19,
+plot(sr_est_mw$Est.Error ~sr_est_mw$MeanYear, ylim=c(0,0.35),xlim= c(1994,2016), pch=19,
 ylab="Estimated error of taxon richness trend", xlab="Mean year of moving window")
 points (sr_est_mw$Est.Error ~sr_est_mw$MeanYear, type="l")
+
+max(ab_est_mw$Est.Error)
+plot(ab_est_mw$Est.Error ~ab_est_mw$MeanYear, ylim=c(0,0.025),xlim= c(1994,2016), pch=19,
+ylab="Estimated error of abundance trend", xlab="Mean year of moving window")
+points (ab_est_mw$Est.Error ~ab_est_mw$MeanYear, type="l")
 
 #######################################
 #### check the proportion of sites with 
@@ -73,17 +74,39 @@ count_sign$sr_posnegR <- count_sign$site_num_SRich_pos/count_sign$site_num_SRich
 count_sign$MeanYear <- as.numeric(count_sign$StartYear) + 4.5
 
 count_sign_mw <- count_sign[count_sign$MeanYear > 1994,]
+count_sign_mw <- count_sign_mw[count_sign_mw$MeanYear < 2016,]
+count_sign_mw$total_sites <- (as.numeric(count_sign_mw$site_num_Abund_pos) + as.numeric(count_sign_mw$site_num_Abund_neg))
 
-par(mfrow=c(1,2))
-plot(count_sign_mw$sr_posnegR ~count_sign_mw$MeanYear, ylim=c(0.7,1.7),xlim= c(1994,2019), pch=19,
-ylab="# sites with positive/negative trends in Taxon richness ", xlab="Mean year of moving window")
+transnum <- log10(count_sign_mw$total_sites)-1.6
+
+par(mfrow=c(1,2),mar=c(3,5,0.2,4))
+plot(0,0, ylim=c(0.7,1.7),xlim= c(1994,2016), ylab="", xlab="",las=1)
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 1, 1, -100), col ="grey80", border = NA)
+points (transnum ~ count_sign_mw$MeanYear, type="l", col="cyan4")
+points (transnum ~ count_sign_mw$MeanYear, pch=19, col="cyan4")
+points (count_sign_mw$sr_posnegR ~count_sign_mw$MeanYear, pch=19)
 points (count_sign_mw$sr_posnegR ~count_sign_mw$MeanYear, type="l")
-abline(h=1, lty=2, col="grey60")
+box(lwd=2)
+title(ylab="# sites with positive/negative", line=3.2)
+title(ylab="taxon richness trends", line=2.2)
+title(xlab="Mean year of moving window", line=2)
+marks <- c(250, 500, 750, 1000, 1250, 1500)
+axis(4, at=c(0.797940009, 1.098970004, 1.275061263, 1.4, 1.496910013, 1.576091259),cex.axis=1,labels=marks,las=1,col="cyan4")
+mtext(side=4, "Number of sites", line=2.5, las=3)
 
-plot(count_sign_mw$ab_posnegR ~count_sign_mw$MeanYear, ylim=c(0.7,1.7),xlim= c(1994,2019), pch=19,
-ylab="# sites with positive/negative trends in Abundance", xlab="Mean year of moving window")
+plot(0,0, ylim=c(0.7,1.7),xlim= c(1994,2016), ylab="", xlab="", las=1)
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 1, 1, -100), col ="grey80", border = NA)
+points (transnum ~ count_sign_mw$MeanYear, type="l", col="cyan4")
+points (transnum ~ count_sign_mw$MeanYear, pch=19, col="cyan4")
+points (count_sign_mw$ab_posnegR ~count_sign_mw$MeanYear, pch=19)
 points (count_sign_mw$ab_posnegR ~count_sign_mw$MeanYear, type="l")
-abline(h=1, lty=2, col="grey60")
+box(lwd=2)
+title(ylab="# sites with positive/negative", line=3.2)
+title(ylab="abundance trends", line=2.2)
+title(xlab="Mean year of moving window", line=2)
+legend("topleft", bty="n", legend=c("trend ratio", "site count"), pch=19, col=c(1,"cyan4"))
+axis(4, at=c(0.797940009, 1.098970004, 1.275061263, 1.4, 1.496910013, 1.576091259),cex.axis=1,labels=marks,las=1,col="cyan4")
+mtext(side=4, "Number of sites", line=2.5)
 ###############################################################################
 
 #### check average number of years sampled per time series
