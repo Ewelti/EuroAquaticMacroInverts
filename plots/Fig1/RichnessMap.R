@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
@@ -20,7 +20,7 @@ colnames(siteData)[1] <- "site_id"
 resp <- merge(siteData,response_stan_pivot,by="site_id")
 head(resp)
 #################################################################################
-##install.packages("rworldmap")
+##install.packages("rworldxtra")
 library(rworldxtra)
 library(RColorBrewer)
 library(maps)
@@ -116,7 +116,7 @@ points(sr_sites_asc$Longitude_X[sr_sites_asc$spp_richness_p <= 0],sr_sites_asc$L
 
 lg <- round(seq(min(sr_sites$spp_richness_p), max(sr_sites$spp_richness_p), by=((max(sr_sites$spp_richness_p)-min(sr_sites$spp_richness_p))/7)),digits=1)
 
-lg2 <- c(round(min(sr_sites$spp_richness_p),digits=1), "","",0, "","",round(max(sr_sites$spp_richness_p),digits=1))
+lg2 <- c(round(max(sr_sites$spp_richness_p),digits=1), "","",0, "","",round(min(sr_sites$spp_richness_p),digits=1))
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -126,8 +126,8 @@ y <- seq(69.8,61.3, by=(-(69.8-61.3)/(co_leng-1)))
 x <- rep(-8.2,co_leng)
 x2 <- rep(-6,co_leng)
 #legend(-9, 72.3,title="",legend=lg,col =c(pal_neg(4),pal_pos(4)),lty=1,lwd=1,bty="n",cex=0.9)
-legend(-9, 72.3,title="",legend=lg2,col =c('midnightblue','white','white','white','white','white','red4'),text.col=c("white"),lty=1,lwd=1,bty="n",cex=1)
-segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
+legend(-9, 72.3,title="",legend=lg2,col =c('red4','white','white','white','white','white','midnightblue'),text.col=c("white"),lty=1,lwd=1,bty="n",cex=1)
+segments(x, y, x2, y, col= rev(unique(sr_sites$sr_col)),lwd=3)
 #legend(-10.2,72.7,legend=c("% change/yr species richness"),bty='n')
 
 dev.off()
