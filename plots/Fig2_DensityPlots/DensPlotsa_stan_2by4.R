@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
@@ -47,7 +47,7 @@ polygon(x=c(stand_SppRich$Q10, stand_SppRich$Q10, stand_SppRich$Q90, stand_SppRi
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd = 1)
 legend(x=-18, y=(4/4*(b-a)+a), legend=("a, Taxon richness"), bty="n", cex=1.3)
-legend(x=5, y=(4/4*(b-a)+a), legend=expression(paste("+0.94% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=5, y=(4/4*(b-a)+a), legend=expression(paste("+0.73% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Abundance #####
 abund <- subset(response_stan, Response == "abundance")
@@ -78,7 +78,7 @@ polygon(x=c(stand_abund$Q10, stand_abund$Q10, stand_abund$Q90, stand_abund$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/4*(b-a)+a), legend=("b, Abundance"), bty="n", cex=1.3)
-legend(x=5, y=(3/4*(b-a)+a), legend=expression(paste("+1.13% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=5, y=(3/4*(b-a)+a), legend=expression(paste("+0.51% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Shannon's Evenness #####
 E10 <- subset(response_stan, Response == "E10")
@@ -112,7 +112,7 @@ polygon(x=c(stand_E10$Q10, stand_E10$Q10, stand_E10$Q90, stand_E10$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/4*(b-a)+a), legend=("c, Evenness"), bty="n", cex=1.3)
-legend(x=5, y=(2/4*(b-a)+a), legend=expression(paste("-0.5% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=5, y=(2/4*(b-a)+a), legend=expression(paste("-0.23% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Turnover #####
 turnover <- subset(response_stan, Response == "turnover")
@@ -148,7 +148,7 @@ polygon(x=c(stand_turnover$Q10, stand_turnover$Q10, stand_turnover$Q90, stand_tu
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/4*(b-a)+a), legend=("d, Turnover"), bty="n", cex=1.3)
-legend(x=5, y=(1/4*(b-a)+a), legend=expression(paste("-0.3% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=5, y=(1/4*(b-a)+a), legend=expression(paste("-0.2% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
 box(lwd=2,col="white")
@@ -187,7 +187,7 @@ polygon(x=c(stand_FRic$Q10, stand_FRic$Q10, stand_FRic$Q90, stand_FRic$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(4/4*(b-a)+a), legend=("e, Func. richness"), bty="n", cex=1.3)
-legend(x=5, y=(4/4*(b-a)+a), legend=expression(paste("+1% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=5, y=(4/4*(b-a)+a), legend=expression(paste("+1.03% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Functional Redundancy #####
 FRed <- subset(response_stan, Response == "FRed")
@@ -219,7 +219,7 @@ polygon(x=c(stand_FRed$Q10, stand_FRed$Q10, stand_FRed$Q90, stand_FRed$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/4*(b-a)+a), legend=("f, Func. redundancy"), bty="n", cex=1.3)
-legend(x=5, y=(3/4*(b-a)+a), legend=expression(paste("+0.19% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=5, y=(3/4*(b-a)+a), legend=expression(paste("+0.03% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func evenness #####
 FEve <- subset(response_stan, Response == "FEve")
@@ -254,7 +254,7 @@ polygon(x=c(stand_FEve$Q10, stand_FEve$Q10, stand_FEve$Q90, stand_FEve$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/4*(b-a)+a), legend=("g, Func. evenness"), bty="n", cex=1.3)
-legend(x=5, y=(2/4*(b-a)+a), legend=expression(paste("-0.51% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=5, y=(2/4*(b-a)+a), legend=expression(paste("-0.22% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func turnover #####
 F_to <- subset(response_stan, Response == "F_to")
@@ -287,7 +287,7 @@ polygon(x=c(stand_F_to$Q10, stand_F_to$Q10, stand_F_to$Q90, stand_F_to$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/4*(b-a)+a), legend=("h, Func. turnover"), bty="n", cex=1.3)
-legend(x=5, y=(1/4*(b-a)+a), legend=expression(paste("-1.41% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=5, y=(1/4*(b-a)+a), legend=expression(paste("-0.67% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
 box(lwd=2,col="white")

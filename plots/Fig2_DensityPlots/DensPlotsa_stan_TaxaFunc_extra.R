@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
 response_stan <- readRDS("outputs/stanTrends_site_level.rds")
@@ -47,7 +47,7 @@ polygon(x=c(stand_shannonsH$Q10, stand_shannonsH$Q10, stand_shannonsH$Q90, stand
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(4/4*(b-a)+a), legend=("a, Shannon's H"), bty="n", cex=1.3)
-legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("-0.07% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+0.25% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### rarefied Spp Richness #####
 SppRichRare <- subset(response_stan, Response == "spp_rich_rare")
@@ -80,7 +80,7 @@ polygon(x=c(stand_SppRichRare$Q10, stand_SppRichRare$Q10, stand_SppRichRare$Q90,
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(3/4*(b-a)+a), legend=("b, Rarefied taxon richness"), bty="n", cex=1.3)
-legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.48% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.22% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Func diverg #####
 FDiv <- subset(response_stan, Response == "FDiv")
@@ -114,7 +114,7 @@ polygon(x=c(stand_FDiv$Q10, stand_FDiv$Q10, stand_FDiv$Q90, stand_FDiv$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/4*(b-a)+a), legend=("c, Func. divergence"), bty="n", cex=1.3)
-legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+0.18% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+0.09% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Rao's Q #####
 RaoQ <- subset(response_stan, Response == "RaoQ")
@@ -149,7 +149,7 @@ polygon(x=c(stand_RaoQ$Q10, stand_RaoQ$Q10, stand_RaoQ$Q90, stand_RaoQ$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/4*(b-a)+a), legend=("d, Rao's Q"), bty="n", cex=1.3)
-legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+0.03% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+0.21% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
 box(lwd=2,col="white")

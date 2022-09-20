@@ -154,7 +154,7 @@ summary(ab_mo)
 ### meta-analysis ####
 
 #for Ellen
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/meta_updated")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/meta_updated")
 
 #for Diana unweighted models
 setwd("C:/Users/db40fysa/Dropbox/Git/ellen_outputs/meta")
