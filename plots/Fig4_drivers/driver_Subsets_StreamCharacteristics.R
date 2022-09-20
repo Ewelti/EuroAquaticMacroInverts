@@ -2,16 +2,16 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
-drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
-#drivEst <- read.csv("outputs/Driver_horseshoe_metaanaly_Ests.csv")
+#drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
+drivEst <- read.csv("outputs/Driver_horseshoe_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)
 
 options(scipen=999)
 
 ##save plot
-tiff(filename = "plots/Fig4_drivers/Drivers_Subsets_streamCharacteristics.tiff", width = 7.8, height = 5, units = 'in', res = 600, compression = 'lzw')
-#tiff(filename = "plots/drivers/Drivers_horseshoe.tiff", width = 13, height = 9, units = 'in', res = 600, compression = 'lzw')
+#tiff(filename = "plots/Fig4_drivers/Drivers_Subsets_streamCharacteristics.tiff", width = 7.8, height = 5, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig4_drivers/Drivers_Subsets_streamCharacteristics_horseshoe.tiff", width = 13, height = 9, units = 'in', res = 600, compression = 'lzw')
 
 ##layout
 layout(mat = matrix(c(1:10), 
@@ -28,9 +28,10 @@ plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 #####################Sub metrics ##############################
 #### alien_SppRich #####
 sub <- subset(drivEst, Response == "alien_SppRich")
+subQ <- c(sub$Q0.5[6:9],sub$Q95[6:9])
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.01,0.04), ylim=c(0.8,4.8),cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(0.8,4.8),cex=2, bty="n")
 #polygon(x=c(-100,-100,0,0),
 #        y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
@@ -41,8 +42,8 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg[1,] ~ mm_neg[2,], pch="l",cex=2,col="firebrick2")
-points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
+points(mm_neg[1,] ~ mm_neg[2,], pch="l",cex=4,col="firebrick2")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=4,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)
@@ -73,9 +74,10 @@ polygon(x=c(if (sub$Q10[9]>0) {sub$Q10[9]} else {0}, if (sub$Q10[9]>0) {sub$Q10[
 
 #### alien_abund #####
 sub <- subset(drivEst, Response == "alien_abund")
+subQ <- c(sub$Q0.5[6:9],sub$Q95[6:9])
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.01,0.01), ylim=c(0.8,4.8), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(0.8,4.8),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 axis(2, at=yy, lwd = 0, lwd.ticks = 0, labels=c("str. order", "accum.", "elevation", "slope"), las=1,cex.axis=1.3)
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
@@ -84,8 +86,8 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg[1,] ~ mm_neg[2,], pch="l",cex=2,col="firebrick2")
-points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
+points(mm_neg[1,] ~ mm_neg[2,], pch="l",cex=4,col="firebrick2")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=4, col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)
@@ -116,9 +118,10 @@ polygon(x=c(if (sub$Q10[9]>0) {sub$Q10[9]} else {0}, if (sub$Q10[9]>0) {sub$Q10[
 
 #### native_SppRich #####
 sub <- subset(drivEst, Response == "native_SppRich")
+subQ <- c(sub$Q0.5[6:9],sub$Q95[6:9])
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.05,0.1), ylim=c(0.8,4.8), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(0.8,4.8),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("b, Native richness"), bty="n", cex=1.1)
@@ -126,8 +129,8 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
-points(mm_pos[1,] ~ mm_pos[2,], pch="l",cex=2,col="dodgerblue")
+points(mm_neg$yy ~ mm_neg$est, pch="l",cex=4,col="firebrick2")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=4,col="dodgerblue")
 polygon(x=c(if (sub$Q2.5[6]<0) {sub$Q2.5[6]} else {0}, if (sub$Q2.5[6]<0) {sub$Q2.5[6]} else {0}, if (sub$Q97.5[6]<0) {sub$Q97.5[6]} else {0}, if (sub$Q97.5[6]<0) {sub$Q97.5[6]} else {0}),y=(yyy1), col = "firebrick2", border = NA)
 polygon(x=c(if (sub$Q5[6]<0) {sub$Q5[6]} else {0}, if (sub$Q5[6]<0) {sub$Q5[6]} else {0}, if (sub$Q95[6]<0) {sub$Q95[6]} else {0}, if (sub$Q95[6]<0) {sub$Q95[6]} else {0}),y=(yyy2), col = "firebrick2", border = NA)
 polygon(x=c(if (sub$Q10[6]<0) {sub$Q10[6]} else {0}, if (sub$Q10[6]<0) {sub$Q10[6]} else {0}, if (sub$Q90[6]<0) {sub$Q90[6]} else {0}, if (sub$Q90[6]<0) {sub$Q90[6]} else {0}),y=(yyy3), col = "firebrick2", border = NA)
@@ -155,9 +158,10 @@ polygon(x=c(if (sub$Q10[9]>0) {sub$Q10[9]} else {0}, if (sub$Q10[9]>0) {sub$Q10[
 
 #### native_abund #####
 sub <- subset(drivEst, Response == "native_abund")
+subQ <- c(sub$Q0.5[6:9],sub$Q95[6:9])
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.003,0.001), ylim=c(0.8,4.8), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(0.8,4.8),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("f, Native abundance"), bty="n", cex=1.1)
@@ -165,8 +169,8 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
-points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
+points(mm_neg$yy ~ mm_neg$est, pch="l",cex=4,col="firebrick2")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=4,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)
@@ -197,9 +201,10 @@ polygon(x=c(if (sub$Q10[9]>0) {sub$Q10[9]} else {0}, if (sub$Q10[9]>0) {sub$Q10[
 
 #### EPT_SppRich #####
 sub <- subset(drivEst, Response == "EPT_SppRich")
+subQ <- c(sub$Q0.5[6:9],sub$Q95[6:9])
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.05,0.04), ylim=c(0.8,4.8), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(0.8,4.8),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("c, EPT richness"), bty="n", cex=1.1)
@@ -207,8 +212,8 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
-points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
+points(mm_neg$yy ~ mm_neg$est, pch="l",cex=4,col="firebrick2")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=4,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)
@@ -239,9 +244,10 @@ polygon(x=c(if (sub$Q10[9]>0) {sub$Q10[9]} else {0}, if (sub$Q10[9]>0) {sub$Q10[
 
 #### EPT_abund #####
 sub <- subset(drivEst, Response == "EPT_abund")
+subQ <- c(sub$Q0.5[6:9],sub$Q95[6:9])
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.005,0.005), ylim=c(0.8,4.8), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(0.8,4.8),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("g, EPT abundance"), bty="n", cex=1.1)
@@ -249,8 +255,8 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
-points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
+points(mm_neg$yy ~ mm_neg$est, pch="l",cex=4,col="firebrick2")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=4,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)
@@ -281,9 +287,10 @@ polygon(x=c(if (sub$Q10[9]>0) {sub$Q10[9]} else {0}, if (sub$Q10[9]>0) {sub$Q10[
 
 #### insect_SppRich #####
 sub <- subset(drivEst, Response == "insect_SppRich")
+subQ <- c(sub$Q0.5[6:9],sub$Q95[6:9])
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.02,0.02), ylim=c(0.8,4.8), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(0.8,4.8),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("d, Insect richness"), bty="n", cex=1.1)
@@ -291,8 +298,8 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
-points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
+points(mm_neg$yy ~ mm_neg$est, pch="l",cex=4,col="firebrick2")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=4,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)
@@ -323,17 +330,18 @@ polygon(x=c(if (sub$Q10[9]>0) {sub$Q10[9]} else {0}, if (sub$Q10[9]>0) {sub$Q10[
 
 #### insect_abund #####
 sub <- subset(drivEst, Response == "insect_abund")
+subQ <- c(sub$Q0.5[6:9],sub$Q95[6:9])
 est <- sub$Estimate[6:9]
 yy <- c(1:4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.003,0.003), ylim=c(0.8,4.8), cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(0.8,4.8),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("h, Insect abundance"), bty="n", cex=1.1)
 mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
-points(mm_neg[1,] ~ mm_neg[2,], pch="l",cex=2,col="firebrick2")
-points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
+points(mm_neg[1,] ~ mm_neg[2,], pch="l",cex=4,col="firebrick2")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=4,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)

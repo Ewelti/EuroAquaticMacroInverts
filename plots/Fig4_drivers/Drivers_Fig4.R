@@ -3,7 +3,6 @@ setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts"
 
 # attach data
 drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
-#drivEst <- read.csv("outputs/Driver_horseshoe_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)
 
@@ -232,7 +231,7 @@ mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
 points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
-points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
+points(mm_pos[1,] ~ mm_pos[2,], pch="l",cex=2,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)
@@ -293,7 +292,7 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 #points(yy ~ est, pch="l",cex=2.2,col="white")
-points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
+points(mm_neg[1,] ~ mm_neg[2,], pch="l",cex=2,col="firebrick2")
 points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
@@ -405,7 +404,6 @@ polygon(x=c(if (sub$Q10[5]>0) {sub$Q10[5]} else {0}, if (sub$Q10[5]>0) {sub$Q10[
 abline(h=3.5,lty=2, col="grey60")
 abline(h=4.5,lty=2, col="grey60")
 
-
 #### Turnover #####
 sub <- subset(drivEst, Response == "turnover")
 subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
@@ -418,7 +416,7 @@ mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
 points(mm_neg$yy ~ mm_neg$est, pch="l",cex=2,col="firebrick2")
-points(mm_pos[1,] ~ mm_pos[2,], pch="l",cex=2,col="dodgerblue")
+points(mm_pos$yy ~ mm_pos$est, pch="l",cex=2,col="dodgerblue")
 yyy1=c(0.975,1.025,1.025,0.975)
 yyy2=c(0.95,1.05,1.05,0.95)
 yyy3=c(0.9,1.1,1.1,0.9)

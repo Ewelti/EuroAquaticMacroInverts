@@ -2,16 +2,16 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
-drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
-#drivEst <- read.csv("outputs/Driver_horseshoe_metaanaly_Ests.csv")
+#drivEst <- read.csv("outputs/Driver_metaanaly_Ests.csv")
+drivEst <- read.csv("outputs/Driver_horseshoe_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)
 
 options(scipen=999)
 
 ##save plot
-tiff(filename = "plots/Fig4_drivers/Drivers_Subsets.tiff", width = 8, height = 5, units = 'in', res = 600, compression = 'lzw')
-#tiff(filename = "plots/drivers/Drivers_horseshoe.tiff", width = 12, height = 9, units = 'in', res = 600, compression = 'lzw')
+#tiff(filename = "plots/Fig4_drivers/Drivers_Subsets.tiff", width = 8, height = 5, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig4_drivers/Drivers_Subsets_horseshoe.tiff", width = 12, height = 9, units = 'in', res = 600, compression = 'lzw')
 
 ##layout
 layout(mat = matrix(c(1:10), 
@@ -28,11 +28,10 @@ plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 #####################Sub metrics ##############################
 #### alien_SppRich #####
 sub <- subset(drivEst, Response == "alien_SppRich")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
 yy <- c(5,7,6,8,3,2,4)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.025,0.068), ylim=c(1.7,9.4),cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 #polygon(x=c(-100,-100,0,0),
 #        y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
@@ -97,10 +96,10 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### alien_abund #####
 sub <- subset(drivEst, Response == "alien_abund")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.005,0.0075), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+yy <- c(5,7,6,8,3,2,4)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 axis(2, at=yy, lwd = 0, lwd.ticks = 0, labels=c("ppt sl.","tmax sl.",  "ppt mean", "tmax mean",
 				#"str. order", "accum.", "elevation", "slope",
@@ -163,10 +162,10 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### native_SppRich #####
 sub <- subset(drivEst, Response == "native_SppRich")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.1,0.1), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+yy <- c(5,7,6,8,3,2,4)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("b, Native richness"), bty="n", cex=1.1)
@@ -226,10 +225,10 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### native_abund #####
 sub <- subset(drivEst, Response == "native_abund")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.009,0.007), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+yy <- c(5,7,6,8,3,2,4)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("f, Native abundance"), bty="n", cex=1.1)
@@ -286,10 +285,10 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### EPT_SppRich #####
 sub <- subset(drivEst, Response == "EPT_SppRich")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.06,0.065), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+yy <- c(5,7,6,8,3,2,4)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("c, EPT richness"), bty="n", cex=1.1)
@@ -346,10 +345,10 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### EPT_abund #####
 sub <- subset(drivEst, Response == "EPT_abund")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0075,0.0115), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+yy <- c(5,7,6,8,3,2,4)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("g, EPT abundance"), bty="n", cex=1.1)
@@ -409,10 +408,10 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### insect_SppRich #####
 sub <- subset(drivEst, Response == "insect_SppRich")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.07,0.07), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+yy <- c(5,7,6,8,3,2,4)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("d, Insect richness"), bty="n", cex=1.1)
@@ -471,10 +470,10 @@ abline(h=4.5,lty=2, col="grey60")
 
 #### insect_abund #####
 sub <- subset(drivEst, Response == "insect_abund")
-est1 <- sub$Estimate[2:5]
-est2 <- sub$Estimate[10:12]
-est <- c(est1,est2)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.0042,0.005), ylim=c(1.7,9.4), cex=2, bty="n")
+subQ <- c(sub$Q0.5[2:5], sub$Q0.5[10:12],sub$Q95[2:5], sub$Q95[10:12])
+est <- c(sub$Estimate[2:5], sub$Estimate[10:12])
+yy <- c(5,7,6,8,3,2,4)
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(min(subQ),max(subQ)), ylim=c(1.7,9.4),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=8.4,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
 legend("topleft", legend=("h, Insect abundance"), bty="n", cex=1.1)
