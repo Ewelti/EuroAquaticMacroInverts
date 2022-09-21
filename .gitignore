@@ -13,8 +13,8 @@ outputs/meta_updated/*
 outputs/driver_unweighted/*
 outputs/onestage/*
 outputs/MA_higherthreshold_meta/*
-outputs/HTMV1/*
-outputs/HTMV2/*
-outputs/HTMV_countryLevel/*
+outputs/HTMW1/*
+outputs/HTMW2/*
+outputs/HTMW_countryLevel/*
 outputs/onestage_decadeEffect/*
 
