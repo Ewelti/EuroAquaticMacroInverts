@@ -567,6 +567,38 @@ senss <- rbind(sens1, sens2)
 
 saveRDS(senss,file="sensitiv_taxonresTrends.rds")
 
+##########################################
+#### one stage decadal trends #####
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/onestage_decadeEffect")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/onestage_decadeEffect"
+
+htma <- readRDS("onestage_decadeEffect_abund_nativeSpp.rds")
+head(htma)
+
+require(data.table)
+library(brms)
+
+files = list.files(path = path, pattern = '\\.rds$')
+
+DecadeTrends <- lapply(files,function(x){
+  
+  temp <- data.frame(readRDS(paste(path,x,sep="/")))
+  
+  #add on response from file name
+  name <- gsub(".rds","", x)
+  temp$Response <- strsplit(as.character(name),"onestage_decadeEffect_")[[1]][2]
+  temp$var <- rownames(temp) 
+  return(temp)
+  
+})
+
+DecadeTrends <- do.call(rbind,DecadeTrends)
+rownames(DecadeTrends) <- NULL
+DecadeTrends <- DecadeTrends[, c(6, 5, 1, 2, 3, 4)]
+head(DecadeTrends)
+write.csv(DecadeTrends,file="DecadeTrends.csv")
+###########################################################
+
 ### country level trends ####
 
 trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/metacountries"
