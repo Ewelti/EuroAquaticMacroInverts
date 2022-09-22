@@ -25,6 +25,17 @@ head(sites_later)
 yearcount <- aggregate(year ~ site_id, data = sites_later, FUN = length)
 head(yearcount)
 
+#subset for sites with more years
+siteslater_long <- yearcount[which(yearcount$year >= 20),]
+head(siteslater_long)
+nrow(siteslater_long)
+
+write.csv(siteslater_long, "yearsSampled_since1990.csv")
+
+#subset full dataset for sites with at least yrs of data in 1990 or later
+allYrs <- subset(sites_later, site_id %in% siteslater_long$site_id)
+head(allYrs)
+
 #see how many sites have each number of years of data 8-30 years from 1990 onward
 HTMWc <- NULL
 for(i in 8:30){
@@ -34,14 +45,3 @@ for(i in 8:30){
 	HTMWc <- rbind(HTMWc, d.i)
 }
 HTMWc
-
-#subset for sites with more years
-siteslater_long <- yearcount[which(yearcount$year >= 8),]
-head(siteslater_long)
-nrow(siteslater_long)
-
-write.csv(siteslater_long, "yearsSampled_since1990.csv")
-
-#subset full dataset for sites with at least 15yrs of data in 2000 or later
-allYrs <- subset(sites_later, site_id %in% siteslater_long$site_id)
-head(allYrs)
