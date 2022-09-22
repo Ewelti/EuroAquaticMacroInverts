@@ -9,6 +9,13 @@ TaskID$TaskID <- 1:nrow(TaskID)
 nrow(TaskID)#135
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
+### site selection ##################
+
+selectedSites <- read.csv("/data/idiv_ess/Ellen/sitesForHTMW1.csv")
+
+#subset sites in list of selected sites with high overlapping years (2000-2018)
+response_stan <- subset(response_stan, site_id %in% selectedSites$site_id)
+
 ### get start year for this task #############
 
 myStartYear <- TaskID$StartYear[which(TaskID$TaskID==task.id)]
