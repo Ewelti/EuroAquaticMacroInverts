@@ -256,8 +256,8 @@ write.csv(MoAv6, "outputs/movingAve_YrEsts.csv")
 ##############################################
 
 ### high threshold moving average yr syntheses! #####
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/MA_higherthreshold_meta")
-path <- "C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/MA_higherthreshold_meta"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/HTMW1")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/HTMW1"
 
 require(data.table)
 library(brms)
@@ -271,7 +271,7 @@ dat_list = lapply(files, function(x){
   fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
   fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
   fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-  nam <- gsub("metaanalysis_movingaverage_","", x)
+  nam <- gsub("metaanalysis_movingaverage_higherthreshold","", x)
   name <- gsub(".rds","", nam)
   name <- gsub("_1","__1", name)
   name <- gsub("_2","__2", name)
@@ -282,12 +282,13 @@ dat_list = lapply(files, function(x){
   fixed <-data.frame(lapply(fixed, function(x) t(data.frame(x))))
   return(fixed)
 })
+head(dat_list)
 
 MovAve <- do.call(rbind.data.frame, dat_list)
 head(MovAve)
 unique(MovAve$Response)
 ##
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 htma <- readRDS("outputs/stanTrends_site_level_movingaveragesHTMV.rds")
 head(htma)
@@ -301,14 +302,14 @@ sitecount_ab
 MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
 head(MoAv1)
 ##
-write.csv(MoAv1, "outputs/HighThresholdMovingAve_YrEsts.csv")
+write.csv(MoAv1, "outputs/HighThresholdMovingAve1_YrEsts.csv")
 
 ##
 
 ##############################################
 
 #### Combine HT moving window trends
-trendsDir <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/HTMV"
+trendsDir <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/HTMW_siteLevel"
 
 trendsFiles <- list.files(trendsDir)[grepl(".RDS",list.files(trendsDir))]
 
@@ -328,7 +329,7 @@ HTMWsiteTrends <- lapply(trendsFiles,function(x){
 })
 
 HTMWsiteTrends <- do.call(rbind,HTMWsiteTrends)
-dim(HTMWsiteTrends)
+head(HTMWsiteTrends)
 saveRDS(HTMWsiteTrends,file="HTMWsiteTrends.rds")
 
 #####################################################

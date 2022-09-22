@@ -13,7 +13,8 @@ DATA2 <- sites[!is.na(sites$site_id_wMissing),]
 DATA2$turnover <- as.numeric(DATA2$turnover)
 
 #subset by year
-sites_later <- subset(DATA2,year > 1999)
+sites_later1 <- subset(DATA2,year >= 2000)
+sites_later <- subset(sites_later1,year <= 2018)
 head(sites_later)
 
 #count number of sampling years per site
@@ -23,7 +24,7 @@ head(yearcount)
 #subset for sites with more years
 siteslater_long <- yearcount[which(yearcount$year > 14),]
 head(siteslater_long)
-nrow(siteslater_long)#556
+nrow(siteslater_long)#515
 
 #subset full dataset for sites with at least 15yrs of data in 2000 or later
 allYrs <- subset(sites_later, site_id %in% siteslater_long$site_id)
@@ -33,7 +34,7 @@ head(allYrs)
 timeWindow <- 10
 minimumThreshold <- 6
 
-SufficientSites <- lapply(2000:2014, function(x){
+SufficientSites <- lapply(2000:2009, function(x){
   allYrs2 <- subset(allYrs, year_wMissing >= x & year_wMissing < (x+timeWindow))
   siteSummary <- tapply(allYrs2$abundance,allYrs2$site_id,length)
   data.frame(StartYear = x, site_id = names(siteSummary)[siteSummary>=minimumThreshold])
@@ -198,10 +199,6 @@ trends <- data.frame(do.call(rbind, trends))
 trends$siteID <- allsites
 
 saveRDS(trends, file=paste0("trendsHTMV__",myResponse,"__",myCountry,"__",StartYear,".RDS"))
-
-
-
-
 
 
 
