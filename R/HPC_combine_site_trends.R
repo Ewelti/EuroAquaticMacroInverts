@@ -349,14 +349,9 @@ library(lubridate)
 sites <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) # change file name according to the time series to be analyzed
 #delete missing data rows
 DATA2 <- sites[!is.na(sites$site_id_wMissing),]
-sort(unique(DATA2$year))
-
-#make turnover numeric
-DATA2$turnover <- as.numeric(DATA2$turnover)
 
 #count number of sites per year
 sitecount <- aggregate(site_id ~ year, data = DATA2, FUN = length)
-sitecount
 
 #subset by year
 sites_later <- subset(DATA2,year > 1989)
@@ -391,7 +386,7 @@ head(MoAv1)
 
 ##
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
-write.csv(MovAve, "outputs/HighThresholdMovingAve2_YrEsts.csv")
+write.csv(MoAv1, "outputs/HighThresholdMovingAve2_YrEsts.csv")
 ##
 ##############################################
 
