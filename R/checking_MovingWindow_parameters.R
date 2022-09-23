@@ -53,7 +53,7 @@ tr$fctr <- factor(tr$TaxRes)
 plot(NA, ylim=range(tr$site_num),xlim= c(1994,2016))
 for (x in split(tr, tr$TaxRes)) lines(x$MeanYr, x$site_num, col=x$fctr[1],lwd=0.01)
 
-##barplots
+###########Country count/mean moving window year
 library(tidyr)
 cut <- CountryCount[ which(CountryCount$MeanYr > 1994 & CountryCount$MeanYr < 2016), ]
 ccw <- spread(cut, MeanYr, site_num)
@@ -80,7 +80,32 @@ barplot(as.matrix(ccww), las=2, col= colors, border=colors, xaxt='n')
 place <- seq(1.6,26.8, length = 22)
 marks <- c(1994:2015)
 axis(side = 1, at=place, labels=marks,las=2,tick=F,line=F)
-legend(x=2,y=1400, rev(rownames(sites)), fill = rev(colors), border = rev(colors), bty = "n",cex=1.4)
+legend(x=2,y=1400, rev(ccww[,1]), fill = rev(colors), border = rev(colors), bty = "n",cex=1.4)
+title(ylab="Number of sites", line=2.2,cex.lab=1.5)
+title(xlab="Mean year of moving window", line=2.2,cex.lab=1.5)
+
+##
+dev.off()
+##
+
+###########sites of a given taxonomic Res count/mean moving window year
+cuttr <- TaxResCount[ which(TaxResCount$MeanYr > 1994 & TaxResCount$MeanYr < 2016), ]
+trw <- spread(cuttr, MeanYr, site_num)
+trw <- as.data.frame(trw)
+
+# # bargraph # #
+tiff(filename = "plots/MA_TaxaResPerYr.tiff", width =5, height = 8, units = 'in', res = 600, compression = 'lzw')
+
+par(mgp=c(3,0,-1),mar=c(4,4,0.4,0.2)+0.1)
+
+colors <- c("black","lightskyblue","lightslateblue")
+
+barplot(as.matrix(trw), las=2, col= colors, border=colors, xaxt='n')
+
+place <- seq(1.6,26.8, length = 22)
+marks <- c(1994:2015)
+axis(side = 1, at=place, labels=marks,las=2,tick=F,line=F)
+legend(x=2,y=1200, rev(trw[,1]), fill = rev(colors), border = rev(colors), bty = "n",cex=1.7)
 title(ylab="Number of sites", line=2.2,cex.lab=1.5)
 title(xlab="Mean year of moving window", line=2.2,cex.lab=1.5)
 
