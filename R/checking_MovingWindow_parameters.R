@@ -1,15 +1,24 @@
 ##Set working directory
-setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 ###############################################
-#### import data and library
-ma_ests <- read.csv("movingAve_YrEsts.csv")
-head(ma_ests)
+#### import site/yr summary info
+sites <- read.csv("/outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
+CT <- data.frame(site_id=sites$site, TaxRes=sites$TaxonomicRes, country=sites$Country)
+head(CT)
+
+#### import year estimates
+ma_ests <- read.csv("/outputs/movingAve_YrEsts.csv")
 #### subset data into response variables
 ab_est <- ma_ests[ma_ests$Response == "abundance",]
 sr_est <- ma_ests[ma_ests$Response == "spp_richness",]
 
-ma <- readRDS("stanTrends_site_level_movingaverages.rds")
+#### import site level estimates
+ma1 <- readRDS("/outputs/stanTrends_site_level_movingaverages.rds")
+ma1 <- merge(ma1,CT,by="site_id", all=T) ##add in country and taxonomic resolution information
+ma <- ma[complete.cases(ma), ] ## delete sites with no estimates
+ma$MeanYr <- as.numeric(ma$StartYear) + 4.5
+head(ma_ests)
 head(ma)
 #### subset data into response variables
 ab <- ma[ma$Response == "abundance",]
@@ -17,6 +26,68 @@ sr <- ma[ma$Response == "spp_richness",]
 
 #install.packages("data.table")
 library(data.table)
+
+#################################################
+##### check changes in number of sites per country and per taxonomic resolution over time
+
+# number of sites per county per year
+ab_or <- ab[order(ab$MeanYr),]
+DT <- data.table(ab_or)
+CountryCount <- DT[, .(site_num = length(unique(site_id))), by = list(MeanYr,country)]
+head(CountryCount)
+unique(CountryCount$country)
+
+# number of sites per taxonomic resolution per year
+TaxResCount <- DT[, .(site_num = length(unique(site_id))), by = list(MeanYr,TaxRes)]
+head(TaxResCount)
+
+#line plots
+cc <- CountryCount[ which(CountryCount$MeanYr > 1994 & CountryCount$MeanYr < 2016), ]
+cc$fctr <- factor(cc$county)
+plot(NA, ylim=range(cc$site_num),xlim= c(1994,2016))
+for (x in split(cc, cc$country)) lines(x$MeanYr, x$site_num, col=x$fctr[1],lwd=0.01)
+
+TaxResCount <- TaxResCount[order(TaxResCount$MeanYr),]
+tr <- TaxResCount[ which(TaxResCount$MeanYr > 1994 & TaxResCount$MeanYr < 2016), ]
+tr$fctr <- factor(tr$TaxRes)
+plot(NA, ylim=range(tr$site_num),xlim= c(1994,2016))
+for (x in split(tr, tr$TaxRes)) lines(x$MeanYr, x$site_num, col=x$fctr[1],lwd=0.01)
+
+##barplots
+library(tidyr)
+cut <- CountryCount[ which(CountryCount$MeanYr > 1994 & CountryCount$MeanYr < 2016), ]
+ccw <- spread(cut, MeanYr, site_num)
+ccw [is.na(ccw )] <- 0
+ccw
+
+oth <- ccw[1,2:23] + ccw[3,2:23] + ccw[4,2:23] + ccw[6,2:23] + ccw[7,2:23] + ccw[11,2:23] + ccw[12,2:23] + ccw[13,2:23] + ccw[14,2:23] + ccw[17,2:23]
+lab <- data.frame(country="Other",oth)
+names(lab) <- sub("^X", "", names(lab))
+
+ccww <- rbind(lab,ccw[20,],ccw[19,],ccw[18,],ccw[16,],ccw[15,],ccw[10,],ccw[9,],ccw[8,],ccw[5,],ccw[2,])
+ccww[2,1] = "UK"
+
+# # bargraph # #
+tiff(filename = "plots/MA_countriesPerYr.tiff", width =5, height = 8, units = 'in', res = 600, compression = 'lzw')
+
+par(mgp=c(3,0,-1),mar=c(4,4,0.4,0.2)+0.1)
+
+colors <- c("black","lightslateblue","lightskyblue", "darkblue","darkseagreen2", "forestgreen",
+"brown1","darkorange","red3","peachpuff", "saddlebrown")
+
+barplot(as.matrix(ccww), las=2, col= colors, border=colors, xaxt='n')
+
+place <- seq(1.6,26.8, length = 22)
+marks <- c(1994:2015)
+axis(side = 1, at=place, labels=marks,las=2,tick=F,line=F)
+legend(x=2,y=1400, rev(rownames(sites)), fill = rev(colors), border = rev(colors), bty = "n",cex=1.4)
+title(ylab="Number of sites", line=2.2,cex.lab=1.5)
+title(xlab="Mean year of moving window", line=2.2,cex.lab=1.5)
+
+##
+dev.off()
+##
+
 
 ##########################################
 ## check changes in estimate error over time
@@ -174,9 +245,9 @@ head(mean_yr_count)
 ## plot # mean years sampled over moving window years
 
 mean_yr_count$MeanYear <- as.numeric(mean_yr_count$startyear) + 4.5
-mean_yr_count_mw <- mean_yr_count[mean_yr_count$MeanYear > 1994,]
+mean_yr_count_mw <- mean_yr_count[ which(mean_yr_count$MeanYear >1994 & mean_yr_count$MeanYear <2016), ]
 
-plot(mean_yr_count_mw$count.i ~mean_yr_count_mw$MeanYear, ylim=c(6,9),xlim= c(1994,2019), pch=19,
+plot(mean_yr_count_mw$count.i ~mean_yr_count_mw$MeanYear, ylim=c(6,9),xlim= c(1994,2016), pch=19,
 ylab="Mean number of sampled years", xlab="Mean year of moving window")
 points (mean_yr_count_mw$count.i ~mean_yr_count_mw$MeanYear, type="l")
 
