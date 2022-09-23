@@ -341,6 +341,55 @@ head(MovAve)
 unique(MovAve$Response)
 rownames(MovAve) <- NULL
 ##
+#######################get number of sites per year
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
+library(lubridate)
+
+##attach data
+sites <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) # change file name according to the time series to be analyzed
+#delete missing data rows
+DATA2 <- sites[!is.na(sites$site_id_wMissing),]
+sort(unique(DATA2$year))
+
+#make turnover numeric
+DATA2$turnover <- as.numeric(DATA2$turnover)
+
+#count number of sites per year
+sitecount <- aggregate(site_id ~ year, data = DATA2, FUN = length)
+sitecount
+
+#subset by year
+sites_later <- subset(DATA2,year > 1989)
+head(sites_later)
+
+#count number of sampling years per site
+yearcount <- aggregate(year ~ site_id, data = sites_later, FUN = length)
+head(yearcount)
+
+#subset for sites with more years
+siteslater_long <- yearcount[which(yearcount$year >= 20),]
+head(siteslater_long)
+nrow(siteslater_long)
+
+###### get data to match with sites to count sites per year
+response_stan <- readRDS("outputs/stanTrends_site_level_movingaverages.rds")
+
+#subset estimates to sites selected for HTMW2
+HTMW2sub <- subset(response_stan, site_id %in% siteslater_long$site_id)
+head(HTMW2sub)
+length(unique(HTMW2sub$site_id))
+
+library(data.table)
+subs <- subset(HTMW2sub, HTMW2sub$Response == "abundance")
+DT <- data.table(subs)
+sitecount_ab <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
+sitecount_ab
+
+MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
+MoAv1 <- subset(MoAv1,StartYear >1989)
+head(MoAv1)
+
+##
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 write.csv(MovAve, "outputs/HighThresholdMovingAve2_YrEsts.csv")
 ##
