@@ -1,12 +1,12 @@
 #script to combine site-level trends together in a single meta-analysis
 
 #get data
-response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level_movingaveragesHTMV.rds")
+response_stan <- readRDS("/data/idiv_ess/Ellen/stanTrends_site_level_movingaverages.rds")
 
 ### get response for this task ######
 TaskID <- unique(response_stan[,c("StartYear","Response")])
 TaskID$TaskID <- 1:nrow(TaskID)
-nrow(TaskID)#135
+nrow(TaskID)#321
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
 ### site selection ##################
