@@ -454,40 +454,7 @@ sensTrends <- do.call(rbind,sensTrends)
 head(sensTrends)
 write.csv(sensTrends,file="SplitSensitivityTrends.csv")
 
-#####################################################
-
-### moving average yr syntheses from splits by latitude! #####
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split"
-
-require(data.table)
-library(brms)
-
-files = list.files(path = path, pattern = '\\.rds$')
-
-dat_list = lapply(files, function(x){
-  fit <- readRDS(x)
-  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
-  fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
-  fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
-  fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
-  nam <- gsub("metaanalysis_movingaverage_","", x)
-  name <- gsub(".rds","", nam)
-  name <- gsub("_1","__1", name)
-  name <- gsub("_2","__2", name)
-  response <- strsplit(as.character(name),"__")[[1]][1]
-  year <- strsplit(as.character(name),"__")[[1]][2]
-  fixed <- list(Response=response, StartYear=year, fixed_995[,1:4], fixed_975[,3:4],
-                fixed_95[,3:4],fixed_90[,3:4])
-  fixed <-data.frame(lapply(fixed, function(x) t(data.frame(x))))
-  return(fixed)
-})
-
-MovAve <- do.call(rbind.data.frame, dat_list)
-head(MovAve)
-##
-write.csv(MovAve, "outputs/movingAve_split_YrEsts.csv")
+##################################################################
 
 ### sensitivity analysis ####
 
@@ -495,8 +462,8 @@ library(raster)
 require(data.table)
 
 ## seasonDiff in separate folder
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff"
 
 firstfile <- readRDS("fixef_seasonDiff_abundance.rds")
 num_files <- length(list.files(path))
@@ -512,8 +479,8 @@ names(dat_list) <- trendsFiles
 sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
 sens1 <- cbind(season, sens)
 
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff_nonNative")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff_nonNative"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff_nonNative")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonDiff_nonNative"
 
 firstfile <- readRDS("fixef_seasonDiff_abund_nativeSpp.rds")
 num_files <- length(list.files(path))
@@ -534,8 +501,8 @@ senss <- rbind(sens1, sens2)
 saveRDS(senss,file="sensitiv_seasonDiff.rds")
 
 ### seasonTrends #####
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends"
 
 firstfile <- readRDS("fixef_seasonTrends_abundance.rds")
 num_files <- length(list.files(path))
@@ -551,8 +518,8 @@ names(dat_list) <- trendsFiles
 sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
 sens1 <- cbind(season, sens)
 
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends_nonNative")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends_nonNative"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends_nonNative")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/seasonTrends_nonNative"
 
 firstfile <- readRDS("fixef_seasonTrends_abund_nativeSpp.rds")
 num_files <- length(list.files(path))
@@ -573,8 +540,8 @@ senss <- rbind(sens1, sens2)
 saveRDS(senss,file="sensitiv_seasonTrends.rds")
 
 ## taxonresDiff
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff"
 
 firstfile <- readRDS("fixef_taxonresDiff_abundance.rds")
 num_files <- length(list.files(path))
@@ -590,8 +557,8 @@ names(dat_list) <- trendsFiles
 sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
 sens1 <- cbind(taxonres, sens)
 
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff_nonNative")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff_nonNative"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff_nonNative")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresDiff_nonNative"
 
 firstfile <- readRDS("fixef_taxonresDiff_abund_nativeSpp.rds")
 num_files <- length(list.files(path))
@@ -612,8 +579,8 @@ senss <- rbind(sens1, sens2)
 saveRDS(senss,file="sensitiv_taxonresDiff.rds")
 
 ## taxonresTrends
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends"
 
 firstfile <- readRDS("fixef_taxonresTrends_abundance.rds")
 num_files <- length(list.files(path))
@@ -629,8 +596,8 @@ names(dat_list) <- trendsFiles
 sens <- as.data.frame(dplyr::bind_rows(dat_list, .id = "Response"))
 sens1 <- cbind(taxonres, sens)
 
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends_nonNative")
-path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends_nonNative"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends_nonNative")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/Sensitivity/taxonresTrends_nonNative"
 
 firstfile <- readRDS("fixef_taxonresTrends_abund_nativeSpp.rds")
 num_files <- length(list.files(path))
@@ -714,3 +681,39 @@ ggplot(countryTrends)+
   geom_hline(yintercept=0, linetype="dashed")+
   facet_wrap(~Response)+
   theme_few()
+
+#####################################################
+
+### moving average yr syntheses from splits by latitude! #####
+setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split")
+path <- "C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/outputs/movingaverage_meta_split"
+
+require(data.table)
+library(brms)
+
+files = list.files(path = path, pattern = '\\.rds$')
+
+dat_list = lapply(files, function(x){
+  fit <- readRDS(x)
+  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+  fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
+  fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
+  fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
+  nam <- gsub("metaanalysis_movingaverage_","", x)
+  name <- gsub(".rds","", nam)
+  name <- gsub("_1","__1", name)
+  name <- gsub("_2","__2", name)
+  response <- strsplit(as.character(name),"__")[[1]][1]
+  year <- strsplit(as.character(name),"__")[[1]][2]
+  fixed <- list(Response=response, StartYear=year, fixed_995[,1:4], fixed_975[,3:4],
+                fixed_95[,3:4],fixed_90[,3:4])
+  fixed <-data.frame(lapply(fixed, function(x) t(data.frame(x))))
+  return(fixed)
+})
+
+MovAve <- do.call(rbind.data.frame, dat_list)
+head(MovAve)
+##
+write.csv(MovAve, "outputs/movingAve_split_YrEsts.csv")
+###############################################################

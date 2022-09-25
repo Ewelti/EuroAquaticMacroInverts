@@ -48,7 +48,7 @@ box(lwd=2)
 #### FRic #####
 sub <- subset(seasTr, Response == "FRic")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.04,0.03), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.06,0.03), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -60,7 +60,7 @@ box(lwd=2)
 #### RaoQ #####
 sub <- subset(seasTr, Response == "RaoQ")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.34,0.5), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.34,0.6), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -72,7 +72,7 @@ box(lwd=2)
 #### spp_richness_rarefied #####
 sub <- subset(seasTr, Response == "spp_rich_rare")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.2,0.3), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.2,0.2), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -83,7 +83,7 @@ box(lwd=2)
 #### E10 #####
 sub <- subset(seasTr, Response == "E10")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.01,0.005), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.01,0.01), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -94,7 +94,7 @@ box(lwd=2)
 #### FuncRedundancy #####
 sub <- subset(seasTr, Response == "FRed")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.001,0.003), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.001,0.0025), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -105,7 +105,7 @@ box(lwd=2)
 #### FEve #####
 sub <- subset(seasTr, Response == "FEve")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.007,0.01), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.005,0.015), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -116,7 +116,7 @@ box(lwd=2)
 #### abundance #####
 sub <- subset(seasTr, Response == "abundance")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.03,0.03), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.04,0.02), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -127,7 +127,7 @@ box(lwd=2)
 #### turnover #####
 sub <- subset(seasTr, Response == "turnover")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.007,0.005), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.015,0.01), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -138,7 +138,7 @@ box(lwd=2)
 #### FDiv #####
 sub <- subset(seasTr, Response == "FDiv")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.02,0.05), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.02,0.08), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
@@ -149,7 +149,7 @@ box(lwd=2)
 #### F_to #####
 sub <- subset(seasTr, Response == "F_to")
 yy <- c(3,2,1,4)
-plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.045,0.015), cex=2,ylim=c(0.7,4.3))
+plot(yy ~ sub$Estimate, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-0.045,0.04), cex=2,ylim=c(0.7,4.3))
 polygon(x=c(-100,-100,0,0),
         y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 points(yy ~ sub$Estimate, pch=19,cex=2)
