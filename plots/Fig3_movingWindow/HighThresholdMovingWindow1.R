@@ -22,9 +22,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear <2012), ] # this is min 500 sites
+SRs <- sr[ which(sr$StartYear >1999 & sr$StartYear <2010), ] # this is min 500 sites and within selected years of high number of sites
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1.8,2), xlim=c(2004.5,2015.5))#ylim=c(-0.8,2.55))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1.5,1.5), xlim=c(2004.5,2013.5))#ylim=c(-0.8,2.55))
 title(ylab=expression(paste("Taxon richness (% y"^"-1", ")")), line=2,cex.lab=1.4)
 #title(xlab="Mean year of moving window", line=2,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -46,9 +46,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear <2012), ] # this is min 500 sites
+SRs <- sr[ which(sr$StartYear >1999 & sr$StartYear <2010), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-2.7,2.5), xlim=c(2004.5,2015.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-2.7,2.5), xlim=c(2004.5,2013.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Abundance (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -69,9 +69,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear <2012), ] # this is min 500 sites
+SRs <- sr[ which(sr$StartYear >1999 & sr$StartYear <2010), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-3.3,2.5), xlim=c(2004.5,2015.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-3.6,2.5), xlim=c(2004.5,2013.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Functional richness (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -93,9 +93,9 @@ names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
 names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
-SRs <- sr[ which(sr$StartYear <2012), ] # this is min 500 sites
+SRs <- sr[ which(sr$StartYear >1999 & sr$StartYear <2010), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1,1.3), xlim=c(2004.5,2015.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1.3,1), xlim=c(2004.5,2013.5)) #ylim=c(-0.57,0.4))
 title(ylab=expression(paste("Functional redundancy (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
