@@ -288,7 +288,7 @@ dev.off()
 #### in each year of the moving window analysis
 
 ## attach data
-DATA1_list <- read.csv("All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T)
+DATA1_list <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T)
 allYrs <- DATA1_list[!is.na(DATA1_list$site_id_wMissing),]
 attach(allYrs)
 head(allYrs)
@@ -327,7 +327,7 @@ count_nz <- count[count$count.i > 0,]
 head(count_nz)
 
 write.csv(count_nz, "yearcount_sitelevel_MovingWindow.csv")
-count_nz <- read.csv("yearcount_sitelevel_MovingWindow.csv")
+count_nz <- read.csv("outputs/yearcount_sitelevel_MovingWindow.csv")
 
 
 ###########################################################

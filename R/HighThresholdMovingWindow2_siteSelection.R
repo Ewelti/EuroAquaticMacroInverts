@@ -9,6 +9,7 @@ sites <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.c
 #delete missing data rows
 DATA2 <- sites[!is.na(sites$site_id_wMissing),]
 sort(unique(DATA2$year))
+length(unique(DATA2$site_id))
 
 #make turnover numeric
 DATA2$turnover <- as.numeric(DATA2$turnover)
@@ -45,3 +46,19 @@ for(i in 8:30){
 	HTMWc <- rbind(HTMWc, d.i)
 }
 HTMWc
+
+#see how many sites have each number of years of data 8-30 years from all data
+
+yearcount <- aggregate(year ~ site_id, data = DATA2, FUN = length)
+head(yearcount)
+
+HTMWc <- NULL
+for(i in 8:30){
+	siteslater_long <- yearcount[which(yearcount$year >= i),]
+	numsites <- nrow(siteslater_long)
+	d.i <- data.frame(years = i, site_count = numsites)
+	HTMWc <- rbind(HTMWc, d.i)
+}
+HTMWc
+
+plot(HTMWc$site_count~HTMWc$years, ylab="Number of sites", xlab="Sampling years",pch=19,cex.lab=1.5,cex=2)
