@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
 taxoresTr <- readRDS("outputs/Sensitivity/sensitiv_taxonresTrends.RDS")

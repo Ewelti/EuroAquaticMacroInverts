@@ -92,6 +92,40 @@ countryTrends <- rbind(countryTrends,countryTrends_Beta)
 names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level.rds")
 
+##############################################
+#### jackknife trends ####
+trendsDir <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/meta_country_jacknife"
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/meta_country_jacknife")
+
+ma <- readRDS("metaanalysis_country_jacknife_abund_nativeSpp.rds")
+head(ma)
+
+trendsFiles <- list.files(trendsDir)[grepl(".rds",list.files(trendsDir))]
+
+countryTrends <- lapply(trendsFiles,function(x){
+   
+  temp <- readRDS(paste(trendsDir,x,sep="/"))
+  
+  #add on response from file name
+  name <- gsub(".rds","", x)
+  temp$Response <- gsub("metaanalysis_country_jacknife_","", name)
+  return(temp)
+
+})
+
+countryTrends <- do.call(rbind,countryTrends)
+
+# add country removed
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
+siteData <- read.csv("All_siteLevel_and_glmOutput.csv", header=T) 
+allCountries <- sort(unique(siteData$Country))
+co <- rep(allCountries,20)
+countryTrends$country <- co
+head(countryTrends)
+write.csv(countryTrends,file="JackknifeTrends.csv")
+
+################################################
+
 ### site-level moving averages ####
 
 trendsDir <- "C:/Users/db40fysa/Dropbox/Git/ellen_outputs/movingaverage"
