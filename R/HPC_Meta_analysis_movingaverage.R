@@ -26,7 +26,7 @@ response_stan <- subset(response_stan, !is.na(estimate))
 ### site metadata ######
 
 d1 <- read.csv("/data/idiv_ess/Ellen/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
-siteData <- unique(d1[,c("site_id","study_id","country")])
+siteData <- unique(d1[,c("site_id","study_id","country","TaxonomicRes")])
 response_stan <- merge(siteData,response_stan,by="site_id")
 
 ### run model ####
@@ -51,13 +51,25 @@ cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
 rstan_options(auto_write = FALSE)
 options(mc.cores = cpus_per_task)
 
-#define priors
+# fit1 <- brm(estimate|se(sd) ~ 1 + (1|study_id) + (1|country),
+#             data = response_stan, iter=3000, init = 0,
+#             chains = 4, prior = prior1,
+#             control = list(adapt_delta = 0.90, 
+#                            max_treedepth = 12))
+# 
+# ### save output ####
+# 
+# saveRDS(fit1,file=paste0("metaanalysis_movingaverage_",myResponse,"_",myStartYear,".rds"))
+
+### species-level only ####
+
 fit1 <- brm(estimate|se(sd) ~ 1 + (1|study_id) + (1|country),
-            data = response_stan, iter=3000, init = 0,
+            data = subset(response_stan, TaxonomicRes=="species"), 
+            iter=3000, init = 0,
             chains = 4, prior = prior1,
             control = list(adapt_delta = 0.90, 
                            max_treedepth = 12))
 
-### save output ####
+saveRDS(fit1,file=paste0("metaanalysis_movingaverage_specieslevel_",myResponse,"_",myStartYear,".rds"))
 
-saveRDS(fit1,file=paste0("metaanalysis_movingaverage_",myResponse,"_",myStartYear,".rds"))
+### end #####

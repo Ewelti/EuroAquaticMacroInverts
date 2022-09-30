@@ -26,7 +26,7 @@ siteData <- unique(d1[,c("site","study_id","Country",
                          #"N_Est", "N_mean", 
                          "urban_meanPerc_upstr", "crop_meanPerc_upstr",
                          #"crop_Est", "urban_Est", 
-                         "dam_impact_score_lessthan100km")])
+                         "dam_impact_score_lessthan100km","TaxonomicRes")])
 
 #change names for consistency elsewhere
 names(siteData)[which(names(siteData)=="site")] <- "site_id"
@@ -71,38 +71,70 @@ cpus_per_task = as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
 rstan_options(auto_write = FALSE)
 options(mc.cores = cpus_per_task)
 
-#define priors 
-prior1 = c(set_prior("normal(0,1)", class = "b"))
+# #define priors 
+# prior1 = c(set_prior("normal(0,1)", class = "b"))
+# 
+# #unweighted
+# 
+# fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+#               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
+#               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+#               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+#             data = response_stan, iter=5000, chains = 4, prior=prior1,
+#             control = list(adapt_delta = 0.90, max_treedepth = 12))
+# 
+# #### save output ####
+# 
+# saveRDS(fit1,file=paste0("metaanalysis_unweighted_drivers_",myResponse,".rds"))
+# 
+# #weighted
+# 
+# fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+#               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
+#               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+#               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+#             data = response_stan, iter=5000, chains = 4, prior=prior1,
+#             control = list(adapt_delta = 0.90, max_treedepth = 12))
+# 
+# #### save output ####
+# 
+# saveRDS(fit1,file=paste0("metaanalysis_drivers_",myResponse,".rds"))
+# 
+# ### prior check 1 ###
+# 
+# #also model with narrower prior - the horseshoe prior
+# 
+# prior1 = c(set_prior("horseshoe(1)", class = "b"))
+# 
+# fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+#               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
+#               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+#               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+#             data = response_stan, iter=5000, chains = 4, prior=prior1,
+#             control = list(adapt_delta = 0.90, max_treedepth = 12))
+# 
+# #### save output ####
+# 
+# saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_",myResponse,".rds"))
+# 
+# ### prior check 2 ###
+# 
+# #also model with narrower prior - the lasso prior
+# 
+# prior1 = c(set_prior("lasso()", class = "b"))
+# 
+# fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+#               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
+#               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+#               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+#             data = response_stan, iter=5000, chains = 4, prior=prior1,
+#             control = list(adapt_delta = 0.90, max_treedepth = 12))
+# 
+# #### save output ####
+# 
+# saveRDS(fit1,file=paste0("metaanalysis_drivers_lasso_",myResponse,".rds"))
 
-#unweighted
-
-fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
-              sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
-              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
-              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
-            data = response_stan, iter=5000, chains = 4, prior=prior1,
-            control = list(adapt_delta = 0.90, max_treedepth = 12))
-
-#### save output ####
-
-saveRDS(fit1,file=paste0("metaanalysis_unweighted_drivers_",myResponse,".rds"))
-
-#weighted
-
-fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
-              sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
-              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
-              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
-            data = response_stan, iter=5000, chains = 4, prior=prior1,
-            control = list(adapt_delta = 0.90, max_treedepth = 12))
-
-#### save output ####
-
-saveRDS(fit1,file=paste0("metaanalysis_drivers_",myResponse,".rds"))
-
-### prior check 1 ###
-
-#also model with narrower prior - the horseshoe prior
+### species only #####
 
 prior1 = c(set_prior("horseshoe(1)", class = "b"))
 
@@ -110,27 +142,8 @@ fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C
               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
-            data = response_stan, iter=5000, chains = 4, prior=prior1,
+            data = subset(response_stan, TaxonomicRes=="species"), 
+            iter=5000, chains = 4, prior=prior1,
             control = list(adapt_delta = 0.90, max_treedepth = 12))
 
-#### save output ####
-
-saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_",myResponse,".rds"))
-
-### prior check 2 ###
-
-#also model with narrower prior - the lasso prior
-
-prior1 = c(set_prior("lasso()", class = "b"))
-
-fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
-              sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
-              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
-              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
-            data = response_stan, iter=5000, chains = 4, prior=prior1,
-            control = list(adapt_delta = 0.90, max_treedepth = 12))
-
-#### save output ####
-
-saveRDS(fit1,file=paste0("metaanalysis_drivers_lasso_",myResponse,".rds"))
-
+saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_specieslevel_",myResponse,".rds"))
