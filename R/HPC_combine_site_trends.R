@@ -214,6 +214,7 @@ dat_list = lapply(files, function(x){
 })
 
 MovAve <- do.call(rbind.data.frame, dat_list)
+rownames(MovAve) <- NULL
 head(MovAve)
 ##
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
@@ -223,69 +224,32 @@ head(ma)
 library(data.table)
 unique(ma$Response)
 
+#get site metadata
+d1 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d1$site_id <- d1$site
+head(d1)
+siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes")])
+ma <- merge(siteData,ma,by="site_id")
+
 subs <- subset(ma, ma$Response == "abundance")
 DT <- data.table(subs)
-sitecount_ab <- DT[, .(site_num_Abund = length(unique(site_id))), by = StartYear]
+sitecount_ab <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
 sitecount_ab
-
-subs_sr <- subset(ma, ma$Response == "spp_richness")
-DT_sr <- data.table(subs_sr)
-sitecount_sr <- DT_sr[, .(site_num_SRich = length(unique(site_id))), by = StartYear]
-sitecount_sr
-
-subs_nat <- subset(ma, ma$Response == "SppRich_nativeSpp")
-DT_nat <- data.table(subs_nat)
-sitecount_nat <- DT_nat[, .(site_num_Native = length(unique(site_id))), by = StartYear]
-sitecount_nat
+COcount_ab <- DT[, .(country_num = length(unique(Country))), by = StartYear]
+COcount_ab
 
 subs_al <- subset(ma, ma$Response == "alien_SppRich")
 DT_al <- data.table(subs_al)
 sitecount_al <- DT_al[, .(site_num_Alien = length(unique(site_id))), by = StartYear]
 sitecount_al
 
-subs_FRic <- subset(ma, ma$Response == "FRic")
-DT_FRic <- data.table(subs_FRic)
-sitecount_FRic <- DT_FRic[, .(site_num_FRic = length(unique(site_id))), by = StartYear]
-sitecount_FRic
-
-subs_FRed <- subset(ma, ma$Response == "FRed")
-DT_FRed <- data.table(subs_FRed)
-sitecount_FRed <- DT_FRed[, .(site_num_FRed = length(unique(site_id))), by = StartYear]
-sitecount_FRed
-
-subs_e10 <- subset(ma, ma$Response == "E10")
-DT_e10 <- data.table(subs_e10)
-sitecount_e10 <- DT_e10[, .(site_num_e10  = length(unique(site_id))), by = StartYear]
-sitecount_e10
-
-subs_fto <- subset(ma, ma$Response == "F_to")
-DT_fto <- data.table(subs_fto)
-sitecount_fto <- DT_fto[, .(site_num_fto = length(unique(site_id))), by = StartYear]
-sitecount_fto
-
-subs_fe <- subset(ma, ma$Response == "FEve")
-DT_fe <- data.table(subs_fe)
-sitecount_fe <- DT_fe[, .(site_num_fe = length(unique(site_id))), by = StartYear]
-sitecount_fe
-
-subs_to <- subset(ma, ma$Response == "turnover")
-DT_to <- data.table(subs_to)
-sitecount_to <- DT_to[, .(site_num_to = length(unique(site_id))), by = StartYear]
-sitecount_to
-
 MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
-MoAv2 <- merge(MoAv1,sitecount_sr,by="StartYear", all=T)
-MoAv3 <- merge(MoAv2,sitecount_nat,by="StartYear", all=T)
-MoAv4 <- merge(MoAv3,sitecount_al,by="StartYear", all=T)
-MoAv5 <- merge(MoAv4,sitecount_FRic,by="StartYear", all=T)
-MoAv6 <- merge(MoAv5,sitecount_FRed,by="StartYear", all=T)
-MoAv7 <- merge(MoAv6,sitecount_e10,by="StartYear", all=T)
-MoAv8 <- merge(MoAv7,sitecount_fto,by="StartYear", all=T)
-MoAv9 <- merge(MoAv8,sitecount_fe,by="StartYear", all=T)
-MoAv10 <- merge(MoAv9,sitecount_to,by="StartYear", all=T)
-head(MoAv10)
+MoAv2 <- merge(MoAv1,sitecount_al,by="StartYear", all=T)
+MoAv3 <- merge(MoAv2,COcount_ab,by="StartYear", all=T)
+MoAv4 <- subset(MoAv3,StartYear >1989)
+head(MoAv4)
 ##
-write.csv(MoAv6, "outputs/movingAve_YrEsts.csv")
+write.csv(MoAv4, "outputs/movingAve_YrEsts.csv")
 
 ##############################################
 
@@ -321,6 +285,7 @@ head(dat_list)
 MovAve <- do.call(rbind.data.frame, dat_list)
 head(MovAve)
 unique(MovAve$Response)
+rownames(MovAve) <- NULL
 ##
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
@@ -328,12 +293,26 @@ htma <- readRDS("outputs/stanTrends_site_level_movingaveragesHTMV.rds")
 head(htma)
 library(data.table)
 
+#get site metadata
+d1 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d1$site_id <- d1$site
+head(d1)
+siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes")])
+htma <- merge(siteData,htma,by="site_id")
+
+head(htma)
+
+library(data.table)
 subs <- subset(htma, htma$Response == "abundance")
 DT <- data.table(subs)
 sitecount_ab <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
 sitecount_ab
+COcount_ab <- DT[, .(country_num = length(unique(Country))), by = StartYear]
+COcount_ab
 
 MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
+MoAv1 <- merge(MoAv1,COcount_ab,by="StartYear", all=T)
+MoAv1 <- subset(MoAv1,StartYear >1999)
 head(MoAv1)
 ##
 write.csv(MoAv1, "outputs/HighThresholdMovingAve1_YrEsts.csv")
@@ -408,13 +387,27 @@ HTMW2sub <- subset(response_stan, site_id %in% siteslater_long$site_id)
 head(HTMW2sub)
 length(unique(HTMW2sub$site_id))
 
+#get site metadata
+d1 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d1$site_id <- d1$site
+head(d1)
+siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes")])
+HTMW2sub <- merge(siteData,HTMW2sub,by="site_id")
+
+head(HTMW2sub)
+length(unique(HTMW2sub$site_id))
+length(unique(HTMW2sub$Country))
+
 library(data.table)
 subs <- subset(HTMW2sub, HTMW2sub$Response == "abundance")
 DT <- data.table(subs)
 sitecount_ab <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
 sitecount_ab
+COcount_ab <- DT[, .(country_num = length(unique(Country))), by = StartYear]
+COcount_ab
 
 MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
+MoAv1 <- merge(MoAv1,COcount_ab,by="StartYear", all=T)
 MoAv1 <- subset(MoAv1,StartYear >1989)
 head(MoAv1)
 
@@ -449,6 +442,97 @@ head(HTMWsiteTrends)
 saveRDS(HTMWsiteTrends,file="HTMWsiteTrends.rds")
 
 #####################################################
+##############################################
+
+### species level sites only moving average #####
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/movingaverage_spplevelOnly")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/movingaverage_spplevelOnly"
+
+require(data.table)
+library(brms)
+
+files = list.files(path = path, pattern = '\\.rds$')
+
+dat_list = lapply(files, function(x){
+  fit <- readRDS(x)
+  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+  fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
+  fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
+  fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
+  nam <- gsub("metaanalysis_movingaverage_specieslevel_","", x)
+  name <- gsub(".rds","", nam)
+  name <- gsub("_1","__1", name)
+  name <- gsub("_2","__2", name)
+  response <- strsplit(as.character(name),"__")[[1]][1]
+  year <- strsplit(as.character(name),"__")[[1]][2]
+  fixed <- list(Response=response, StartYear=year, fixed_995[,1:4], fixed_975[,3:4],
+                fixed_95[,3:4],fixed_90[,3:4])
+  fixed <-data.frame(lapply(fixed, function(x) t(data.frame(x))))
+  return(fixed)
+})
+head(dat_list)
+
+MovAve <- do.call(rbind.data.frame, dat_list)
+head(MovAve)
+unique(MovAve$Response)
+rownames(MovAve) <- NULL
+##
+#######################get number of sites per year
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
+library(lubridate)
+
+##attach data
+sites <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) # change file name according to the time series to be analyzed
+#delete missing data rows
+DATA2 <- sites[!is.na(sites$site_id_wMissing),]
+#subset for sites with spp level data
+sppD <- DATA2[which(DATA2$TaxonomicRes == "species"),]
+head(sppD)
+
+#count number of sites per year
+sitecount <- aggregate(site_id ~ year, data = sppD, FUN = length)
+head(sitecount)
+
+#count number of sampling years per site
+yearcount <- aggregate(year ~ site_id, data = sppD, FUN = length)
+head(yearcount)
+
+###### get data to match with sites to count sites per year
+response_stan <- readRDS("outputs/stanTrends_site_level_movingaverages.rds")
+
+#subset estimates to sites selected for spp level only
+SppSub <- subset(response_stan, site_id %in% sppD$site_id)
+
+#get site metadata
+d1 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d1$site_id <- d1$site
+head(d1)
+siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes")])
+SppSub <- merge(siteData,SppSub,by="site_id")
+
+head(SppSub)
+length(unique(SppSub$site_id))
+length(unique(SppSub$Country))
+
+library(data.table)
+subs <- subset(SppSub, SppSub$Response == "abundance")
+DT <- data.table(subs)
+sitecount_ab <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
+sitecount_ab
+COcount_ab <- DT[, .(country_num = length(unique(Country))), by = StartYear]
+COcount_ab
+
+MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
+MoAv1 <- merge(MoAv1,COcount_ab,by="StartYear", all=T)
+MoAv1 <- subset(MoAv1,StartYear >1989)
+head(MoAv1)
+
+##
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+write.csv(MoAv1, "outputs/SppLevelMovAve_YrEsts.csv")
+##
+############################################################################################
 ##############################################
 
 #### Combine trends for sensitivity analysis splitting the dataset by taxonomic resolution
