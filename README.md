@@ -47,6 +47,7 @@ R/HPC_modelchecking.R - examination of the meta-analysis files of the previous s
 R/HPC-Meta-analysis_drivers.R - fit driver models to the site-level data (run on HPC)
 
 ## plots folder
+Online Figures.docx includes all additional online figures not included in main text or Extended Data
 Contains all plots and code to make main and supplemental plots.
 Contains additional maps of driver and response distributions across sites not included in the manuscript.
 
