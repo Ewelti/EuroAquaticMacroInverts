@@ -350,7 +350,7 @@ points (count_sign_mw_co$transnum ~ count_sign_mw_co$MeanYear, pch=19, col="cyan
 box(lwd=2)
 title(ylab="Proportion of sites with positive trends", line=2.9)
 title(xlab="Mean year of moving window", line=2)
-legend("bottomright", bty="n", legend="j, UK",cex=1.5)
+legend("bottomright", bty="n", legend="t, UK",cex=1.5)
 marks <- c(2,5,10,25,50,100,200,350)
 axis(4, at=c(0.120411998,0.279588002,0.4,0.559176003,0.679588002,0.8,0.920411998,1.017627218),cex.axis=1,labels=marks,las=1,col="cyan4")
 mtext(side=4, "Number of sites", line=3, las=3, cex=0.7)
