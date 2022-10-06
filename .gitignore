@@ -15,6 +15,7 @@ outputs/onestage/*
 outputs/MA_higherthreshold_meta/*
 outputs/HTMW1/*
 outputs/HTMW2/*
+outputs/HTMW3/*
 outputs/HTMW_siteLevel/*
 outputs/onestage_decadeEffect/*
 outputs/meta_country_jacknife/*

@@ -52,104 +52,194 @@ ggplot(summaryData)+
 
 qplot(Year_count, medTrends, data=summaryData)
 
-#check against gls fits
-gls <- read.csv("outputs/All_siteLevel_and_glmOutput.csv",as.is=T)
-head(all)
-all <- merge(response_stan_pivot, gls, by.x="site_id", by.y="site")
+t_col <- function(color, percent = 50, name = NULL) {
+  #      color = color name
+  #    percent = % transparency
+  #       name = an optional name for the color
 
-#compare estimates
-qplot(abund_nativeSpp, nativeAbun_Est, data=all)
-qplot(abundance, Abun_Est, data=all)
-qplot(alien_Abund, AlienAbun_Est, data=all)
-qplot(alien_SppRich, AlienSppRich_Est, data=all)
-qplot(insect_Abund, insect_Abund_Est, data=all)
-qplot(insect_SppRich, insect_SppRich_Est, data=all)
-qplot(EPT_Abund, EPT_Abund_Est, data=all)
-qplot(EPT_SppRich, EPT_SppRich_Est, data=all)
+## Get RGB values for named color
+rgb.val <- col2rgb(color)
 
-qplot(F_to, F_to_Est, data=all)
-qplot(FDiv, FDiv_Est, data=all)
-qplot(FEve, FEve_Est, data=all)
-qplot(FRic, FRic_Est, data=all)
-qplot(RaoQ, RaoQ_Est, data=all)
+## Make new color using input color as base and alpha set by transparency
+t.col <- rgb(rgb.val[1], rgb.val[2], rgb.val[3],
+             max = 255,
+             alpha = (100 - percent) * 255 / 100,
+             names = name)
 
-qplot(shannonsH, ShanH_Est, data=all)
-qplot(spp_rich_rare, SppRichRare_Est, data=all)
-qplot(spp_richness, SppRich_Est, data=all)
-qplot(SppRich_nativeSpp, nativeSppRich_Est, data=all)
-qplot(turnover, TurnO_Est, data=all)
+## Save the color
+invisible(t.col)
+}
+mycol <- t_col("pink", perc = 20, name = "lt.pink")
 
-#check effect of time series length on estimates
-dim(response_stan_pivot)
-qplot(Year_count, abund_nativeSpp, data=response_stan_pivot)
-qplot(Year_count, abundance, data=response_stan_pivot)
-qplot(Year_count, alien_Abund, data=response_stan_pivot)
-qplot(Year_count, alien_SppRich, data=response_stan_pivot)
-qplot(Year_count, insect_Abund, data=response_stan_pivot)
-qplot(Year_count, insect_SppRich, data=response_stan_pivot)
-qplot(Year_count, EPT_Abund, data=response_stan_pivot)
-qplot(Year_count, EPT_SppRich, data=response_stan_pivot)
-
-qplot(Year_count, F_to, data=response_stan_pivot)
-qplot(Year_count, FDiv, data=response_stan_pivot)
-qplot(Year_count, FEve, data=response_stan_pivot)
-qplot(Year_count, FRic, data=response_stan_pivot)
-qplot(Year_count, RaoQ, data=response_stan_pivot)
-
-qplot(Year_count, shannonsH, data=response_stan_pivot)
-qplot(Year_count, spp_rich_rare, data=response_stan_pivot)
-qplot(Year_count, spp_richness, data=response_stan_pivot)
-qplot(Year_count, SppRich_nativeSpp, data=response_stan_pivot)
-qplot(Year_count, turnover, data=response_stan_pivot)
-
+#####################################################
 ## effect of years sampled on trend estimates
-par(mfrow=c(2,2),mar=c(4,4,0.4,0.4))
-plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$spp_richness,xlab="Years sampled", ylab="Taxon richness estimate")
-abline(h=0, col="grey70", lty=2)
-abline(lm(response_stan_pivot$spp_richness~response_stan_pivot$Year_count),col=2)
-plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$abundance,xlab="Years sampled", ylab="Abundance estimate")
-abline(h=0, col="grey70", lty=2)
-abline(lm(response_stan_pivot$abundance~response_stan_pivot$Year_count),col=2)
-plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$FRic,xlab="Years sampled", ylab="Functional richness estimate")
-abline(h=0, col="grey70", lty=2)
-abline(lm(response_stan_pivot$abundance~response_stan_pivot$Year_count),col=2)
-plot(x=response_stan_pivot$Year_count,y=response_stan_pivot$abundance,xlab="Years sampled", ylab="Functional redundancy estimate")
-abline(h=0, col="grey70", lty=2)
-abline(lm(response_stan_pivot$abundance~response_stan_pivot$Year_count),col=2)
+tiff(filename = "plots/YearCountTrendEsts.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
 
-tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Year_count)
-summary(tr_mo)
-ab_mo = lm(response_stan_pivot$abundance~response_stan_pivot$Year_count)
-summary(ab_mo)
-fr_mo = lm(response_stan_pivot$FRic~response_stan_pivot$Year_count)
-summary(fr_mo)
-fre_mo = lm(response_stan_pivot$FRed~response_stan_pivot$Year_count)
-summary(fre_mo)
+par(mfrow=c(2,2),mar=c(4,4,0.4,0.4))
+x1 <- response_stan_pivot$Year_count
+y1 <- response_stan_pivot$spp_richness
+mod <- lm(y1 ~ x1)
+summary(mod)
+newx <- seq(min(x1), max(x1), length.out=54)
+preds <- predict(mod, newdata = data.frame(x1=newx), interval = 'confidence')
+# plot
+plot(x=x1,y=y1,type="n",xlab="Years sampled", ylab="Taxon richness estimate")
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 0, 0, -100), col ="grey80", border = NA)
+box(lwd=2)
+points(y1~x1)
+# add fill
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col =mycol, border = NA) #col = 'grey80'
+# model
+abline(mod,lty=1,lwd=2,col=2)
+# intervals
+lines(newx, preds[ ,3], lty = 'dashed', col = 2)
+lines(newx, preds[ ,2], lty = 'dashed', col = 2)
+
+x1 <- response_stan_pivot$Year_count
+y1 <- response_stan_pivot$abundance
+mod <- lm(y1 ~ x1)
+summary(mod)
+newx <- seq(min(x1), max(x1), length.out=54)
+preds <- predict(mod, newdata = data.frame(x1=newx), interval = 'confidence')
+# plot
+plot(x=x1,y=y1,type="n",xlab="Years sampled", ylab="Abundance estimate")
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 0, 0, -100), col ="grey80", border = NA)
+box(lwd=2)
+points(y1~x1)
+# add fill
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col =mycol, border = NA) #col = 'grey80'
+# model
+abline(mod,lty=1,lwd=2,col=2)
+# intervals
+lines(newx, preds[ ,3], lty = 'dashed', col = 2)
+lines(newx, preds[ ,2], lty = 'dashed', col = 2)
+
+x1 <- response_stan_pivot$Year_count
+y1 <- response_stan_pivot$FRic
+mod <- lm(y1 ~ x1)
+summary(mod)
+newx <- seq(min(x1), max(x1), length.out=54)
+preds <- predict(mod, newdata = data.frame(x1=newx), interval = 'confidence')
+# plot
+plot(x=x1,y=y1,type="n",xlab="Years sampled", ylab="Functional richness estimate")
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 0, 0, -100), col ="grey80", border = NA)
+box(lwd=2)
+points(y1~x1)
+# add fill
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col =mycol, border = NA) #col = 'grey80'
+# model
+abline(mod,lty=1,lwd=2,col=2)
+# intervals
+lines(newx, preds[ ,3], lty = 'dashed', col = 2)
+lines(newx, preds[ ,2], lty = 'dashed', col = 2)
+
+x1 <- response_stan_pivot$Year_count
+y1 <- response_stan_pivot$FRed
+mod <- lm(y1 ~ x1)
+summary(mod)
+newx <- seq(min(x1), max(x1), length.out=54)
+preds <- predict(mod, newdata = data.frame(x1=newx), interval = 'confidence')
+# plot
+plot(x=x1,y=y1,type="n",xlab="Years sampled", ylab="Functional redundancy estimate")
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 0, 0, -100), col ="grey80", border = NA)
+box(lwd=2)
+points(y1~x1)
+# add fill
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col =mycol, border = NA) #col = 'grey80'
+# model
+abline(mod,lty=1,lwd=2,col=2)
+# intervals
+lines(newx, preds[ ,3], lty = 'dashed', col = 2)
+lines(newx, preds[ ,2], lty = 'dashed', col = 2)
+
+##
+dev.off()
+##############
+##############################################################################
 
 ## effect of start year on trend estimates
+tiff(filename = "plots/StartYearTrendEsts.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
+
 par(mfrow=c(2,2),mar=c(4,4,0.4,0.4))
-plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$spp_richness,xlab="Starting year", ylab="Taxon richness estimate")
-abline(h=0, col="grey70", lty=2)
-abline(lm(response_stan_pivot$spp_richness~response_stan_pivot$Starting_year),col=2)
-plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$abundance,xlab="Starting year", ylab="Abundance estimate")
-abline(h=0, col="grey70", lty=2)
-abline(lm(response_stan_pivot$abundance~response_stan_pivot$Starting_year),col=2)
-plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$FRic,xlab="Starting year", ylab="Functional richness estimate")
-abline(h=0, col="grey70", lty=2)
-abline(lm(response_stan_pivot$abundance~response_stan_pivot$Starting_year),col=2)
-plot(x=response_stan_pivot$Starting_year,y=response_stan_pivot$abundance,xlab="Starting year", ylab="Functional redundancy estimate")
-abline(h=0, col="grey70", lty=2)
-abline(lm(response_stan_pivot$abundance~response_stan_pivot$Starting_year),col=2)
+x1 <- response_stan_pivot$Starting_year
+y1 <- response_stan_pivot$spp_richness
+mod <- lm(y1 ~ x1)
+summary(mod)
+newx <- seq(min(x1), max(x1), length.out=54)
+preds <- predict(mod, newdata = data.frame(x1=newx), interval = 'confidence')
+# plot
+plot(x=x1,y=y1,type="n",xlab="Starting year", ylab="Taxon richness estimate")
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 0, 0, -100), col ="grey80", border = NA)
+box(lwd=2)
+points(y1~x1)
+# add fill
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col =mycol, border = NA) #col = 'grey80'
+# model
+abline(mod,lty=1,lwd=2,col=2)
+# intervals
+lines(newx, preds[ ,3], lty = 'dashed', col = 2)
+lines(newx, preds[ ,2], lty = 'dashed', col = 2)
 
-tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Starting_year)
-summary(tr_mo)
-ab_mo = lm(response_stan_pivot$abundance~response_stan_pivot$Starting_year)
-summary(ab_mo)
+x1 <- response_stan_pivot$Starting_year
+y1 <- response_stan_pivot$abundance
+mod <- lm(y1 ~ x1)
+summary(mod)
+newx <- seq(min(x1), max(x1), length.out=54)
+preds <- predict(mod, newdata = data.frame(x1=newx), interval = 'confidence')
+# plot
+plot(x=x1,y=y1,type="n",xlab="Starting year", ylab="Abundance estimate")
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 0, 0, -100), col ="grey80", border = NA)
+box(lwd=2)
+points(y1~x1)
+# add fill
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col =mycol, border = NA) #col = 'grey80'
+# model
+abline(mod,lty=1,lwd=2,col=2)
+# intervals
+lines(newx, preds[ ,3], lty = 'dashed', col = 2)
+lines(newx, preds[ ,2], lty = 'dashed', col = 2)
 
-tr_mo = lm(response_stan_pivot$spp_richness~response_stan_pivot$Ending_year)
-summary(tr_mo)
-ab_mo = lm(response_stan_pivot$abundance~response_stan_pivot$Ending_year)
-summary(ab_mo)
+x1 <- response_stan_pivot$Starting_year
+y1 <- response_stan_pivot$FRic
+mod <- lm(y1 ~ x1)
+summary(mod)
+newx <- seq(min(x1), max(x1), length.out=54)
+preds <- predict(mod, newdata = data.frame(x1=newx), interval = 'confidence')
+# plot
+plot(x=x1,y=y1,type="n",xlab="Starting year", ylab="Functional richness estimate")
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 0, 0, -100), col ="grey80", border = NA)
+box(lwd=2)
+points(y1~x1)
+# add fill
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col =mycol, border = NA) #col = 'grey80'
+# model
+abline(mod,lty=1,lwd=2,col=2)
+# intervals
+lines(newx, preds[ ,3], lty = 'dashed', col = 2)
+lines(newx, preds[ ,2], lty = 'dashed', col = 2)
+
+x1 <- response_stan_pivot$Starting_year
+y1 <- response_stan_pivot$FRed
+mod <- lm(y1 ~ x1)
+summary(mod)
+newx <- seq(min(x1), max(x1), length.out=54)
+preds <- predict(mod, newdata = data.frame(x1=newx), interval = 'confidence')
+# plot
+plot(x=x1,y=y1,type="n",xlab="Starting year", ylab="Functional redundancy estimate")
+polygon(x = c(1, 1, 2040, 2040), y = c(-100, 0, 0, -100), col ="grey80", border = NA)
+box(lwd=2)
+points(y1~x1)
+# add fill
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col =mycol, border = NA) #col = 'grey80'
+# model
+abline(mod,lty=1,lwd=2,col=2)
+# intervals
+lines(newx, preds[ ,3], lty = 'dashed', col = 2)
+lines(newx, preds[ ,2], lty = 'dashed', col = 2)
+
+##
+dev.off()
+############################################
 
 ### meta-analysis ####
 
