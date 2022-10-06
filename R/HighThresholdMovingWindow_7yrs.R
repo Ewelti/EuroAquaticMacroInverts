@@ -35,7 +35,7 @@ SufficientSites$Response <- c(rep("FRic",nrow(SufficientSites)/4),
                              rep("spp_richness", nrow(SufficientSites)/4))
 SufficientSites$TaskID <- 1:nrow(SufficientSites)
 
-write.table(SufficientSites,"outputs/MovingAverageHigherThreshold3_TaskIDs.csv",sep=",",row.names=FALSE)
+#write.table(SufficientSites,"outputs/MovingAverageHigherThreshold3_TaskIDs.csv",sep=",",row.names=FALSE)
 
 #get task id
 TaskID <- SufficientSites
