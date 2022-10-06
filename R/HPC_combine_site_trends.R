@@ -153,32 +153,6 @@ countryTrends <- do.call(rbind,countryTrends)
 names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
 saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaverages.rds")
 
-### site-level MA higher threshold v 3 ####
-
-#7 year moving windows
-
-modelFiles <- list.files("~/Dropbox/Collabs/Ellen/Ellen_HTMV/22072914")
-
-#combine all
-countryTrends <- lapply(modelFiles,function(x){
-  
-  temp <- readRDS(paste("~/Dropbox/Collabs/Ellen/Ellen_HTMV/22072914",x,sep="/"))
-  
-  #add on response from file name
-  if(nrow(temp)>0){
-    temp$Response <- strsplit(as.character(x),"__")[[1]][2]
-    temp$StartYear <- strsplit(as.character(x),"__")[[1]][4]
-    temp$StartYear <- gsub(".RDS","",temp$StartYear)
-    #temp$country <- strsplit(as.character(x),"__")[[1]][3]
-  }
-  return(temp)
-  
-})
-
-countryTrends <- do.call(rbind,countryTrends)
-names(countryTrends)[which(names(countryTrends)=="siteID")] <- "site_id"
-saveRDS(countryTrends,file="outputs/stanTrends_site_level_movingaveragesHTMV3.rds")
-
 ### site-level MA higher threshold ####
 
 TaskIDs <- read.csv("outputs/MovingAverageHigherThreshold_TaskIDs.csv")
@@ -442,7 +416,71 @@ setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/
 write.csv(MoAv1, "outputs/HighThresholdMovingAve2_YrEsts.csv")
 ##
 ##############################################
+##############################################
 
+### HTMW3 #####
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/HTMW3")
+path <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/HTMW3"
+
+require(data.table)
+library(brms)
+
+files = list.files(path = path, pattern = '\\.rds$')
+
+dat_list = lapply(files, function(x){
+  fit <- readRDS(x)
+  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+  fixed_995 <- fixef(fit, probs = c(0.005, 0.995))
+  fixed_975 <- fixef(fit, probs = c(0.025, 0.975))
+  fixed_95 <- fixef(fit, probs = c(0.05, 0.95))
+  fixed_90 <- fixef(fit, probs = c(0.1, 0.9))
+  nam <- gsub("metaanalysis_movingaverage_higherthreshold3_","", x)
+  name <- gsub(".rds","", nam)
+  name <- gsub("_1","__1", name)
+  name <- gsub("_2","__2", name)
+  response <- strsplit(as.character(name),"__")[[1]][1]
+  year <- strsplit(as.character(name),"__")[[1]][2]
+  fixed <- list(Response=response, StartYear=year, fixed_995[,1:4], fixed_975[,3:4],
+                fixed_95[,3:4],fixed_90[,3:4])
+  fixed <-data.frame(lapply(fixed, function(x) t(data.frame(x))))
+  return(fixed)
+})
+head(dat_list)
+
+MovAve <- do.call(rbind.data.frame, dat_list)
+head(MovAve)
+unique(MovAve$Response)
+rownames(MovAve) <- NULL
+##
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+
+htma <- readRDS("outputs/stanTrends_site_level_movingaveragesHTMV3.rds")
+head(htma)
+library(data.table)
+
+#get site metadata
+d1 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d1$site_id <- d1$site
+head(d1)
+siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes")])
+htma <- merge(siteData,htma,by="site_id")
+
+library(data.table)
+subs <- subset(htma, htma$Response == "abundance")
+DT <- data.table(subs)
+sitecount_ab <- DT[, .(site_num = length(unique(site_id))), by = StartYear]
+sitecount_ab
+COcount_ab <- DT[, .(country_num = length(unique(Country))), by = StartYear]
+COcount_ab
+
+MoAv1 <- merge(MovAve,sitecount_ab,by="StartYear", all=T)
+MoAv1 <- merge(MoAv1,COcount_ab,by="StartYear", all=T)
+head(MoAv1)
+##
+write.csv(MoAv1, "outputs/HighThresholdMovingAve3_YrEsts.csv")
+##
+
+##############################################
 #### Combine HT moving window trends
 trendsDir <- "C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/HTMW_siteLevel"
 
