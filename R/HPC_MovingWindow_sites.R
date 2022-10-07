@@ -1,6 +1,7 @@
 rm(list=ls())
 
 library(lubridate)
+library(tidybayes)
 
 #load data
 #d1 <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T) 
