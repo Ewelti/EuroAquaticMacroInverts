@@ -23,18 +23,16 @@ SufficientSites <- lapply(1990:2014, function(x){
 
 SufficientSites <- do.call(rbind, SufficientSites)
 SufficientSites$country <- allYrs$country[match(SufficientSites$site_id,allYrs$site_id)]
-SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
-#SufficientSites <- rbind(SufficientSites,SufficientSites,SufficientSites)
-##E10, FEve, F_to
-SufficientSites$Response <- c(rep("turnover",nrow(SufficientSites)))
+length(unique(SufficientSites$site_id))
+length(unique(SufficientSites$country))
 
-#SufficientSites$Response <- c(rep("E10",nrow(SufficientSites)/3),
-#                              rep("FEve", nrow(SufficientSites)/3),
-#                              rep("F_to", nrow(SufficientSites)/3))
-#SufficientSites$Response <- c(rep("FRic",nrow(SufficientSites)/2),
-#                             rep("FRed", nrow(SufficientSites)/2))
-#SufficientSites$Response <- c(rep("abundance",nrow(SufficientSites)/2),
-#                              rep("spp_richness", nrow(SufficientSites)/2))
+#expand for all responses
+SufficientSites <- unique(SufficientSites[,c("StartYear","country")])
+SufficientSites <- rbind(SufficientSites,SufficientSites,SufficientSites,SufficientSites)
+SufficientSites$Response <- c(rep("FRic",nrow(SufficientSites)/4),
+                              rep("FRed", nrow(SufficientSites)/4),
+                              rep("abundance",nrow(SufficientSites)/4),
+                              rep("spp_richness", nrow(SufficientSites)/4))
 SufficientSites$TaskID <- 1:nrow(SufficientSites)
 
 #write.table(SufficientSites,"outputs/MovingAverage_TaskIDs.csv",sep=",",row.names=FALSE)
@@ -42,7 +40,7 @@ SufficientSites$TaskID <- 1:nrow(SufficientSites)
 #get task id
 #TaskID <- read.csv("/data/idiv_ess/Ellen/MovingAverage_TaskIDs.csv",as.is=T)
 TaskID <- SufficientSites
-nrow(TaskID)#748
+nrow(TaskID)#1400
 task.id = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID", "1"))
 
 ### country ###
@@ -153,24 +151,37 @@ fitStanModel <- function(mydata){
                      iter = 3000)
   
   #extract model fits
-  modelSummary <- summary(stan_model)$summary
-  modelFits <- data.frame(estimate = modelSummary[1,"mean"],
-                          sd = modelSummary[1,"sd"],
-                          rhat = modelSummary[1,"Rhat"])
+  #modelSummary <- summary(stan_model)$summary
+  #modelFits <- data.frame(estimate = modelSummary[1,"mean"],
+  #                        sd = modelSummary[1,"sd"],
+  #                        rhat = modelSummary[1,"Rhat"])
   
+  #or extract posteriors
+  mySamples <- tidybayes::spread_draws(stan_model, b)
+  mySubset <- subset(mySamples, .iteration %in% 1251:1500)
+  mySubset$site_id <- unique(mydata$site_id)
   }
-  return(modelFits)
-  
+  #return(modelFits)
+  return(mySubset)
 }
 
 #loop for all sites
 allsites <- sort(unique(allYrs$site_id))
 
+# #for summary outputs
+# trends <- lapply(allsites, function(x){
+#   fitStanModel(subset(allYrs, site_id == x))
+# })
+# 
+# trends <- data.frame(do.call(rbind, trends))
+# trends$siteID <- allsites
+# 
+# saveRDS(trends, file=paste0("trends__",myResponse,"__",myCountry,"__",StartYear,".RDS"))
+
+#for posterior samples
 trends <- lapply(allsites, function(x){
   fitStanModel(subset(allYrs, site_id == x))
 })
-
 trends <- data.frame(do.call(rbind, trends))
-trends$siteID <- allsites
+saveRDS(trends, file=paste0("trendSamples__",myResponse,"__",myCountry,"__",StartYear,".RDS"))
 
-saveRDS(trends, file=paste0("trends__",myResponse,"__",myCountry,"__",StartYear,".RDS"))
