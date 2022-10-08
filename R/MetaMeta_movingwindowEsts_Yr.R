@@ -112,7 +112,34 @@ fred_fixed <-data.frame(lapply(sr_fixed, function(x) t(data.frame(x))))
 
 metameta_Ests <- rbind(spprich_fixed, ab_fixed, fric_fixed, fred_fixed)
 
+write.csv(metameta_Ests,"outputs/metameta_MovYrEsts.csv")
 #############################################################################
+####check percent change in estimates per yr
+resp_est <- subset(MA, Response == "spp_richness")
+meta_est <- subset(metameta_Ests, Response == "spp_richness")
+rm <- mean(resp_est$Estimate)
+mm <- meta_est$Estimate
+(mm/rm)*100 #### mean percent change in trend est per yr
+
+resp_est <- subset(MA, Response == "abundance")
+meta_est <- subset(metameta_Ests, Response == "abundance")
+rm <- mean(resp_est$Estimate)
+mm <- meta_est$Estimate
+(mm/rm)*100 #### mean percent change in trend est per yr
+
+resp_est <- subset(MA, Response == "FRic")
+meta_est <- subset(metameta_Ests, Response == "FRic")
+rm <- mean(resp_est$Estimate)
+mm <- meta_est$Estimate
+(mm/rm)*100 #### mean percent change in trend est per yr
+
+resp_est <- subset(MA, Response == "FRed")
+meta_est <- subset(metameta_Ests, Response == "FRed")
+rm <- mean(resp_est$Estimate)
+mm <- meta_est$Estimate
+(mm/rm)*100 #### mean percent change in trend est per yr
+##############################################################################
+metameta_Ests <- read.csv("outputs/metameta_MovYrEsts.csv")
 ##plot
 tiff(filename = "plots/Fig3_movingWindow/metametaEsts.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
 
@@ -149,7 +176,7 @@ yy <- 1
 plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(sub$Q0.5,sub$Q99.5), ylim=c(0.4,1.6),cex=2, bty="n")
 segments(x0=0,y0=0,x1=0,y1=4.18,lty=2, lwd=2,col="grey60")
 title(xlab="Estimate", line=2.4,cex.lab=1.3)
-legend("topleft", legend=("b, abundance"), bty="n", cex=1.3)
+legend("topleft", legend=("b, Abundance"), bty="n", cex=1.3)
 mm <- cbind(yy,est)
 mm_neg <- as.data.frame(mm[ which(est < 0),])
 mm_pos <- as.data.frame(mm[ which(est > 0),])
