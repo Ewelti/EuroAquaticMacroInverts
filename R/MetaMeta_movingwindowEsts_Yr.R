@@ -8,6 +8,7 @@ MA <- read.csv("outputs/movingAve_YrEsts.csv")
 MA$yr_c <- (MA$StartYear-1989)
 head(MA)
 MA = subset(MA, select = -c(X) )
+head(MA)
 MA <- MA[ which(MA$StartYear <2012), ]
 
 ##add libraries
@@ -113,31 +114,33 @@ fred_fixed <-data.frame(lapply(sr_fixed, function(x) t(data.frame(x))))
 metameta_Ests <- rbind(spprich_fixed, ab_fixed, fric_fixed, fred_fixed)
 
 write.csv(metameta_Ests,"outputs/metameta_MovYrEsts.csv")
+
 #############################################################################
+metameta_Ests <- read.csv("outputs/metameta_MovYrEsts.csv")
 ####check percent change in estimates per yr
 resp_est <- subset(MA, Response == "spp_richness")
 meta_est <- subset(metameta_Ests, Response == "spp_richness")
 rm <- mean(resp_est$Estimate)
-mm <- meta_est$Estimate
-(mm/rm)*100 #### mean percent change in trend est per yr
+percChange_perYr<-(meta_est[,3:12]/rm)*100
+percChange_perYr
 
 resp_est <- subset(MA, Response == "abundance")
 meta_est <- subset(metameta_Ests, Response == "abundance")
 rm <- mean(resp_est$Estimate)
-mm <- meta_est$Estimate
-(mm/rm)*100 #### mean percent change in trend est per yr
+percChange_perYr<-(meta_est[,3:12]/rm)*100
+percChange_perYr
 
 resp_est <- subset(MA, Response == "FRic")
 meta_est <- subset(metameta_Ests, Response == "FRic")
 rm <- mean(resp_est$Estimate)
-mm <- meta_est$Estimate
-(mm/rm)*100 #### mean percent change in trend est per yr
+percChange_perYr<-(meta_est[,3:12]/rm)*100
+percChange_perYr
 
 resp_est <- subset(MA, Response == "FRed")
 meta_est <- subset(metameta_Ests, Response == "FRed")
 rm <- mean(resp_est$Estimate)
-mm <- meta_est$Estimate
-(mm/rm)*100 #### mean percent change in trend est per yr
+percChange_perYr<-(meta_est[,3:12]/rm)*100
+percChange_perYr
 ##############################################################################
 metameta_Ests <- read.csv("outputs/metameta_MovYrEsts.csv")
 ##plot
