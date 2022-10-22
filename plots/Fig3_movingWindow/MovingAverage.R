@@ -60,6 +60,7 @@ points(SRs$Estimate~SRs$meanYr, pch=21,bg=1,cex=1.8)#pch="-",
 points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
 legend("topright", bty="n", legend="b",cex=1.5)
 
+par(mar=c(4,4,0.2,0.2))
 #plot for FRic
 SR <- subset(MA, Response == "FRic")
 st <-(SR[1:(nrow(SR)),3:12])*100

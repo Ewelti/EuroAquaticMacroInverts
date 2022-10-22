@@ -5,6 +5,7 @@ setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts"
 MA <- read.csv("outputs/movingAve_YrEsts.csv")
 MA$meanYr <- (MA$StartYear+ 4.5)
 head(MA)
+MA = subset(MA, select = -c(X) )
 unique(MA$Response)
 
 tiff(filename = "plots/Fig3_movingWindow/MovingAverages_extra.tiff", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
@@ -61,6 +62,8 @@ points(SRs$Estimate~SRs$meanYr, pch=21,bg=1,cex=1.8)#pch="-",
 points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
 legend("topright", bty="n", legend="b",cex=1.5)
 
+
+par(mar=c(4,4,0.2,0.2))
 #### Func evenness #####
 SR <- subset(MA, Response == "FEve")
 ave_FEve <- 0.517910888
