@@ -45,6 +45,8 @@ ma <- ms[ which(ms$start_year <2012), ]
 ma$MeanYear <- as.numeric(ma$start_year) + 4.5
 names(ma)[names(ma) == 'start_year'] <- 'StartYear'
 
+write.csv(ma, "outputs/MovingWindowProportions.csv")
+ma <- read.csv("outputs/MovingWindowProportions.csv")
 
 #### import site level estimates
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
