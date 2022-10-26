@@ -28,9 +28,9 @@ layout(mat = matrix(c(1:15),
 par(mar=c(1.8,2,0.4,1))
 #empty plot for where the labels will go
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
-title(ylab=expression(paste("% y"^"-1")), line=-2,cex.lab=1.6)
+title(ylab=expression(paste("Site % y"^"-1")), line=-2,cex.lab=1.6)
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
-title(ylab="Proportion sites w/ + trends", line=-0.3,cex.lab=1.4)
+title(ylab="Proportion sites with", line=-0.3,cex.lab=1.4)
 title(ylab="positive trends", line=-1.4,cex.lab=1.4)
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 
