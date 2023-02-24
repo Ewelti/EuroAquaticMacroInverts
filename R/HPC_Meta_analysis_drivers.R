@@ -36,9 +36,11 @@ names(siteData)[which(names(siteData)=="Country")] <- "country"
 
 #function to add a new column onto the data with scaled vars (with s before their name)
 scaleVars <- function(df){
-  newd <- plyr::numcolwise(scale)(df)
+  newd <- lapply(df, function(x) if(is.numeric(x)){
+    scale(x, center=TRUE, scale=TRUE)
+  } else x)
   names(newd) <- sapply(names(newd),function(x)paste0("s",x))
-  cbind(df, newd)
+  cbind(df[,c(1:3,15)], newd)
 }
 
 #apply function
@@ -100,13 +102,13 @@ options(mc.cores = cpus_per_task)
 # 
 # saveRDS(fit1,file=paste0("metaanalysis_drivers_",myResponse,".rds"))
 # 
-# ### prior check 1 ###
-# 
+### prior check 1 ###
+
 # #also model with narrower prior - the horseshoe prior
 # 
 # prior1 = c(set_prior("horseshoe(1)", class = "b"))
 # 
-# fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+# fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior +
 #               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
 #               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
 #               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
@@ -116,7 +118,7 @@ options(mc.cores = cpus_per_task)
 # #### save output ####
 # 
 # saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_",myResponse,".rds"))
-# 
+
 # ### prior check 2 ###
 # 
 # #also model with narrower prior - the lasso prior
@@ -134,16 +136,47 @@ options(mc.cores = cpus_per_task)
 # 
 # saveRDS(fit1,file=paste0("metaanalysis_drivers_lasso_",myResponse,".rds"))
 
-### species only #####
+# ### species only #####
+# 
+# prior1 = c(set_prior("horseshoe(1)", class = "b"))
+# 
+# fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+#               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
+#               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+#               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+#             data = subset(response_stan, TaxonomicRes=="species"), 
+#             iter=5000, chains = 4, prior=prior1,
+#             control = list(adapt_delta = 0.90, max_treedepth = 12))
+# 
+# saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_specieslevel_",myResponse,".rds"))
+
+### test ####################
 
 prior1 = c(set_prior("horseshoe(1)", class = "b"))
 
-fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
-              sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
-              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
-              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
-            data = subset(response_stan, TaxonomicRes=="species"), 
-            iter=5000, chains = 4, prior=prior1,
-            control = list(adapt_delta = 0.90, max_treedepth = 12))
+fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior +
+              (1|study_id) + (1|country),
+            data = response_stan, iter=1000, prior=prior1)
 
-saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_specieslevel_",myResponse,".rds"))
+#make table for prediction for precipitation effect, controlling for others at medians
+library(marginaleffects)
+df <- datagrid(newdata = response_stan, 
+               FUN_numeric = median,
+               sppt_Est = sort(unique(response_stan$sppt_Est)))
+head(df)
+
+#get prediction of the model for this set of covariate values
+preds <- posterior_linpred(fit1, newdata = df, re_formula = NA) 
+df$trend <- apply(preds, 2, mean) 
+df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
+df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
+
+saveRDS(df, file="preds_sppt_Est.rds")
+
+#quick plot (we wont run this on HPC)
+ggplot(df) +
+  geom_line(aes(x=sppt_Est, y=trend)) +
+  geom_ribbon(aes(x=sppt_Est, ymin=lower, ymax=upper),alpha=0.5) +
+  geom_hline(yintercept=0, linetype="dashed")
+
+### end of test
