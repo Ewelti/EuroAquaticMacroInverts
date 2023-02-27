@@ -105,15 +105,15 @@ options(mc.cores = cpus_per_task)
 ### prior check 1 ###
 
 # #also model with narrower prior - the horseshoe prior
-# 
-# prior1 = c(set_prior("horseshoe(1)", class = "b"))
-# 
-# fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior +
-#               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
-#               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
-#               sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
-#             data = response_stan, iter=5000, chains = 4, prior=prior1,
-#             control = list(adapt_delta = 0.90, max_treedepth = 12))
+
+prior1 = c(set_prior("horseshoe(1)", class = "b"))
+
+fit1 <- brm(estimate|se(sd) ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior +
+              sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
+              sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
+              sdam_impact_score_lessthan100km + (1|study_id) + (1|country),
+            data = response_stan, iter=5000, chains = 4, prior=prior1,
+            control = list(adapt_delta = 0.90, max_treedepth = 12))
 # 
 # #### save output ####
 # 
@@ -150,21 +150,16 @@ options(mc.cores = cpus_per_task)
 # 
 # saveRDS(fit1,file=paste0("metaanalysis_drivers_horseshoe_specieslevel_",myResponse,".rds"))
 
-### test ####################
+### predictions ####################
 
-prior1 = c(set_prior("horseshoe(1)", class = "b"))
-
-fit1 <- brm(estimate ~ sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior +
-              (1|study_id) + (1|country),
-            data = response_stan, iter=1000, prior=prior1)
-
-#### All 11 driver variables: sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
+#All 11 driver variables: sppt_Est + stmax_Est + sppt_mm_12moPrior + stmax_C_12moPrior + 
 #               sstrahler_streamOrder + saccumulation_atPoint + selevation_atPoint +
 #               sslope_mean + surban_meanPerc_upstr + scrop_meanPerc_upstr +
 #               sdam_impact_score_lessthan100km
 
 #make table for prediction for precipitation trend effect, controlling for others at medians
 library(marginaleffects)
+
 df <- datagrid(newdata = response_stan, 
                FUN_numeric = median,
                sppt_Est = sort(unique(response_stan$sppt_Est)))
@@ -176,7 +171,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_sppt_Est.rds")
+saveRDS(df, file=paste0("preds-sppt_Est-",myResponse,".rds"))
 
 #make table for prediction for temperature trend effect, controlling for others at medians
 library(marginaleffects)
@@ -191,7 +186,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_stmax_Est.rds")
+saveRDS(df, file=paste0("preds-stmax_Est-",myResponse,".rds"))
 
 #make table for prediction for precipitation mean effect, controlling for others at medians
 library(marginaleffects)
@@ -206,7 +201,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_sppt_mm_12moPrior.rds")
+saveRDS(df, file=paste0("preds-sppt_mm_12moPrior-",myResponse,".rds"))
 
 #make table for prediction for temperature mean effect, controlling for others at medians
 library(marginaleffects)
@@ -221,7 +216,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_stmax_C_12moPrior.rds")
+saveRDS(df, file=paste0("preds-stmax_C_12moPrior-",myResponse,".rds"))
 
 #make table for prediction for stream order effect, controlling for others at medians
 library(marginaleffects)
@@ -236,7 +231,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_sstrahler_streamOrder.rds")
+saveRDS(df, file=paste0("preds-sstrahler_streamOrder-",myResponse,".rds"))
 
 #make table for prediction for accumulation effect, controlling for others at medians
 library(marginaleffects)
@@ -251,7 +246,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_saccumulation_atPoint.rds")
+saveRDS(df, file=paste0("preds-saccumulation_atPoint-",myResponse,".rds"))
 
 #make table for prediction for elevation effect, controlling for others at medians
 library(marginaleffects)
@@ -266,7 +261,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_selevation_atPoint.rds")
+saveRDS(df, file=paste0("preds-selevation_atPoint-",myResponse,".rds"))
 
 #make table for prediction for slope effect, controlling for others at medians
 library(marginaleffects)
@@ -281,7 +276,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_sslope_mean.rds")
+saveRDS(df, file=paste0("preds-sslope_mean-",myResponse,".rds"))
 
 #make table for prediction for urban cover effect, controlling for others at medians
 library(marginaleffects)
@@ -296,7 +291,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_surban_meanPerc_upstr.rds")
+saveRDS(df, file=paste0("preds-surban_meanPerc_upstr-",myResponse,".rds"))
 
 #make table for prediction for crop cover effect, controlling for others at medians
 library(marginaleffects)
@@ -311,7 +306,7 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_scrop_meanPerc_upstr.rds")
+saveRDS(df, file=paste0("preds-scrop_meanPerc_upstr-",myResponse,".rds"))
               
 #make table for prediction for precipitation trend effect, controlling for others at medians
 library(marginaleffects)
@@ -326,13 +321,6 @@ df$trend <- apply(preds, 2, mean)
 df$lower <- apply(preds, 2, function(x) quantile(x,0.025)) 
 df$upper <- apply(preds, 2, function(x) quantile(x,0.975)) 
 
-saveRDS(df, file="preds_sdam_impact_score_lessthan100km.rds")
-
-
-#quick plot (we wont run this on HPC)
-ggplot(df) +
-  geom_line(aes(x=sppt_Est, y=trend)) +
-  geom_ribbon(aes(x=sppt_Est, ymin=lower, ymax=upper),alpha=0.5) +
-  geom_hline(yintercept=0, linetype="dashed")
+saveRDS(df, file=paste0("preds-sdam_impact_score_lessthan100km-", myResponse,".rds"))
 
 ### end of test
