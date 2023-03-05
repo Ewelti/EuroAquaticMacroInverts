@@ -1,17 +1,24 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/outputs")
 
 # load libraries
 #install.packages("psych")
 library(psych)
 
 # attach data
-DATA1_list <- read.csv("All_indices_benthicMacroInverts_AllYears.csv", header=T)
+DATA1 <- read.csv("All_siteLevel_and_glmOutput.csv", header=T)
+head(DATA1)
+DATA1$tmax_est <-as.numeric(DATA1$tmax_est)
+
+cor(DATA1$tmax_Est,DATA1$elevation_atPoint,  method = ("pearson"))
+
+DATA1_list <- read.csv("All_indices_benthicMacroInverts_AllYears_alienzeros.csv", header=T)
 DATA2 <- DATA1_list[!is.na(DATA1_list$site_id_wMissing),]
 DATA2$turnover <- as.numeric(DATA2$turnover)
 attach(DATA2)
 head(DATA2)
 
+corr(
 
 td <- cbind.data.frame(spp_richness,spp_rich_rare,shannonsH, E10,log10(abundance),log10(S_PIE),turnover)
 head(td)

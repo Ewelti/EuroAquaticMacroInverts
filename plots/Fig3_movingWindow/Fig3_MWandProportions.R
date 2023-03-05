@@ -9,14 +9,24 @@ library(janitor)
 MA <- read.csv("outputs/movingAve_YrEsts.csv")
 MA$meanYr <- (MA$StartYear+ 4.5)
 head(MA)
+max(MA$StartYear)
 MA = subset(MA, select = -c(X) )
 
 #############################################
 
-movav1 <- read.csv("outputs/MovingWindowProportions.csv")
+#movav1 <- read.csv("outputs/MovingWindowProportions.csv")
+
+movav1 <- readRDS("outputs/proportions_modelSummaries.rds")
+movav1 <- data.frame(movav1)
+movav1$MeanYear <- (movav1$start_year+ 4.5)
+colnames(movav1)[2] ="StartYear"
+head(movav1)
+max(movav1$StartYear)
+movav1 <- movav1[ which(movav1$MeanYear < 2016), ]
+
 ##################################################
 
-tiff(filename = "plots/Fig3_movingWindow/MovingAveragesProportions.tiff", width = 11, height = 6.5, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig3_movingWindow/Fig3_MovingAveragesProportions.tiff", width = 11, height = 6.5, units = 'in', res = 600, compression = 'lzw')
 
 ##layout
 layout(mat = matrix(c(1:15), 
@@ -59,10 +69,12 @@ points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
 legend("topright", bty="n", legend="a, Taxon richness",cex=1.5)
 
 count_sign_mw <- movav1[which(movav1$response=='spp_richness'),]
-plot(0,0, ylim=c(0.4,0.7),xlim= c(1994,2016), ylab="", xlab="",las=1)
+plot(0,0, ylim=c(0.3,0.8),xlim= c(1994,2016), ylab="", xlab="",las=1)
 polygon(x = c(0.5, 0.5, 2040, 2040), y = c(-100, 0.5, 0.5, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0.5, 0.5, 100), col ="lightsteelblue1", border = NA)
 polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower95Prop,rev(count_sign_mw$upper95Prop)),col="#00000020", border = NA)
+polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower90Prop,rev(count_sign_mw$upper90Prop)),col="#00000020", border = NA)
+polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower80Prop,rev(count_sign_mw$upper80Prop)),col="#00000020", border = NA)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, pch=21,bg=1,cex=1.8)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, type="l", lwd=2)
 legend("topright", bty="n", legend="e, Taxon richness",cex=1.5)
@@ -92,10 +104,12 @@ points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
 legend("topright", bty="n", legend="b, Abundance",cex=1.5)
 
 count_sign_mw <- movav1[which(movav1$response=='abundance'),]
-plot(0,0, ylim=c(0.4,0.7),xlim= c(1994,2016), ylab="", xlab="",las=1)
+plot(0,0, ylim=c(0.3,0.8),xlim= c(1994,2016), ylab="", xlab="",las=1)
 polygon(x = c(0.5, 0.5, 2040, 2040), y = c(-100, 0.5, 0.5, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0.5, 0.5, 100), col ="lightsteelblue1", border = NA)
 polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower95Prop,rev(count_sign_mw$upper95Prop)),col="#00000020", border = NA)
+polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower90Prop,rev(count_sign_mw$upper90Prop)),col="#00000020", border = NA)
+polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower80Prop,rev(count_sign_mw$upper80Prop)),col="#00000020", border = NA)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, pch=21,bg=1,cex=1.8)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, type="l", lwd=2)
 title(xlab="Mean year of moving window", line=2.5,cex.lab=1.1)
@@ -126,10 +140,12 @@ points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
 legend("topright", bty="n", legend="c, Functional richness",cex=1.5)
 
 count_sign_mw <- movav1[which(movav1$response=='FRic'),]
-plot(0,0, ylim=c(0.4,0.7),xlim= c(1994,2016), ylab="", xlab="",las=1)
+plot(0,0, ylim=c(0.3,0.8),xlim= c(1994,2016), ylab="", xlab="",las=1)
 polygon(x = c(0.5, 0.5, 2040, 2040), y = c(-100, 0.5, 0.5, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0.5, 0.5, 100), col ="lightsteelblue1", border = NA)
 polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower95Prop,rev(count_sign_mw$upper95Prop)),col="#00000020", border = NA)
+polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower90Prop,rev(count_sign_mw$upper90Prop)),col="#00000020", border = NA)
+polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower80Prop,rev(count_sign_mw$upper80Prop)),col="#00000020", border = NA)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, pch=21,bg=1,cex=1.8)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, type="l", lwd=2)
 title(xlab="Mean year of moving window", line=2.5,cex.lab=1.1)
@@ -161,10 +177,12 @@ points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
 legend("topright", bty="n", legend="d, Functional redundancy",cex=1.5)
 
 count_sign_mw <- movav1[which(movav1$response=='FRed'),]
-plot(0,0, ylim=c(0.4,0.7),xlim= c(1994,2016), ylab="", xlab="",las=1)
+plot(0,0, ylim=c(0.3,0.8),xlim= c(1994,2016), ylab="", xlab="",las=1)
 polygon(x = c(0.5, 0.5, 2040, 2040), y = c(-100, 0.5, 0.5, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0.5, 0.5, 100), col ="lightsteelblue1", border = NA)
 polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower95Prop,rev(count_sign_mw$upper95Prop)),col="#00000020", border = NA)
+polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower90Prop,rev(count_sign_mw$upper90Prop)),col="#00000020", border = NA)
+polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower80Prop,rev(count_sign_mw$upper80Prop)),col="#00000020", border = NA)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, pch=21,bg=1,cex=1.8)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, type="l", lwd=2)
 title(xlab="Mean year of moving window", line=2.5,cex.lab=1.1)
