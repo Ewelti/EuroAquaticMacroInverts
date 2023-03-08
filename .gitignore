@@ -3,8 +3,9 @@
 .RData
 .Ruserdata
 raw-data*
+outputs/unused_analyses/*
+outputs/unused_outputs/*
 outputs/Sensitivity/*
-outputs/old/*
 outputs/movingaverage_meta/*
 outputs/movingaverage_meta_split/*
 outputs/meta_updated/*
@@ -13,9 +14,7 @@ outputs/meta_updated/*
 outputs/driver_unweighted/*
 outputs/onestage/*
 outputs/MA_higherthreshold_meta/*
-outputs/HTMW1/*
 outputs/HTMW2/*
-outputs/HTMW3/*
 outputs/HTMW_siteLevel/*
 outputs/onestage_decadeEffect/*
 outputs/meta_country_jacknife/*
@@ -23,5 +22,7 @@ outputs/movingaverage_spplevelOnly/*
 outputs/drivers_spplevelOnly/*
 outputs/proportions_country/*
 outputs/Driver_marginalEffects/*
+outputs/unused/*
+plots/Fig_3movingWindow/old/*
 
 
