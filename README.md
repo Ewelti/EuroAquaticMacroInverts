@@ -36,7 +36,7 @@ ClimateModel_stan folder - contains outputs of models calculating temperature an
 
 ## R folder
 
-####Initial_Biodiversity_FuncTrait_and_climate_calcs folder
+#### Initial_Biodiversity_FuncTrait_and_climate_calcs folder
 contains scripts to calculate taxonomic and functional trait metrics for each site year and calculate temperature and precipitation trends
 
 stan_models folder - 
