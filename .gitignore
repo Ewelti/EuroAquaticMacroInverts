@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 raw-data*
+R/unused/*
 outputs/unused_analyses/*
 outputs/unused_outputs/*
 outputs/Sensitivity/*

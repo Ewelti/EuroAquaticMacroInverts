@@ -3,7 +3,7 @@ setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts"
 
 ###############################################
 #### import site/yr summary info
-sites <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
+sites <- read.csv("outputs/All_siteLevel.csv", header=T) # change file name according to the time series to be analyzed
 CT <- data.frame(site_id=sites$site, TaxRes=sites$TaxonomicRes, country=sites$Country)
 head(CT)
 

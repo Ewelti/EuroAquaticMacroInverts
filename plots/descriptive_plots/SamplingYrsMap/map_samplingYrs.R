@@ -11,7 +11,7 @@ x$names
 
 ##import metadata with sites locations
 # attach data
-sites <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T) # change file name according to the time series to be analyzed
+sites <- read.csv("outputs/All_siteLevel.csv", header=T) # change file name according to the time series to be analyzed
 head(sites)
 attach(sites)
 

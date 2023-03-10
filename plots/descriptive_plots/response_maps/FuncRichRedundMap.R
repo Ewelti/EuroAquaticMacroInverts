@@ -14,7 +14,7 @@ response_stan_pivot <- response_stan %>%
                                 values_from = "estimate")
 
 #get site metadata
-d2 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d2 <- read.csv("outputs/All_siteLevel.csv", header=T)
 siteData <- unique(d2[,c("site","Longitude_X","Latitude_Y")])
 colnames(siteData)[1] <- "site_id"
 resp <- merge(siteData,response_stan_pivot,by="site_id")

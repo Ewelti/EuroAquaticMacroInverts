@@ -14,7 +14,7 @@ response_stan_pivot <- response_stan %>%
                                 values_from = "estimate")
 
 #get site metadata
-d2 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d2 <- read.csv("outputs/All_siteLevel.csv", header=T)
 siteData <- unique(d2[,c("site","Longitude_X","Latitude_Y","ppt_Est", "tmax_Est", 
                          "ppt_mm_12moPrior", "tmax_C_12moPrior", 
                          "strahler_streamOrder","accumulation_atPoint", 

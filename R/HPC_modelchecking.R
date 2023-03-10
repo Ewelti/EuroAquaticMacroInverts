@@ -25,7 +25,7 @@ response_stan_pivot <- response_stan %>%
                                 values_from = "estimate")
 
 #get site metadata
-d1 <- read.csv("outputs/All_siteLevel_and_glmOutput.csv", header=T)
+d1 <- read.csv("outputs/All_siteLevel.csv", header=T)
 d1$site_id <- d1$site
 head(d1)
 siteData <- unique(d1[,c("site_id","study_id","Country","season","TaxonomicRes", "Year_count", "Starting_year","Ending_year")])

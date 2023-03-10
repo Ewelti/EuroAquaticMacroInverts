@@ -6,7 +6,7 @@ setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/
 library(psych)
 
 # attach data
-DATA1 <- read.csv("All_siteLevel_and_glmOutput.csv", header=T)
+DATA1 <- read.csv("All_siteLevel.csv", header=T)
 head(DATA1)
 DATA1$tmax_est <-as.numeric(DATA1$tmax_est)
 
