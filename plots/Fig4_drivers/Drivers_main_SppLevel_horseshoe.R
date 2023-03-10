@@ -2,7 +2,7 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
-drivEst <- read.csv("outputs/Driver_sppLevel_metaanaly_Ests.csv")
+drivEst <- read.csv("outputs/outputs_sensitivity/SppLevel_outputs/Driver_sppLevel_metaanaly_Ests.csv")
 head(drivEst)
 unique(drivEst$Response)
 

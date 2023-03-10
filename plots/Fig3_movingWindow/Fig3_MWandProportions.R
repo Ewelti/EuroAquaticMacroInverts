@@ -6,17 +6,14 @@ library(tidyverse)
 library(janitor)
 
 # attach data
-MA <- read.csv("outputs/movingAve_YrEsts.csv")
+MA <- read.csv("outputs/outputs_movingWindow/movingAve_YrEsts.csv")
 MA$meanYr <- (MA$StartYear+ 4.5)
 head(MA)
 max(MA$StartYear)
 MA = subset(MA, select = -c(X) )
 
 #############################################
-
-#movav1 <- read.csv("outputs/MovingWindowProportions.csv")
-
-movav1 <- readRDS("outputs/proportions_modelSummaries.rds")
+movav1 <- readRDS("outputs/outputs_movingWindow/proportions_modelSummaries.rds")
 movav1 <- data.frame(movav1)
 movav1$MeanYear <- (movav1$start_year+ 4.5)
 colnames(movav1)[2] ="StartYear"

@@ -2,7 +2,7 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
-ESTs <- read.csv("outputs/Yr_Ests_Comparison.csv")
+ESTs <- read.csv("outputs/outputs_sensitivity/metaanlysisModelComparison/Yr_Ests_Comparison.csv")
 head(ESTs)
 
 tiff(filename = "plots/EstComparison.tiff", width = 12, height = 10, units = 'in', res = 600, compression = 'lzw')

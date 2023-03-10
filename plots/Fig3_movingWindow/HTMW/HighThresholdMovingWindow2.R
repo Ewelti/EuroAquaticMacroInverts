@@ -2,7 +2,7 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
-MA <- read.csv("outputs/HighThresholdMovingAve2_YrEsts.csv")
+MA <- read.csv("outputs/outputs_sensitivity/HTMW2/HighThresholdMovingAve2_YrEsts.csv")
 MA$meanYr <- (MA$StartYear+ 4.5)
 MA = subset(MA, select = -c(X) )
 head(MA)

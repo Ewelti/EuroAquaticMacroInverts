@@ -1,6 +1,6 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
-MA <- readRDS("outputs/HTMWsiteTrends.rds")
+MA <- readRDS("outputs/outputs_sensitivity/siteLevel_HTMW/HTMWsiteTrends.rds")
 head(MA)
 dim(MA)
 unique(MA$Response)

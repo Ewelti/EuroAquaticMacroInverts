@@ -2,7 +2,7 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
-seasTr <- readRDS("outputs/Sensitivity/sensitiv_seasonTrends.RDS")
+seasTr <- readRDS("outputs/outputs_sensitivity/TaxonomicSeason/sensitiv_seasonTrends.RDS")
 head(seasTr)
 unique(seasTr$Response)
 

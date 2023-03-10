@@ -50,7 +50,7 @@ ma <- read.csv("outputs/MovingWindowProportions.csv")
 
 #### import site level estimates
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
-ma1 <- readRDS("outputs/stanTrends_site_level_movingaverages.rds")
+ma1 <- readRDS("outputs/outputs_movingWindow/stanTrends_site_level_movingaverages.rds")
 ab <- ma1[ma1$Response == "abundance",]
 library(data.table)
 DT <- data.table(ab)

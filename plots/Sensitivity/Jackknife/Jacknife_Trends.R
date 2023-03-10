@@ -2,7 +2,7 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
-JKTr <- read.csv("outputs/JackknifeTrends.csv")
+JKTr <- read.csv("outputs/outputs_sensitivity/Jackknife/JackknifeTrends.csv")
 head(JKTr)
 unique(JKTr$Response)
 

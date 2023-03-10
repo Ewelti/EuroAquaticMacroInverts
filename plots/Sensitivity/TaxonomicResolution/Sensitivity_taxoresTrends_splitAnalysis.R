@@ -2,7 +2,7 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts")
 
 # attach data
-taxoresTr <- read.csv("outputs/SplitSensitivityTrends.csv")
+taxoresTr <- read.csv("outputs/outputs_sensitivity/TaxonomicSeason/SplitSensitivityTrends.csv")
 head(taxoresTr)
 unique(taxoresTr$response)
 

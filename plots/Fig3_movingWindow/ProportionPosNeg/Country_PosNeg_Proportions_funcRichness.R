@@ -8,7 +8,7 @@ CT <- data.frame(site_id=sites$site, TaxRes=sites$TaxonomicRes, country=sites$Co
 head(CT)
 
 #### import site level estimates
-ma1 <- readRDS("outputs/stanTrends_site_level_movingaverages.rds")
+ma1 <- readRDS("outputs/outputs_movingWindow/stanTrends_site_level_movingaverages.rds")
 ma <- merge(ma1,CT,by="site_id", all=T) ##add in country and taxonomic resolution information
 ma <- ma[complete.cases(ma), ] ## delete sites with no estimates
 ma$MeanYr <- as.numeric(ma$StartYear) + 4.5
