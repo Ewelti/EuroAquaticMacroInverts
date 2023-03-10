@@ -13,8 +13,8 @@ DATA2 <- sites[!is.na(sites$site_id_wMissing),]
 DATA2$turnover <- as.numeric(DATA2$turnover)
 
 #subset by year
-sites_later1 <- subset(DATA2,year >= 2000)
-sites_later <- subset(sites_later1,year <= 2018)
+sites_later1 <- subset(DATA2,year >= 1990)
+sites_later <- subset(sites_later1,year <= 2011)
 head(sites_later)
 
 #count number of sampling years per site
@@ -22,11 +22,11 @@ yearcount <- aggregate(year ~ site_id, data = sites_later, FUN = length)
 head(yearcount)
 
 #subset for sites with more years
-siteslater_long <- yearcount[which(yearcount$year > 14),]
+siteslater_long <- yearcount[which(yearcount$year > 19),]
 head(siteslater_long)
 nrow(siteslater_long)#515
 
-#subset full dataset for sites with at least 15yrs of data in 2000 or later
+#subset full dataset for sites with at least 20yrs of data in 2000 or later
 allYrs <- subset(sites_later, site_id %in% siteslater_long$site_id)
 head(allYrs)
 

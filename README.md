@@ -37,15 +37,27 @@ ClimateModel_stan folder - contains outputs of models calculating temperature an
 ## R folder
 ### Analyses:
 
-Calculation of trends of biodiversity metrics for each of the 1816 sites
+Initial_Biodiversity_FuncTrait_and_climate_calcs folder - contains scripts to calculate taxonomic and functional trait metrics for each site year and calculate temperature and precipitation trends
 
-Meta-analysis models to get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
+stan_models folder - contains scripts of all stan models used in analyses
 
-Models with drivers for each metric trend (2 step model)
+trend_metaAnalysis folder - contains the following scripts:
+HPC_macroinverts_stanmodels: models to calculate trends for each biodiversity metric and each of the 1816 sites
+HPC_Meta_analysis: Meta-analysis models to get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
+HPC_modelchecking: examining meta-analysis model fit parameters and calculating probability increasing/decreasing for each biodiversity metric
 
-Moving window analysis
+MovingWindow folder - contains the following scripts:
+HPC_MovingWindow_sites: models to calculate trends for each site within each window and biodiversity metric in moving window analysis
+HPC_Meta_analysis_movingwindow: models to calculate overall estimates of trends within each window and biodiverisity metric
+MetaMeta_movingwindowEsts_Yr: models to calculate overall linear year effects on biodiversity trajectories in moving window analyses
 
-Sensitivity analyses
+Driver folder - contains the following scripts:
+HPC_Meta_analysis_drivers: models to caluculate driver effects on biodiversity metrics
+Modelchecking_Drivers_horseshoePriors: examining driver model fit parameters
+
+Sensitivity folder - contains scripts for sensitivity checking models including effects of trends within countries (Country_effects), high threshold moving window analysis (HTMW), using a one stage model rather than the two stage meta-analysis model for trend estimates (OneStage_models), effects of taxonomic resolution for the moving window analysis and claculating the proportion of pos/neg trends/ window (checking_MovingWindow_parameters), effects of taxonomic resolution and seasonality on trend estimates (HPC_Sensitivity_analysis), and examing driver model outputs for sites with taxa IDed to species level only (Modelchecking_Drivers_sppLevel_horseshoe)
+
+HPC_combine_site_trends script: code to concatenate outputs for many analyses including biodiverity trends, meta-analysis, moving window analysis, driver analysis, and sensitivity analyses
 
 ### HPC analysis: 
 
