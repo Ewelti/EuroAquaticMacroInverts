@@ -61,22 +61,22 @@ Contains scripts of all stan models used in analyses
 
 * _trend_metaAnalysis_ folder:
 Contains the following scripts:
-	* HPC_macroinverts_stanmodels: models to calculate trends for each biodiversity metric and each of the 1816 sites
-	* HPC_Meta_analysis: Meta-analysis models to synthesize the site-level data using the output of the previous step and get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
-	* HPC_modelchecking: examining meta-analysis model fit parameters and calculating probability increasing/decreasing for each biodiversity metric
+	* **HPC_macroinverts_stanmodels** : models to calculate trends for each biodiversity metric and each of the 1816 sites
+	* **HPC_Meta_analysis** : Meta-analysis models to synthesize the site-level data using the output of the previous step and get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
+	* **HPC_modelchecking** : examining meta-analysis model fit parameters and calculating probability increasing/decreasing for each biodiversity metric
 
 * _MovingWindow_ folder: 
 Contains the following scripts:
-	* HPC_MovingWindow_sites: models to calculate trends for each site within each window and biodiversity metric in moving window analysis
-	* HPC_Meta_analysis_movingwindow: models to calculate overall estimates of trends within each window and biodiverisity metric
-	* MetaMeta_movingwindowEsts_Yr: models to calculate overall linear year effects on biodiversity trajectories in moving window analyses
+	* **HPC_MovingWindow_sites** : models to calculate trends for each site within each window and biodiversity metric in moving window analysis
+	* **HPC_Meta_analysis_movingwindow** : models to calculate overall estimates of trends within each window and biodiverisity metric
+	* **MetaMeta_movingwindowEsts_Yr** : models to calculate overall linear year effects on biodiversity trajectories in moving window analyses
 
 * _Driver_ folder:
 Contains the following scripts:
-	* HPC_Meta_analysis_drivers: models to caluculate driver effects on biodiversity metrics using site-level data
-	* Modelchecking_Drivers_horseshoePriors: examining driver model fit parameters
+	* **HPC_Meta_analysis_drivers** : models to caluculate driver effects on biodiversity metrics using site-level data
+	* **Modelchecking_Drivers_horseshoePriors** : examining driver model fit parameters
 
-* _Sensitivity_ folder:
+* __Sensitivity__ folder:
 Contains scripts for sensitivity checking models including: 
 	* effects of trends within countries (Country_effects), 
 	* high threshold moving window analysis (HTMW), 
