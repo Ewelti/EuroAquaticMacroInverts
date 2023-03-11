@@ -24,6 +24,6 @@ outputs/drivers_spplevelOnly/*
 outputs/proportions_country/*
 outputs/Driver_marginalEffects/*
 outputs/unused/*
+plots/unused/*
 plots/Fig_3movingWindow/old/*
 plots/Fig4_drivers/old/*
-plots/unused*
