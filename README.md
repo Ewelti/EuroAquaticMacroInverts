@@ -11,19 +11,19 @@ Haase, P., D.E. Bowler, N.J. Baker, N. Bonada, S. Domisch, J.R. Garcia Marquez, 
 #### **AquaticMacroInvert_metadata.xls** :
 * Contains information on data providers, site characteristics, and the number of sites from each country
 * Two tabs within this metadata spreedsheet contain metadata for the two csv files (in the outputs folder):
-	* "All_indices_benthicMacroInverts_AllYears_alienzeros.csv" (metadata tab: metadata_siteyear) and 
-	* "All_siteLevel.csv" (metadata tab: metadata_sites).
+	* *All_indices_benthicMacroInverts_AllYears_alienzeros.csv* (metadata tab: metadata_siteyear) and 
+	* *All_siteLevel.csv* (metadata tab: metadata_sites)
 
 
 ## outputs folder:
 
-#### **All_indices_benthicMacroInverts_AllYears_alienzeros.csv** : 
+* **All_indices_benthicMacroInverts_AllYears_alienzeros.csv** : 
 Contains data for each site and year on: 
 	* taxonomic diversity metrics, 
 	* functional diversity metrics, and
 	* environmental drivers which are time series (climate, landuse)
 
-#### **All_siteLevel.csv** :
+* **All_siteLevel.csv** :
 Contains data for each site on slopes of functional and taxonomic diversity indices and environmental drivers
 
 * **outputs_metaAnaylsis** folder:
@@ -96,7 +96,7 @@ Concatenates outputs for many analyses including:
 
 ## plots folder
 
-#### **Online Figures.docx** : 
+* **Online Figures.docx** : 
 Includes all additional online figures not included in main text or Extended Data
 
 * **Fig1** folder: 
