@@ -8,7 +8,7 @@ Haase, P., D.E. Bowler, N.J. Baker, N. Bonada, S. Domisch, J.R. Garcia Marquez, 
 
 ## Metadata file:
 
-#### _AquaticMacroInvert_metadata.xls_ :
+#### **AquaticMacroInvert_metadata.xls** :
 * Contains information on data providers, site characteristics, and the number of sites from each country
 * Two tabs within this metadata spreedsheet contain metadata for the two csv files (in the outputs folder):
 	* "All_indices_benthicMacroInverts_AllYears_alienzeros.csv" (metadata tab: metadata_siteyear) and 
@@ -17,25 +17,25 @@ Haase, P., D.E. Bowler, N.J. Baker, N. Bonada, S. Domisch, J.R. Garcia Marquez, 
 
 ## outputs folder:
 
-#### _All_indices_benthicMacroInverts_AllYears_alienzeros.csv_ : 
+#### **All_indices_benthicMacroInverts_AllYears_alienzeros.csv** : 
 Contains data for each site and year on: 
 	* taxonomic diversity metrics, 
 	* functional diversity metrics, and
 	* environmental drivers which are time series (climate, landuse)
 
-#### _All_siteLevel.csv_ :
+#### **All_siteLevel.csv** :
 Contains data for each site on slopes of functional and taxonomic diversity indices and environmental drivers
 
-* _outputs_metaAnaylsis_ folder:
+* **outputs_metaAnaylsis** folder:
 Trend meta-analysis model outputs
 
-* _outputs_movingWindow_ folder:
+* **outputs_movingWindow** folder:
 Moving window analysis outputs
 
-* _outputs_driver_ folder:
+* **outputs_driver** folder:
 Driver analysis outputs 
 
-* _outputs_sensitivity_ folder: 
+* **outputs_sensitivity** folder: 
 Sensitivity analyses outputs including: 
 	* high threshold moving window analysis (HTMW2), 
 	* one-country removal effects (Jackknife), 
@@ -44,39 +44,39 @@ Sensitivity analyses outputs including:
 	* driver and moving window analyses only for sites with taxonomic resolution to species level (SppLevel_outputs), and 
 	* taxonomic resolution and seasonality sensitivity analyses outputs (TaxonomicSeason)
 
-* _TaskIDs_ folder:
+* **TaskIDs** folder:
 Task IDs for running models and model estimates
 
-* _ClimateModel_stan_ folder:
+* **ClimateModel_stan** folder:
 Contains outputs of models calculating temperature and precipitation trends
 
 
 ## R folder
 
-* _Initial_Biodiversity_FuncTrait_and_climate_calcs_ folder:
+* **Initial_Biodiversity_FuncTrait_and_climate_calcs** folder:
 Contains scripts to calculate taxonomic and functional trait metrics for each site year and calculate temperature and precipitation trends
 
-* _stan_models_ folder:
+* **stan_models** folder:
 Contains scripts of all stan models used in analyses
 
-* _trend_metaAnalysis_ folder:
+* **trend_metaAnalysis** folder:
 Contains the following scripts:
-	* **HPC_macroinverts_stanmodels** : models to calculate trends for each biodiversity metric and each of the 1816 sites
-	* **HPC_Meta_analysis** : Meta-analysis models to synthesize the site-level data using the output of the previous step and get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
-	* **HPC_modelchecking** : examining meta-analysis model fit parameters and calculating probability increasing/decreasing for each biodiversity metric
+	* *HPC_macroinverts_stanmodels* : Models to calculate trends for each biodiversity metric and each of the 1816 sites
+	* *HPC_Meta_analysis* : Meta-analysis models to synthesize the site-level data using the output of the previous step and get overall trend for each metric (Trend ~ 1 + (1|study_ID) + (1|Country)
+	* *HPC_modelchecking* : Examining meta-analysis model fit parameters and calculating probability increasing/decreasing for each biodiversity metric
 
-* _MovingWindow_ folder: 
+* **MovingWindow** folder: 
 Contains the following scripts:
-	* **HPC_MovingWindow_sites** : models to calculate trends for each site within each window and biodiversity metric in moving window analysis
-	* **HPC_Meta_analysis_movingwindow** : models to calculate overall estimates of trends within each window and biodiverisity metric
-	* **MetaMeta_movingwindowEsts_Yr** : models to calculate overall linear year effects on biodiversity trajectories in moving window analyses
+	* *HPC_MovingWindow_sites* : Models to calculate trends for each site within each window and biodiversity metric in moving window analysis
+	* *HPC_Meta_analysis_movingwindow* : Models to calculate overall estimates of trends within each window and biodiverisity metric
+	* *MetaMeta_movingwindowEsts_Yr* : Models to calculate overall linear year effects on biodiversity trajectories in moving window analyses
 
-* _Driver_ folder:
+* **Driver** folder:
 Contains the following scripts:
-	* **HPC_Meta_analysis_drivers** : models to caluculate driver effects on biodiversity metrics using site-level data
-	* **Modelchecking_Drivers_horseshoePriors** : examining driver model fit parameters
+	* *HPC_Meta_analysis_drivers* : Models to caluculate driver effects on biodiversity metrics using site-level data
+	* *Modelchecking_Drivers_horseshoePriors* : Examining driver model fit parameters
 
-* __Sensitivity__ folder:
+* **Sensitivity** folder:
 Contains scripts for sensitivity checking models including: 
 	* effects of trends within countries (Country_effects), 
 	* high threshold moving window analysis (HTMW), 
@@ -85,7 +85,7 @@ Contains scripts for sensitivity checking models including:
 	* effects of taxonomic resolution and seasonality on trend estimates (HPC_Sensitivity_analysis), and 
 	* examing driver model outputs for sites with taxa IDed to species level only (Modelchecking_Drivers_sppLevel_horseshoe)
 
-* _HPC_combine_site_trends_ script:
+* *HPC_combine_site_trends* script:
 Concatenates outputs for many analyses including:  
 	* biodiverity trends, 
 	* meta-analysis, 
@@ -96,25 +96,25 @@ Concatenates outputs for many analyses including:
 
 ## plots folder
 
-#### _Online Figures.docx_ : 
+#### **Online Figures.docx** : 
 Includes all additional online figures not included in main text or Extended Data
 
-* _Fig1_ folder: 
+* **Fig1** folder: 
 Contains scripts, data, and icons used to make Figure 1
 
-* _Fig2_DensityPlots_ folder : 
+* **Fig2_DensityPlots** folder : 
 Contains scripts and plots related to meta-analysis trend results
 
-* _Fig3_movingWindow_ folder: 
+* **Fig3_movingWindow** folder: 
 Contains scripts and plots related to the moving window analyses
 
-* _Fig4_drivers folder_: 
+* **Fig4_drivers folder**: 
 Contains scripts and plots related to driver analyses
 
-* _descriptive_plots_ folder: 
+* **descriptive_plots** folder: 
 Contains scripts and plots descriping data distributions and correlations
 
-* _Sensitivity_ folder: 
+* **Sensitivity** folder: 
 Contains scripts and plots for sensitivity analyses regarding: 
 	* one-country removal effects (Jackknife), 
 	* meta-analysis model comparisions (one stage, two stage weighted and unweighed), 
