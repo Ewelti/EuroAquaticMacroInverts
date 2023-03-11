@@ -3,7 +3,7 @@
 .RData
 .Ruserdata
 raw-data*
-R/unused/*
+R/unused*
 outputs/unused_analyses/*
 outputs/unused_outputs/*
 outputs/Sensitivity/*
@@ -26,6 +26,4 @@ outputs/Driver_marginalEffects/*
 outputs/unused/*
 plots/Fig_3movingWindow/old/*
 plots/Fig4_drivers/old/*
-plots/unused/*
-
-
+plots/unused*
