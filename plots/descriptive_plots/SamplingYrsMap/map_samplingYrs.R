@@ -1,5 +1,5 @@
 ##Set working directory
-setwd("C:/Users/ewelti/Desktop/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 #
 
 library(RColorBrewer)
@@ -46,7 +46,7 @@ country
 
 ######################
 ####################
-tiff(filename = "plots/SampleYrs_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/descriptive_plots/SamplingYrsMap/SampleYrs_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
 
 #Create a function to generate a continuous color palette
 rbPal <- colorRampPalette(c("gold",'seagreen1','deepskyblue1','purple'))#

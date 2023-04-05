@@ -2,7 +2,7 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
-response_stan <- readRDS("outputs/stanTrends_site_level.rds")
+response_stan <- readRDS("outputs/outputs_metaAnalysis/stanTrends_site_level.rds")
 head(response_stan)
 unique(response_stan$Response)
 

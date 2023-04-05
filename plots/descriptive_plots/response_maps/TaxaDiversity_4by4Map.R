@@ -1,8 +1,8 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
-response_stan <- readRDS("outputs/stanTrends_site_level.rds")
+response_stan <- readRDS("outputs/outputs_metaAnalysis/stanTrends_site_level.rds")
 head(response_stan)
 unique(response_stan$Response)
 
@@ -60,7 +60,7 @@ country
 ######################
 ####################
 
-tiff(filename = "plots/DiversityMaps/TaxonomicDiversity_map.tiff", width = 11, height = 11, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/descriptive_plots/response_maps/TaxonomicDiversity_map.tiff", width = 11, height = 11, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(0,0,0,0),mfrow=c(2,2))
 ############################Evenness#######################################

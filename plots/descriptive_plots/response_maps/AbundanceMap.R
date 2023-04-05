@@ -1,8 +1,8 @@
 ##Set working directory
-setwd("C:/Users/Ellen/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
+setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
-response_stan <- readRDS("outputs/stanTrends_site_level.rds")
+response_stan <- readRDS("outputs/outputs_metaAnalysis/stanTrends_site_level.rds")
 head(response_stan)
 unique(response_stan$Response)
 
@@ -88,7 +88,7 @@ sr_col_pos <- pal_pos(50)[as.numeric(cut(sr_pos,breaks = 50))]
 unique(sr_col_pos)
 sr_sites$sr_col <- c(sr_col_neg, sr_col_pos)
 
-tiff(filename = "plots/DiversityMaps/Abund_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/descriptive_plots/response_maps/Abund_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(0,0,0,0))
 
