@@ -99,6 +99,9 @@ Concatenates outputs for many analyses including:
 * ***Online Figures.docx*** : 
 Includes all additional online figures not included in main text or Extended Data
 
+* **Supplementary Table 2** : 
+Contains information on time series locations, durations, and site characteristics
+
 * **Fig1** folder: 
 Contains scripts, data, and icons used to make Figure 1
 
