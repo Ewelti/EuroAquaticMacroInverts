@@ -7,6 +7,8 @@ head(response_stan)
 unique(response_stan$Response)
 length(unique(response_stan$site_id))
 
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+
 Ests <- read.csv("outputs/Yr_metaanaly_Ests.csv")
 
 tiff(filename = "plots/Fig2_DensityPlots/SlopeDistributions.tiff", width = 10, height = 6, units = 'in', res = 600, compression = 'lzw')

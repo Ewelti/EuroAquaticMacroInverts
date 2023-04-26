@@ -68,9 +68,10 @@ if(myResponse %in% c("abundance","alien_Abund","abund_nativeSpp",
 }
 
 #not transformed: shannonH, RaoQ, turnover, FEve, "spp_richness","spp_rich_rare",
-#"alien_SppRich","SppRich_nativeSpp","EPT_SppRich","insect_SppRich"
+#"alien_SppRich","SppRich_nativeSpp","EPT_SppRich","insect_SppRich", "FRed"
 
-#still problems with func_turn(F_to), alien_SppRich, EPT_SppRich, and EPT_abund
+#func_turn(F_to): used beta models
+#alien_SppRich, EPT_SppRich, and EPT_abund: used unweighted models
 
 #order by site site year
 allYrs <- allYrs[order(allYrs$year_wMissing),]
