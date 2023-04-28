@@ -32,7 +32,7 @@ sort(unique(TaskID$Response))
 ### updated models #####
 
 #use beta for F_to
-#use zero-inflated for AlienSppRich, EPTSppRich, EPTAbund - not use, since still doesnt work well when weighted
+#use unweighted for AlienSppRich, EPTSppRich, EPTAbund
 #the normal models for the rest
 
 # standard model - for the rest

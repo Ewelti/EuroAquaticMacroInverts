@@ -2,14 +2,17 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
-response_stan <- readRDS("outputs/outputs_metaAnaylsis/stanTrends_site_level.rds")
+response_stan <- readRDS("outputs/outputs_metaAnalysis/stanTrends_site_level.rds")
 head(response_stan)
 unique(response_stan$Response)
 length(unique(response_stan$site_id))
 
-Ests <- read.csv("outputs/Yr_metaanaly_Ests.csv")
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+head(metricdata)
 
-tiff(filename = "plots/Fig2_DensityPlots/SlopeDistributions_extra.tiff", width = 6, height = 6, units = 'in', res = 600, compression = 'lzw')
+Ests <- read.csv("outputs/outputs_metaAnalysis/Yr_metaanaly_Ests.csv")
+
+tiff(filename = "plots/Fig2_DensityPlots/SlopeDistributions_extra.tif", width = 6, height = 6, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,1))
 
@@ -17,8 +20,7 @@ par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,1))
 #### Shannon's H #####
 shannonsH <- subset(response_stan, Response == "shannonsH")
 shannonsH <- shannonsH$estimate[!is.na(shannonsH$estimate)]
-#average Shannon's H = 1.978232299
-ave_shannonsH <- 1.978232299
+ave_shannonsH <- mean(metricdata$shannonsH, na.rm=T)
 percChange_perYr<-(shannonsH/ave_shannonsH)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-3
@@ -52,8 +54,7 @@ legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+0.25% ",y^-1,, sep = ""))
 #### rarefied Spp Richness #####
 SppRichRare <- subset(response_stan, Response == "spp_rich_rare")
 SppRichRare <- SppRichRare$estimate[!is.na(SppRichRare$estimate)]
-#average Rareified species richness= 19.2450259
-ave_SppRichRare <- 19.2450259
+ave_SppRichRare <- mean(metricdata$spp_rich_rare, na.rm=T)
 percChange_perYr<-(SppRichRare/ave_SppRichRare)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-2
@@ -85,8 +86,8 @@ legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.22% ",y^-1,, sep = ""))
 #### Func diverg #####
 FDiv <- subset(response_stan, Response == "FDiv")
 FDiv <- FDiv$estimate[!is.na(FDiv$estimate)]
-ave_FDiv <- 0.826257724
-percChange_perYr<-(FDiv/(ave_FDiv^2))*100
+ave_FDiv <- mean((metricdata$FDiv^2), na.rm=T)
+percChange_perYr<-((FDiv/2)/(ave_FDiv))*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10))*-1
 b <- (max(d$y)+(max(d$y)/10))*3
@@ -101,7 +102,7 @@ polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "coral1", border = "coral1", lwd =2)
 FDiv_Est <- subset(Ests, Response == "func_diverg")
-stand_FDiv <- lapply(FDiv_Est[,2:11],"*",100/(ave_FDiv^2))
+stand_FDiv <- lapply(FDiv_Est[,2:11]/2,"*",100/ave_FDiv)
 yy <- (1.2/4*(b-a)+a)
 points(x=stand_FDiv$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_FDiv$Q2.5, stand_FDiv$Q2.5, stand_FDiv$Q97.5, stand_FDiv$Q97.5),
@@ -114,13 +115,12 @@ polygon(x=c(stand_FDiv$Q10, stand_FDiv$Q10, stand_FDiv$Q90, stand_FDiv$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(2/4*(b-a)+a), legend=("c, Func. divergence"), bty="n", cex=1.3)
-legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+0.09% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+0.04% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### Rao's Q #####
 RaoQ <- subset(response_stan, Response == "RaoQ")
 RaoQ <- RaoQ$estimate[!is.na(RaoQ$estimate)]
-#average Rao's Q = 37.7098828
-ave_RaoQ <- 37.7098828
+ave_RaoQ <- mean(metricdata$RaoQ, na.rm=T)
 percChange_perYr<-(RaoQ/ave_RaoQ)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *0
@@ -149,7 +149,7 @@ polygon(x=c(stand_RaoQ$Q10, stand_RaoQ$Q10, stand_RaoQ$Q90, stand_RaoQ$Q90),
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-18, y=(1/4*(b-a)+a), legend=("d, Rao's Q"), bty="n", cex=1.3)
-legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+0.21% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+0.2% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 ##
 box(lwd=2,col="white")

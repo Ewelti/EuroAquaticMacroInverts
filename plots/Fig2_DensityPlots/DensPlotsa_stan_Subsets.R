@@ -2,14 +2,17 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
-response_stan <- readRDS("outputs/outputs_metaAnaylsis/stanTrends_site_level.rds")
+response_stan <- readRDS("outputs/outputs_metaAnalysis/stanTrends_site_level.rds")
 head(response_stan)
 unique(response_stan$Response)
 length(unique(response_stan$site_id))
 
-Ests <- read.csv("outputs/Yr_metaanaly_Ests.csv")
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+head(metricdata)
 
-tiff(filename = "plots/Fig2_DensityPlots/SlopeDistributions_Subsets.tiff", width = 12, height = 6, units = 'in', res = 600, compression = 'lzw')
+Ests <- read.csv("outputs/outputs_metaAnalysis/Yr_metaanaly_Ests.csv")
+
+tiff(filename = "plots/Fig2_DensityPlots/SlopeDistributions_Subsets.tif", width = 12, height = 6, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,2))
 
@@ -18,7 +21,8 @@ par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,2))
 #### Alien Spp Richness #####
 alien_SppRich <- subset(response_stan, Response == "alien_SppRich")
 alien_SppRich <- alien_SppRich$estimate[!is.na(alien_SppRich$estimate)]
-ave_alien_SppRich <- 1.420037807
+md <- metricdata[ which(metricdata$alien_detected=='yes'), ]
+ave_alien_SppRich <- mean(md$alien_SppRich, na.rm=T)
 percChange_perYr<-(alien_SppRich/ave_alien_SppRich)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-3
@@ -47,13 +51,12 @@ polygon(x=c(stand_alien_SppRich$Q10, stand_alien_SppRich$Q10, stand_alien_SppRic
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-24, y=(4/4*(b-a)+a), legend=("a, Non-native richness"), bty="n", cex=1.3)
-legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+3.98% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+3.97% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### native spp rich #####
 SppRich_nativeSpp <- subset(response_stan, Response == "SppRich_nativeSpp")
 SppRich_nativeSpp <- SppRich_nativeSpp$estimate[!is.na(SppRich_nativeSpp$estimate)]
-#average native spp rich = 27.52824362
-ave_SppRich_nativeSpp <- 27.52824362
+ave_SppRich_nativeSpp <- mean(metricdata$SppRich_nativeSpp, na.rm=T)
 percChange_perYr<-(SppRich_nativeSpp/ave_SppRich_nativeSpp)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-2
@@ -87,8 +90,7 @@ legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.64% ",y^-1,, sep = ""))
 #### EPT spp rich #####
 EPT_SppRich <- subset(response_stan, Response == "EPT_SppRich")
 EPT_SppRich <- EPT_SppRich$estimate[!is.na(EPT_SppRich$estimate)]
-#average EPT spp rich = 9.279548523
-ave_EPT_SppRich <- 9.279548523
+ave_EPT_SppRich <- mean(metricdata$EPT_SppRich, na.rm=T)
 percChange_perYr<-(EPT_SppRich/ave_EPT_SppRich)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-1
@@ -123,8 +125,7 @@ legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+0.45% ",y^-1,, sep = ""))
 #### insect spp rich #####
 insect_SppRich <- subset(response_stan, Response == "insect_SppRich")
 insect_SppRich <- insect_SppRich$estimate[!is.na(insect_SppRich$estimate)]
-#average insect spp rich = 19.19656517
-ave_insect_SppRich <- 19.19656517
+ave_insect_SppRich <- mean(metricdata$insect_SppRich, na.rm=T)
 percChange_perYr<-(insect_SppRich/ave_insect_SppRich)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *0
@@ -157,13 +158,13 @@ legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+0.71% ",y^-1,, sep = ""))
 ##
 box(lwd=2,col="white")
 axis(1,lwd=2)
-abline(v=0, lwd=1.5, lty=2, col="grey40")
+abline(v=0, lwd=1.5, lty=2)
 
 ##
 #### alien abund #####
 alien_Abund <- subset(response_stan, Response == "alien_Abund")
 alien_Abund <- alien_Abund$estimate[!is.na(alien_Abund$estimate)]
-percChange_perYr<- alien_Abund*100
+percChange_perYr<- (10^alien_Abund-1)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10))*-3
 b <- (max(d$y)+(max(d$y)/10))*1
@@ -178,7 +179,7 @@ polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "coral1", border = "coral1", lwd =2)
 alien_Abund_Est <- subset(Ests, Response == "alien_abund")
-stand_alien_Abund <- lapply(alien_Abund_Est[,2:11],"*",100)
+stand_alien_Abund <- lapply((10^alien_Abund_Est[,2:11]-1),"*",100)
 yy <- (3.2/4*(b-a)+a)
 points(x=stand_alien_Abund$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_alien_Abund$Q2.5, stand_alien_Abund$Q2.5, stand_alien_Abund$Q97.5, stand_alien_Abund$Q97.5),
@@ -191,14 +192,12 @@ polygon(x=c(stand_alien_Abund$Q10, stand_alien_Abund$Q10, stand_alien_Abund$Q90,
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-24, y=(4/4*(b-a)+a), legend=("b, Non-native abundance"), bty="n", cex=1.3)
-legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+1.66% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(4/4*(b-a)+a), legend=expression(paste("+3.9% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### native abund #####
 abund_nativeSpp <- subset(response_stan, Response == "abund_nativeSpp")
 abund_nativeSpp <- abund_nativeSpp$estimate[!is.na(abund_nativeSpp$estimate)]
-#average native abund = 3339.274349
-#ave_native_abund <- 3339.274349
-percChange_perYr<- (abund_nativeSpp)*100
+percChange_perYr<- (10^abund_nativeSpp-1)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-2
 b <- (max(d$y)+(max(d$y)/10))*2
@@ -213,7 +212,7 @@ polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "coral1", border = "coral1", lwd =2)
 abund_nativeSpp_Est <- subset(Ests, Response == "native_abund")
-stand_abund_nativeSpp <- lapply(abund_nativeSpp_Est[,2:11],"*",100)
+stand_abund_nativeSpp <- lapply((10^abund_nativeSpp_Est[,2:11]-1),"*",100)
 yy <- (2.2/4*(b-a)+a)
 points(x=stand_abund_nativeSpp$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_abund_nativeSpp$Q2.5, stand_abund_nativeSpp$Q2.5, stand_abund_nativeSpp$Q97.5, stand_abund_nativeSpp$Q97.5),
@@ -226,14 +225,12 @@ polygon(x=c(stand_abund_nativeSpp$Q10, stand_abund_nativeSpp$Q10, stand_abund_na
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-24, y=(3/4*(b-a)+a), legend=("d, Native abundance"), bty="n", cex=1.3)
-legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.11% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(3/4*(b-a)+a), legend=expression(paste("+0.26% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 #### EPT abund #####
 EPT_Abund <- subset(response_stan, Response == "EPT_Abund")
 EPT_Abund <- EPT_Abund$estimate[!is.na(EPT_Abund$estimate)]
-#average ept abund = 783.0506019
-#ave_ept_abund <- 783.0506019
-percChange_perYr<- (EPT_Abund)*100
+percChange_perYr<- (10^EPT_Abund-1)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-1
 b <- (max(d$y)+(max(d$y)/10))*3
@@ -248,7 +245,7 @@ polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "coral1", border = "coral1", lwd =2)
 EPT_Abund_Est <- subset(Ests, Response == "EPT_abund_unweighted")
-stand_EPT_Abund <- lapply(EPT_Abund_Est[,2:11],"*",100)
+stand_EPT_Abund <- lapply((10^EPT_Abund_Est[,2:11]-1),"*",100)
 yy <- (1.2/4*(b-a)+a)
 points(x=stand_EPT_Abund$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_EPT_Abund$Q2.5, stand_EPT_Abund$Q2.5, stand_EPT_Abund$Q97.5, stand_EPT_Abund$Q97.5),
@@ -261,13 +258,13 @@ polygon(x=c(stand_EPT_Abund$Q10, stand_EPT_Abund$Q10, stand_EPT_Abund$Q90, stand
         y=c((yy-yy/6),(yy+yy/6),(yy+yy/6),(yy-yy/6)),
         col = 1,border = 0,lwd =1)
 legend(x=-24, y=(2/4*(b-a)+a), legend=("f, EPT abundance"), bty="n", cex=1.3)
-legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+1.02% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(2/4*(b-a)+a), legend=expression(paste("+2.38% ",y^-1,, sep = "")), bty="n", cex=1.3)
 
 
 #### insect abund #####
 insect_Abund <- subset(response_stan, Response == "insect_Abund")
 insect_Abund <- insect_Abund$estimate[!is.na(insect_Abund$estimate)]
-percChange_perYr<- insect_Abund*100
+percChange_perYr<- (10^insect_Abund-1)*100
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *0
 b <- (max(d$y)+(max(d$y)/10))*4
@@ -282,7 +279,7 @@ polygon(c(d$x[d$x <= 0 ], 0),
         c(d$y[d$x <= 0 ], 0),
         col = "coral1", border = "coral1", lwd =2)
 insect_Abund_Est <- subset(Ests, Response == "insect_abund")
-stand_insect_Abund <- lapply(insect_Abund_Est[,2:11],"*",100)
+stand_insect_Abund <- lapply((10^insect_Abund_Est[,2:11]-1),"*",100)
 yy <- (0.2/4*(b-a)+a)
 points(x=stand_insect_Abund$Estimate, y=yy, lwd=2,pch="|",cex=2)
 polygon(x=c(stand_insect_Abund$Q2.5, stand_insect_Abund$Q2.5, stand_insect_Abund$Q97.5, stand_insect_Abund$Q97.5),
@@ -295,11 +292,11 @@ polygon(x=c(stand_insect_Abund$Q10, stand_insect_Abund$Q10, stand_insect_Abund$Q
         y=c((yy-yy/4.5),(yy+yy/4.5),(yy+yy/4.5),(yy-yy/4.6)),
         col = 1,border = 0,lwd =1)
 legend(x=-24, y=(1/4*(b-a)+a), legend=("h, Insect abundance"), bty="n", cex=1.3)
-legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+0.66% ",y^-1,, sep = "")), bty="n", cex=1.3)
+legend(x=7, y=(1/4*(b-a)+a), legend=expression(paste("+1.53% ",y^-1,, sep = "")), bty="n", cex=1.3)
 ##
 box(lwd=2,col="white")
 axis(1,lwd=2)
-abline(v=0, lwd=1.5, lty=2, col="grey40")
+abline(v=0, lwd=1.5, lty=2)
 ##
 
 dev.off()
