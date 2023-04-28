@@ -76,7 +76,7 @@ sr_sites <- sr_sites[order(sr_sites$E10),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-sr_sites$trend_perc <- (sr_sites$E10)*100
+sr_sites$trend_perc <- (10^sr_sites$E10-1)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$E10 <= 0]]

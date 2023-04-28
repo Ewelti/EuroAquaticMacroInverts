@@ -71,11 +71,7 @@ sr_sites <- resp[!is.na(resp$abundance),]
 sr_sites <- sr_sites[order(sr_sites$abundance),]
 head(sr_sites)
 
-##convert slope to percent annual change
-#ave_SppRich <- 27.28712314 #average spp richness
-#sr_sites$trend_perc <- (sr_sites$spp_richness/ave_SppRich)*100
-##convert slope to percent annual change
-sr_sites$trend_perc <- (sr_sites$abundance)*100
+sr_sites$trend_perc <- (10^sr_sites$abundance-1)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$abundance <= 0]]
