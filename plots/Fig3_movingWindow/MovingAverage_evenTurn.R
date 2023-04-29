@@ -8,12 +8,15 @@ head(MA)
 MA = subset(MA, select = -c(X) )
 unique(MA$Response)
 
-tiff(filename = "plots/Fig3_movingWindow/MovingAverages_extra.tiff", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+head(metricdata)
+
+tiff(filename = "plots/Fig3_movingWindow/MovingAverages_extra.tif", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
 par(mfrow=c(2,2),mar=c(2,4,0.2,0.2))
 
 #### Shannon's Evenness #####
 SR <- subset(MA, Response == "E10")
-st <-(SR[1:(nrow(SR)),3:12])*100
+st <-(10^(SR[1:(nrow(SR)),3:12])-1)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
@@ -23,7 +26,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 #SRs <- sr[ which(sr$StartYear >=1980), ] #this is min 5 countries
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1.2,1.2), xlim=c(1994.5,2015.5))#ylim=c(-0.8,2.55))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
 title(ylab=expression(paste("Shannon's evenness (% y"^"-1", ")")), line=2,cex.lab=1.4)
 #title(xlab="Mean year of moving window", line=2,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -40,7 +43,8 @@ legend("topright", bty="n", legend="a",cex=1.5)
 #plot for turnover
 unique(MA$Response)
 SR <- subset(MA, Response == "turnover")
-ave_turnover <- 0.542933401
+to<-as.numeric(replace(metricdata$turnover, metricdata$turnover=="<NA>", "NA"))
+ave_turnover <- mean(to, na.rm=T)
 st <-(SR[1:(nrow(SR)),3:12]/ave_turnover)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
@@ -49,7 +53,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-4,4), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
 title(ylab=expression(paste("Turnover (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -66,7 +70,7 @@ legend("topright", bty="n", legend="b",cex=1.5)
 par(mar=c(4,4,0.2,0.2))
 #### Func evenness #####
 SR <- subset(MA, Response == "FEve")
-ave_FEve <- 0.517910888
+ave_FEve <- mean(metricdata$FEve, na.rm=T)
 st <-(SR[1:(nrow(SR)),3:12]/ave_FEve)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
@@ -75,7 +79,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1.7,2.2), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
 title(ylab=expression(paste("Functional evenness(% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
@@ -90,7 +94,22 @@ legend("topright", bty="n", legend="c",cex=1.5)
 
 #### Func turnover #####
 SR <- subset(MA, Response == "F_to")
-st <-((exp(SR[1:(nrow(SR)),3:12])-1)*100)
+head(SR)
+
+st <- SR[1:(nrow(SR)),3:12]
+
+labs <- colnames(st)
+
+backtrans <- function(x) {
+perc <- ((plogis(interc + x * 5)/plogis(interc + x * -5))^(1/(10))-1)*100
+print(perc)
+}
+
+for(i in 1:ncol(st)) {      
+  st[,i] <- backtrans(st[,i])
+}
+colnames(st) <- labs
+
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
@@ -98,7 +117,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-5,3), xlim=c(1994.5,2015.5)) #ylim=c(-0.57,0.4))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
 title(ylab=expression(paste("Functional turnover (% y"^"-1", ")")), line=2,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)

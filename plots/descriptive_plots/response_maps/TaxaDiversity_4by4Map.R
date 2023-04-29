@@ -19,6 +19,10 @@ siteData <- unique(d2[,c("site","Longitude_X","Latitude_Y")])
 colnames(siteData)[1] <- "site_id"
 resp <- merge(siteData,response_stan_pivot,by="site_id")
 head(resp)
+
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+head(metricdata)
+
 #################################################################################
 ##install.packages("rworldmap")
 library(rworldxtra)
@@ -116,9 +120,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -138,8 +140,9 @@ sr_sites <- sr_sites[order(sr_sites$turnover),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-ave_trend <- 0.542933401
-sr_sites$trend_perc <- (sr_sites$turnover/ave_trend)*100
+to<-as.numeric(replace(metricdata$turnover, metricdata$turnover=="<NA>", "NA"))
+ave_turnover <- mean(to, na.rm=T)
+sr_sites$trend_perc <- (sr_sites$turnover/ave_turnover)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$turnover <= 0]]
@@ -167,9 +170,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -189,8 +190,8 @@ sr_sites <- sr_sites[order(sr_sites$shannonsH),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-ave_trend <- 1.978232299
-sr_sites$trend_perc <- (sr_sites$shannonsH/ave_trend)*100
+ave_shannonsH <- mean(metricdata$shannonsH, na.rm=T)
+sr_sites$trend_perc <- (sr_sites$shannonsH/ave_shannonsH)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$shannonsH <= 0]]
@@ -218,9 +219,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -241,8 +240,8 @@ sr_sites <- sr_sites[order(sr_sites$spp_rich_rare),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-ave_trend <- 19.2450259
-sr_sites$trend_perc <- (sr_sites$spp_rich_rare/ave_trend)*100
+ave_SppRichRare <- mean(metricdata$spp_rich_rare, na.rm=T)
+sr_sites$trend_perc <- (sr_sites$spp_rich_rare/ave_SppRichRare)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$spp_rich_rare <= 0]]
@@ -270,9 +269,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")

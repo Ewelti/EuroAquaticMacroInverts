@@ -19,6 +19,10 @@ siteData <- unique(d2[,c("site","Longitude_X","Latitude_Y")])
 colnames(siteData)[1] <- "site_id"
 resp <- merge(siteData,response_stan_pivot,by="site_id")
 head(resp)
+
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+head(metricdata)
+
 #################################################################################
 ##install.packages("rworldxtra")
 library(rworldxtra)
@@ -72,7 +76,7 @@ sr_sites <- sr_sites[order(sr_sites$spp_richness),]
 head(sr_sites)
 
 ##convert slope of species richness to percent annual change
-ave_SppRich <- 27.28712314 #average spp richness
+ave_SppRich <- mean(metricdata$spp_richness, na.rm=T)
 sr_sites$spp_richness_p <- (sr_sites$spp_richness/ave_SppRich)*100
 
 #break positive and neg values
@@ -114,9 +118,7 @@ points(sr_sites$Longitude_X[sr_sites$spp_richness_p > 0],sr_sites$Latitude_Y[sr_
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$spp_richness_p <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$spp_richness_p <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$spp_richness_p <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$spp_richness_p), max(sr_sites$spp_richness_p), by=((max(sr_sites$spp_richness_p)-min(sr_sites$spp_richness_p))/7)),digits=1)
-
-lg2 <- c(round(max(sr_sites$spp_richness_p),digits=1), "","",0, "","",round(min(sr_sites$spp_richness_p),digits=1))
+lg2 <- c("",round(mean(sr_pos),digits=1),"",0,"",round(mean(sr_neg),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")

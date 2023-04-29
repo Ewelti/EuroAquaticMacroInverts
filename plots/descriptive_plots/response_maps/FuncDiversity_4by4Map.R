@@ -19,6 +19,10 @@ siteData <- unique(d2[,c("site","Longitude_X","Latitude_Y")])
 colnames(siteData)[1] <- "site_id"
 resp <- merge(siteData,response_stan_pivot,by="site_id")
 head(resp)
+
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+head(metricdata)
+
 #################################################################################
 ##install.packages("rworldmap")
 library(rworldxtra)
@@ -76,8 +80,8 @@ sr_sites <- sr_sites[order(sr_sites$FEve),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-ave_trend <- 0.517910888
-sr_sites$trend_perc <- (sr_sites$FEve/ave_trend)*100
+ave_FEve <- mean(metricdata$FEve, na.rm=T)
+sr_sites$trend_perc <- (sr_sites$FEve/ave_FEve)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$FEve <= 0]]
@@ -117,9 +121,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -135,11 +137,52 @@ legend(-12.5,75.2,legend=expression(paste("a) Functional evenness (%", y^-1, ")"
 ############################ Func Turnover #######################################
 
 sr_sites <- resp[!is.na(resp$F_to),]
-sr_sites <- sr_sites[order(sr_sites$F_to),]
-head(sr_sites)
 
 ##convert slope to percent annual change
-sr_sites$trend_perc <- ((exp(sr_sites$F_to)-1)*100)
+response_stan <- readRDS("outputs/outputs_metaAnalysis/stanTrends_site_level.rds")
+F_to <- subset(response_stan, Response == "F_to")
+
+##pull out min and max years and F_to in yr 1 as intercept estimate
+FT_Data <- unique(metricdata[,c("site_id","F_to", "year_wMissing")])
+FT_Data <- na.omit(FT_Data)
+
+library(data.table)
+FT_Datam <- data.table(FT_Data)
+####mins <- FT_Datam[ , .SD[which.min(year_wMissing)], by = site_id]
+mins <- FT_Datam[ , list(year_wMissing = min(year_wMissing)), by = site_id]
+colnames(mins)[colnames(mins) == "year_wMissing"] <- "min_yr"
+max <- FT_Datam[ , list(year_wMissing = max(year_wMissing)), by = site_id]
+colnames(max)[colnames(max) == "year_wMissing"] <- "max_yr"
+ft_me <- merge(mins,max,by="site_id")
+med <- FT_Datam[ , list(year_wMissing = median(year_wMissing)), by = site_id]
+colnames(med)[colnames(med) == "year_wMissing"] <- "med_yr"
+ft_mer <- merge(ft_me,med,by="site_id")
+inter <- FT_Datam[ , list(F_to = mean(F_to)), by = site_id]
+colnames(inter)[colnames(inter) == "F_to"] <- "intercept"
+ft_merg <- merge(ft_mer,inter,by="site_id")
+ft_merge <- merge(F_to,ft_merg,by="site_id")
+head(ft_merge)
+
+##predict % change/yr for each sites
+library(betareg)
+
+percCh <- NULL
+for(i in unique(ft_merge$site_id)){
+    sub <- ft_merge[ft_merge$site_id == i, ]
+	yr.1 <- sub$med_yr- sub$max_yr
+	yr.n <- sub$med_yr - sub$min_yr
+	year1 <- plogis(sub$intercept + sub$estimate * yr.1)
+	yearn <- plogis(sub$intercept + sub$estimate * yr.n)
+	rate <- (yearn/year1)^(1/(sub$max_yr-sub$min_yr))
+	trend_perc = (rate -1)*100
+    percCh.i <- data.frame(site_id = i, trend_perc)
+    percCh <- rbind(percCh, percCh.i) ; rm(percCh.i, sub, year1, yearn, rate, trend_perc)
+} ; rm(i)
+head(percCh)
+
+sr_sites <- merge(sr_sites,percCh,by="site_id")
+sr_sites <- sr_sites[order(sr_sites$F_to),]
+head(sr_sites)
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$F_to <= 0]]
@@ -167,9 +210,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -189,8 +230,8 @@ sr_sites <- sr_sites[order(sr_sites$RaoQ),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-ave_trend <- 37.7098828
-sr_sites$trend_perc <- (sr_sites$RaoQ/ave_trend)*100
+ave_RaoQ <- mean(metricdata$RaoQ, na.rm=T)
+sr_sites$trend_perc <- (sr_sites$RaoQ/ave_RaoQ)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$RaoQ <= 0]]
@@ -218,9 +259,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -240,8 +279,8 @@ sr_sites <- sr_sites[order(sr_sites$FDiv),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-ave_trend <- 0.826257724
-sr_sites$trend_perc <- (sr_sites$FDiv/ave_trend^2)*100
+ave_FDiv <- mean((metricdata$FDiv^2), na.rm=T)
+sr_sites$trend_perc<-((sr_sites$FDiv/2)/(ave_FDiv))*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$FDiv <= 0]]
@@ -269,9 +308,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")

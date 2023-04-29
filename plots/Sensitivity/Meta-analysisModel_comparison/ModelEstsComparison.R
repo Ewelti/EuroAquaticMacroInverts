@@ -2,10 +2,10 @@
 setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/")
 
 # attach data
-ESTs <- read.csv("outputs/outputs_sensitivity/metaanlysisModelComparison/Yr_Ests_Comparison.csv")
+ESTs <- read.csv("outputs/outputs_sensitivity/metaanalysisModelComparison/Yr_Ests_Comparison.csv")
 head(ESTs)
 
-tiff(filename = "plots/EstComparison.tiff", width = 12, height = 10, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Sensitivity/Meta-analysisModel_comparison/EstComparison.tiff", width = 12, height = 10, units = 'in', res = 600, compression = 'lzw')
 
 ####layout
 layout(mat = matrix(c(1:4), 
@@ -23,7 +23,7 @@ yy <- c(19:0)
 est <-sub$percEstimate
 min(sub$percQ0.5)
 max(sub$percQ99.5)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-4.5,7.1), ylim=c(0,19.5),cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-4.5,18.5), ylim=c(0,19.5),cex=2, bty="n")
 #polygon(x=c(-100,-100,0,0),
 #        y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 segments(x0=0,y0=0,x1=0,y1=19.3,lty=2, lwd=2,col="grey60")
@@ -173,7 +173,7 @@ yy <- c(19:0)
 est <-sub$percEstimate
 min(sub$percQ0.5)
 max(sub$percQ99.5)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-4.5,7.1), ylim=c(0,19.5),cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-4.5,18.5), ylim=c(0,19.5),cex=2, bty="n")
 #polygon(x=c(-100,-100,0,0),
 #        y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 segments(x0=0,y0=0,x1=0,y1=19.3,lty=2, lwd=2,col="grey60")
@@ -318,7 +318,7 @@ yy <- c(19:0)
 est <-sub$percEstimate
 min(sub$percQ0.5)
 max(sub$percQ99.5)
-plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-4.5,7.1), ylim=c(0,19.5),cex=2, bty="n")
+plot(yy ~ est, ylab="",xlab="", yaxt="n", las=1, type="n",xlim=c(-4.5,18.5), ylim=c(0,19.5),cex=2, bty="n")
 #polygon(x=c(-100,-100,0,0),
 #        y=c(-4,22,22,-4), col = "grey80", border = "grey80")
 segments(x0=0,y0=0,x1=0,y1=19.3,lty=2, lwd=2,col="grey60")

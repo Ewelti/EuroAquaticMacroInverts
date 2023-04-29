@@ -83,6 +83,7 @@ unique(sr_col_neg)
 sr_col_pos <- pal_pos(50)[as.numeric(cut(sr_pos,breaks = 50))]
 unique(sr_col_pos)
 sr_sites$sr_col <- c(sr_col_neg, sr_col_pos)
+head(sr_sites)
 
 tiff(filename = "plots/descriptive_plots/response_maps/Abund_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
 
@@ -112,9 +113,9 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+#lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
+#lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg3 <- c("",round(mean(sr_neg),digits=1),0,round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -124,7 +125,7 @@ y <- seq(69.8,61.3, by=(-(69.8-61.3)/(co_leng-1)))
 x <- rep(-8.2,co_leng)
 x2 <- rep(-6,co_leng)
 #legend(-9, 72.3,title="",legend=lg,col =c(pal_neg(4),pal_pos(4)),lty=1,lwd=1,bty="n",cex=0.9)
-legend(-9, 72.3,title="",legend=lg2,col =c('midnightblue','white','white','white','white','white','red4'),text.col=c("white"),lty=1,lwd=1,bty="n",cex=1)
+legend(-11.5, 74.1,title="",legend=lg3,col =alpha("white", 0.0),text.col=c("white"),lty=1,lwd=1,bty="n",cex=1.57)
 segments(x, y, x2, y, col= unique(sr_sites$sr_col),lwd=3)
 legend(-10.2,72.7,legend=expression(paste("Abundance (%", y^-1, ")", sep = "")),text.col=c("white"),bty='n')
 

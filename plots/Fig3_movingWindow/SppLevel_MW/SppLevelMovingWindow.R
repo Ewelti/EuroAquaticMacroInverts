@@ -20,7 +20,7 @@ sppD <- DATA2[which(DATA2$TaxonomicRes == "species"),]
 sppD <- sppD[which(sppD$year >1993),]
 length(unique(sppD$country))
 
-tiff(filename = "plots/Fig3_movingWindow/SppLevel_MW.tiff", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig3_movingWindow/SppLevel_MW/SppLevel_MWin.tiff", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
 par(mfrow=c(2,2),mar=c(2,4,0.2,0.2))
 
 #plot for spp richness
@@ -50,7 +50,7 @@ legend("topright", bty="n", legend="a",cex=1.5)
 
 #plot for abundance
 SR <- subset(MA, Response == "abundance")
-st <-(SR[1:(nrow(SR)),3:12]*100)
+st <-(10^(SR[1:(nrow(SR)),3:12])-1)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
@@ -99,7 +99,7 @@ legend("topright", bty="n", legend="c",cex=1.5)
 SR <- subset(MA, Response == "FRed")
 fr <-na.omit(sppD$FRed)
 ave_FRed <- mean(fr)
-st <-(SR[1:(nrow(SR)),3:12]/ave_FRed)*100
+st <-(10^(SR[1:(nrow(SR)),3:12])-1)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'

@@ -12,6 +12,9 @@ head(MA)
 max(MA$StartYear)
 MA = subset(MA, select = -c(X) )
 
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+head(metricdata)
+
 #############################################
 movav1 <- readRDS("outputs/outputs_movingWindow/proportions_modelSummaries.rds")
 movav1 <- data.frame(movav1)
@@ -23,7 +26,9 @@ movav1 <- movav1[ which(movav1$MeanYear < 2016), ]
 
 ##################################################
 
-tiff(filename = "plots/Fig3_movingWindow/Fig3_MovingAveragesProportions.tiff", width = 11, height = 6.5, units = 'in', res = 600, compression = 'lzw')
+#tiff(filename = "plots/Fig3_movingWindow/Fig3_MovingAveragesProportions.tiff", width = 11, height = 6.5, units = 'in', res = 600, compression = 'lzw')
+pdf("plots/Fig3_movingWindow/Fig3_MovingAveragesProportions.pdf", width = 11, height = 6.5)
+
 
 ##layout
 layout(mat = matrix(c(1:15), 
@@ -43,7 +48,7 @@ plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 
 #plot for spp richness
 SR <- subset(MA, Response == "spp_richness")
-ave_SppRich <- 27.28712314
+ave_SppRich <- mean(metricdata$spp_richness, na.rm=T)
 st <-(SR[1:(nrow(SR)),3:12]/ave_SppRich)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
@@ -54,7 +59,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ] # this is min 7 countries
 #SRs <- sr[ which(sr$StartYear >=1980), ] #this is min 5 countries
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1.4,3.7), xlim=c(1994.5,2015.5))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
 title(ylab=expression(paste("% y"^"-1")), line=2.4,cex.lab=1.4)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0, 0, 100), col ="lightsteelblue1", border = NA)
@@ -81,7 +86,7 @@ title(xlab="Mean year of moving window", line=-2,cex.lab=1.3)
 
 #plot for abundance
 SR <- subset(MA, Response == "abundance")
-st <-(SR[1:(nrow(SR)),3:12]*100)
+st <-(10^(SR[1:(nrow(SR)),3:12])-1)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
@@ -89,7 +94,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-5.3,3.6), xlim=c(1994.5,2015.5))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0, 0, 100), col ="lightsteelblue1", border = NA)
@@ -117,7 +122,7 @@ title(xlab="Mean year of moving window", line=-2,cex.lab=1.3)
 
 #plot for FRic
 SR <- subset(MA, Response == "FRic")
-st <-(SR[1:(nrow(SR)),3:12])*100
+st <-(10^(SR[1:(nrow(SR)),3:12])-1)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
 names(sr)[names(sr) == 'SR$site_num'] <- 'site_num'
@@ -125,7 +130,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-2,4), xlim=c(1994.5,2015.5))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0, 0, 100), col ="lightsteelblue1", border = NA)
@@ -153,7 +158,7 @@ title(xlab="Mean year of moving window", line=-2,cex.lab=1.3)
 
 #plot for FRed
 SR <- subset(MA, Response == "FRed")
-ave_FRed <- 0.291145846
+ave_FRed <- mean(metricdata$FRed, na.rm=T)
 st <-(SR[1:(nrow(SR)),3:12]/ave_FRed)*100
 sr <- cbind(SR$StartYear, SR$site_num, SR$meanYr, st)
 names(sr)[names(sr) == 'SR$StartYear'] <- 'StartYear'
@@ -162,7 +167,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 #select yrs with enough sites to be representative
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
-plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(-1,2), xlim=c(1994.5,2015.5))
+plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0, 0, 100), col ="lightsteelblue1", border = NA)

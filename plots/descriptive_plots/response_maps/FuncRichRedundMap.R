@@ -19,6 +19,10 @@ siteData <- unique(d2[,c("site","Longitude_X","Latitude_Y")])
 colnames(siteData)[1] <- "site_id"
 resp <- merge(siteData,response_stan_pivot,by="site_id")
 head(resp)
+
+metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
+head(metricdata)
+
 #################################################################################
 ##install.packages("rworldmap")
 library(rworldxtra)
@@ -76,7 +80,7 @@ sr_sites <- sr_sites[order(sr_sites$FRic),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-sr_sites$trend_perc <- (sr_sites$FRic)*100
+sr_sites$trend_perc <- (10^sr_sites$FRic-1)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$FRic <= 0]]
@@ -116,9 +120,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")
@@ -138,8 +140,8 @@ sr_sites <- sr_sites[order(sr_sites$FRed),]
 head(sr_sites)
 
 ##convert slope to percent annual change
-ave_trend <- 0.291145846
-sr_sites$trend_perc <- (sr_sites$FRed/ave_trend)*100
+ave_FRed <- mean(metricdata$FRed, na.rm=T)
+sr_sites$trend_perc <- (sr_sites$FRed/ave_FRed)*100
 
 #break positive and neg values
 sr_neg <- sr_sites$trend_perc[(1:length(sr_sites$trend_perc))[sr_sites$FRed <= 0]]
@@ -167,9 +169,7 @@ points(sr_sites$Longitude_X[sr_sites$trend_perc > 0],sr_sites$Latitude_Y[sr_site
 
 points(sr_sites_asc$Longitude_X[sr_sites_asc$trend_perc <= 0],sr_sites_asc$Latitude_Y[sr_sites_asc$trend_perc <= 0],pch = 20,col = alpha(sr_sites_asc$sr_col[sr_sites_asc$trend_perc <= 0],0.6),cex=1)
 
-lg <- round(seq(min(sr_sites$trend_perc), max(sr_sites$trend_perc), by=((max(sr_sites$trend_perc)-min(sr_sites$trend_perc))/7)),digits=1)
-
-lg2 <- c(round(min(sr_sites$trend_perc),digits=1), "","",0, "","",round(max(sr_sites$trend_perc),digits=1))
+lg2 <- c("",round(mean(sr_neg),digits=1),"",0,"",round(mean(sr_pos),digits=1),"")
 
 polygon(x= c(-15,-15,0,0), y= c(60,90,90,60),
         col = "paleturquoise4", border = "paleturquoise4")

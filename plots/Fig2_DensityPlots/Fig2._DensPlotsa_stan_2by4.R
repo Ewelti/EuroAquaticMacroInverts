@@ -290,12 +290,14 @@ for(i in unique(ft_merge$site_id)){
 	yr.n <- sub$med_yr - sub$min_yr
 	year1 <- plogis(sub$intercept + sub$estimate * yr.1)
 	yearn <- plogis(sub$intercept + sub$estimate * yr.n)
-	rate <- (yearn/year1)^(1/(test$max_yr-test$min_yr))
+	rate <- (yearn/year1)^(1/(sub$max_yr-sub$min_yr))
 	perc = (rate -1)*100
     percCh.i <- data.frame(site_id = i, perc)
     percCh <- rbind(percCh, percCh.i) ; rm(percCh.i, sub, year1, yearn, rate, perc)
 } ; rm(i)
 head(percCh)
+
+mean(percCh$perc)
 
 percChange_perYr <- na.omit(percCh$perc)
 d <- density(percChange_perYr)
@@ -315,8 +317,8 @@ F_to_Est <- subset(Ests, Response == "func_turnover")
 head(F_to_Est)
 
 allinter <- mean(ft_merge$intercept)
-minyr <- min(ft_merge$min_yr)
-maxyr <- max(ft_merge$max_yr)
+minyr <- mean(ft_merge$min_yr)
+maxyr <- mean(ft_merge$max_yr)
 
 Year.num <- maxyr - minyr
 yr.1 <- 0-Year.num/2
