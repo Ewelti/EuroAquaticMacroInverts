@@ -11,8 +11,8 @@ unique(MA$Response)
 metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienzeros.csv")
 head(metricdata)
 
-tiff(filename = "plots/Fig3_movingWindow/MovingAverages_extra.tif", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
-par(mfrow=c(2,2),mar=c(2,4,0.2,0.2))
+tiff(filename = "plots/Fig3_movingWindow/ED_Fig3_MovingAverages_extra.tif", width = 8, height = 6.5, units = 'in', res = 600, compression = 'lzw')
+par(mfrow=c(2,2),mar=c(2,5,0.2,0.2))
 
 #### Shannon's Evenness #####
 SR <- subset(MA, Response == "E10")
@@ -54,7 +54,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
 plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
-title(ylab=expression(paste("Turnover (% y"^"-1", ")")), line=2,cex.lab=1.4)
+title(ylab=expression(paste("Turnover (% y"^"-1", ")")), line=2.5,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0, 0, 100), col ="lightsteelblue1", border = NA)
@@ -67,7 +67,7 @@ points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
 legend("topright", bty="n", legend="b",cex=1.5)
 
 
-par(mar=c(4,4,0.2,0.2))
+par(mar=c(4,5,0.2,0.2))
 #### Func evenness #####
 SR <- subset(MA, Response == "FEve")
 ave_FEve <- mean(metricdata$FEve, na.rm=T)
@@ -118,7 +118,7 @@ names(sr)[names(sr) == 'SR$meanYr'] <- 'meanYr'
 SRs <- sr[ which(sr$StartYear >1989 & sr$StartYear <2012), ]
 
 plot(SRs$Estimate~SRs$meanYr,ylab="", cex=1.5, xlab="", type="n", las=1, ylim=c(min(SRs$Q2.5),max(SRs$Q97.5)), xlim=c(min(SRs$meanYr),max(SRs$meanYr)))
-title(ylab=expression(paste("Functional turnover (% y"^"-1", ")")), line=2,cex.lab=1.4)
+title(ylab=expression(paste("Functional turnover (% y"^"-1", ")")), line=2.5,cex.lab=1.4)
 title(xlab="Mean year of moving window", line=2.4,cex.lab=1.3)
 polygon(x = c(0, 0, 2040, 2040), y = c(-100, 0, 0, -100), col ="coral1", border = NA)
 polygon(x = c(0, 0, 2040, 2040), y = c(100, 0, 0, 100), col ="lightsteelblue1", border = NA)

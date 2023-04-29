@@ -9,7 +9,8 @@ unique(drivEst$Response)
 options(scipen=999)
 
 ##save plot
-tiff(filename = "plots/Fig4_drivers/Drivers_main_horseshoe.tiff", width = 7.8, height = 5, units = 'in', res = 600, compression = 'lzw')
+#tiff(filename = "plots/Fig4_drivers/Fig4._Drivers_main_horseshoe.tiff", width = 7.8, height = 5, units = 'in', res = 600, compression = 'lzw')
+pdf("plots/Fig4_drivers/Drivers_main_horseshoe.pdf", width = 7.8, height = 5)
 
 ##layout
 layout(mat = matrix(c(1:10), 

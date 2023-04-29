@@ -12,7 +12,7 @@ head(metricdata)
 
 Ests <- read.csv("outputs/outputs_metaAnalysis/Yr_metaanaly_Ests.csv")
 
-tiff(filename = "plots/Fig2_DensityPlots/SlopeDistributions_extra.tif", width = 6, height = 6, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig2_DensityPlots/ED_Fig2_SlopeDistributions_extra.tif", width = 6, height = 6, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,1))
 

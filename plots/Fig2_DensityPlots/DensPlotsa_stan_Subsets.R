@@ -12,7 +12,7 @@ head(metricdata)
 
 Ests <- read.csv("outputs/outputs_metaAnalysis/Yr_metaanaly_Ests.csv")
 
-tiff(filename = "plots/Fig2_DensityPlots/SlopeDistributions_Subsets.tif", width = 12, height = 6, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig2_DensityPlots/ED_Fig1_SlopeDistributions_Subsets.tif", width = 12, height = 6, units = 'in', res = 600, compression = 'lzw')
 
 par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,2))
 
@@ -20,10 +20,18 @@ par(mar=c(4,0.4,0.4,0.4), mfrow=c(1,2))
 #####################Subsets ##############################
 #### Alien Spp Richness #####
 alien_SppRich <- subset(response_stan, Response == "alien_SppRich")
-alien_SppRich <- alien_SppRich$estimate[!is.na(alien_SppRich$estimate)]
 md <- metricdata[ which(metricdata$alien_detected=='yes'), ]
+library(data.table)
+alien_SppRich <- subset(alien_SppRich, site_id %in% md$site_id)
+alien_SppRich <- alien_SppRich$estimate[!is.na(alien_SppRich$estimate)]
 ave_alien_SppRich <- mean(md$alien_SppRich, na.rm=T)
 percChange_perYr<-(alien_SppRich/ave_alien_SppRich)*100
+
+all.m <- mean(metricdata$alien_SppRich, na.rm=T)
+allraw <-c(alien_SppRich,zeros)
+all.percChange_perYr<-(allraw/all.m)*100
+rawmean <-mean(all.percChange_perYr)
+
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10)) *-3
 b <- (max(d$y)+(max(d$y)/10))*1
@@ -163,8 +171,17 @@ abline(v=0, lwd=1.5, lty=2)
 ##
 #### alien abund #####
 alien_Abund <- subset(response_stan, Response == "alien_Abund")
+md <- metricdata[ which(metricdata$alien_detected=='yes'), ]
+library(data.table)
+alien_Abund <- subset(alien_Abund, site_id %in% md$site_id)
+alien_Abund <- alien_Abund$estimate[!is.na(alien_Abund$estimate)]
 alien_Abund <- alien_Abund$estimate[!is.na(alien_Abund$estimate)]
 percChange_perYr<- (10^alien_Abund-1)*100
+
+zeros <- rep(0,1299-898)
+all <- c(percChange_perYr,zeros)
+all.m <- mean(all)
+
 d <- density(percChange_perYr)
 a <- (max(d$y)+(max(d$y)/10))*-3
 b <- (max(d$y)+(max(d$y)/10))*1
