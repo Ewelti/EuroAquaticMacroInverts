@@ -11,7 +11,7 @@ options(scipen=999)
 
 ##save plot
 #tiff(filename = "plots/Fig4_drivers/Drivers_main_streamCharacteristics.tiff", width = 7.8, height = 5, units = 'in', res = 600, compression = 'lzw')
-tiff(filename = "plots/Fig4_drivers/Drivers_main_streamCharacteristics_horseshoe.tiff", width = 7.8, height = 5, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig4_drivers/ED_Fig6_Drivers_main_streamCharacteristics_horseshoe.tif", width = 7.8, height = 5, units = 'in', res = 600, compression = 'lzw')
 
 ##layout
 layout(mat = matrix(c(1:10), 

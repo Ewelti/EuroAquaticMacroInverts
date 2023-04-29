@@ -6,7 +6,7 @@ taxoresTr <- readRDS("outputs/outputs_sensitivity/TaxonomicSeason/sensitiv_taxon
 head(taxoresTr)
 unique(taxoresTr$Response)
 
-tiff(filename = "plots/Sensitivity/Sensitiv_taxoresTrends.tiff", width = 9, height = 10, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Sensitivity/TaxonomicResolution/ED_Fig9_Sensitiv_taxoresTrends.tif", width = 9, height = 10, units = 'in', res = 600, compression = 'lzw')
 
 layout(mat = matrix(c(1:16), 
                         nrow = 4, 

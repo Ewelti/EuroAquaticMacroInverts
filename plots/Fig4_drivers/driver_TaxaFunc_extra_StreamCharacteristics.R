@@ -11,7 +11,7 @@ options(scipen=999)
 
 ##save plot
 #tiff(filename = "plots/Fig4_drivers/Drivers_TaxaFunc_extra_streamCharacteristics.tiff", width = 5, height = 4, units = 'in', res = 600, compression = 'lzw')
-tiff(filename = "plots/Fig4_drivers/Drivers_TaxaFunc_extra_streamCharacteristics_horseshoe.tiff", width = 5, height = 5, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Fig4_drivers/ED_Fig7_Drivers_TaxaFunc_extra_streamCharacteristics_horseshoe.tif", width = 5, height = 5, units = 'in', res = 600, compression = 'lzw')
 
 ##layout
 layout(mat = matrix(c(1:6), 

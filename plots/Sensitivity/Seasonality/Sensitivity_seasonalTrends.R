@@ -6,7 +6,7 @@ seasTr <- readRDS("outputs/outputs_sensitivity/TaxonomicSeason/sensitiv_seasonTr
 head(seasTr)
 unique(seasTr$Response)
 
-tiff(filename = "plots/Sensitivity/Sensitiv_seasonTrends.tiff", width = 9, height = 10, units = 'in', res = 600, compression = 'lzw')
+tiff(filename = "plots/Sensitivity/Seasonality/ED_Fig10_Sensitiv_seasonTrends.tif", width = 9, height = 10, units = 'in', res = 600, compression = 'lzw')
 
 layout(mat = matrix(c(1:16), 
                         nrow = 4, 
