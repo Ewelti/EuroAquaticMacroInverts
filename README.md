@@ -15,13 +15,20 @@ Haase, P., D.E. Bowler, N.J. Baker, N. Bonada, S. Domisch, J.R. Garcia Marquez, 
 	* *All_siteLevel.csv* (metadata tab: metadata_sites)
 
 
+## raw-data folder:
+
+* ***RawData_metadata.docx*** : 
+Provides metadata regarding raw data files
+
+* **csvs_each_dataset** folder:
+Contains raw taxonomic composition data for all included studies
+
+
 ## outputs folder:
 
 * ***All_indices_benthicMacroInverts_AllYears_alienzeros.csv*** : 
 Contains data for each site and year on: 
 	* taxonomic diversity metrics
-	* functional diversity metrics
-	* environmental drivers which are time series (climate, landuse)
 
 * ***All_siteLevel.csv*** :
 Contains data for each site on slopes of functional and taxonomic diversity indices and environmental drivers
