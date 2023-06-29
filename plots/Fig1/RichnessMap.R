@@ -24,10 +24,10 @@ metricdata <- read.csv("outputs/All_indices_benthicMacroInverts_AllYears_alienze
 head(metricdata)
 
 #################################################################################
-##install.packages("rworldxtra")
-library(rworldxtra)
+
+##library(rworldxtra)
+##library(maps)
 library(RColorBrewer)
-library(maps)
 library(rworldmap)
 library(scales)
 
