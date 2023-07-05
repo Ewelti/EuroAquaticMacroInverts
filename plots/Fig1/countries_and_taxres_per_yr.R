@@ -4,7 +4,8 @@ setwd("C:/Users/elwel/OneDrive/Desktop/aquatic_data/git/EuroAquaticMacroInverts/
 # attach data
 sites <- read.table("plots/Fig1/sites_per_yr.csv", header=T, sep=",", row.names = 1, check.names = F)
 
-tiff(filename = "plots/Fig1/Countries_yr.tiff", width =5, height = 8, units = 'in', res = 600, compression = 'lzw')
+#tiff(filename = "plots/Fig1/Countries_yr.tiff", width =5, height = 8, units = 'in', res = 600, compression = 'lzw')
+pdf("plots/Fig1/Countries_yr.pdf", width =5, height = 8)
 
 par(mgp=c(3,0,-1),mar=c(2,4,0.4,0.2)+0.1)
 

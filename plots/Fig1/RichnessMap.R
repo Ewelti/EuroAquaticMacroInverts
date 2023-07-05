@@ -25,8 +25,6 @@ head(metricdata)
 
 #################################################################################
 
-##library(rworldxtra)
-##library(maps)
 library(RColorBrewer)
 library(rworldmap)
 library(scales)
@@ -90,7 +88,10 @@ sr_col_pos <- pal_pos(50)[as.numeric(cut(sr_pos,breaks = 50))]
 unique(sr_col_pos)
 sr_sites$sr_col <- c(sr_col_neg, sr_col_pos)
 
-tiff(filename = "plots/Fig1/SppRich_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
+#tiff(filename = "plots/Fig1/SppRich_map.tiff", width = 7, height = 6, units = 'in', res = 600, compression = 'lzw')
+#setEPS()
+#postscript("plots/Fig1/SppRich_map.eps", width = 7, height = 6)
+pdf("plots/Fig1/SppRich_map.pdf", width = 7, height = 6)
 
 par(mar=c(0,0,0,0))
 
@@ -130,7 +131,7 @@ x2 <- rep(-6,co_leng)
 #legend(-9, 72.3,title="",legend=lg,col =c(pal_neg(4),pal_pos(4)),lty=1,lwd=1,bty="n",cex=0.9)
 legend(-9, 72.3,title="",legend=lg2,col =c('red4','white','white','white','white','white','midnightblue'),text.col=c("white"),lty=1,lwd=1,bty="n",cex=1)
 segments(x, y, x2, y, col= rev(unique(sr_sites$sr_col)),lwd=3)
-#legend(-10.2,72.7,legend=c("% change/yr species richness"),bty='n')
+legend(-12.5,72.4,legend=expression(paste("Taxon richness (%", y^-1, ")", sep = "")),text.col=c("white"),bty='n')
 
 dev.off()
 #######################
