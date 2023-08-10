@@ -42,8 +42,8 @@ par(mar=c(1.8,2,0.4,1))
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 title(ylab=expression(paste("Mean site trend (% change y"^"-1",")")), line=-2,cex.lab=1.6)
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
-title(ylab="Proportion sites with", line=-0.3,cex.lab=1.4)
-title(ylab="positive trends", line=-1.4,cex.lab=1.4)
+title(ylab="Proportion sites with", line=-0.6,cex.lab=1.6)
+title(ylab="positive trends", line=-2,cex.lab=1.6)
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 
 #plot for spp richness
@@ -68,7 +68,8 @@ polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q5,rev(SRs$Q95)), col ="#00
 polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q10,rev(SRs$Q90)), col ="#00000020", border = NA)
 points(SRs$Estimate~SRs$meanYr, pch=21,bg=1,cex=1.8)#pch="-",
 points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
-legend("topright", bty="n", legend="a, Taxon richness",cex=1.5)
+legend("bottomright", bty="n", legend="Taxon richness",cex=1.5)
+legend("topleft", bty="n", legend=as.expression(bquote(bold("a"))),cex=1.5)
 
 count_sign_mw <- movav1[which(movav1$response=='spp_richness'),]
 plot(0,0, ylim=c(0.3,0.8),xlim= c(1994,2016), ylab="", xlab="",las=1)
@@ -79,7 +80,8 @@ polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_s
 polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_sign_mw$lower80Prop,rev(count_sign_mw$upper80Prop)),col="#00000020", border = NA)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, pch=21,bg=1,cex=1.8)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, type="l", lwd=2)
-legend("topright", bty="n", legend="e, Taxon richness",cex=1.5)
+legend("bottomright", bty="n", legend="Taxon richness",cex=1.5)
+legend("topleft", bty="n", legend=as.expression(bquote(bold("e"))),cex=1.5)
 
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 title(xlab="Mean year of moving window", line=-2,cex.lab=1.3)
@@ -103,7 +105,8 @@ polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q5,rev(SRs$Q95)), col ="#00
 polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q10,rev(SRs$Q90)), col ="#00000020", border = NA)
 points(SRs$Estimate~SRs$meanYr, pch=21,bg=1,cex=1.8)#pch="-",
 points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
-legend("topright", bty="n", legend="b, Abundance",cex=1.5)
+legend("bottomright", bty="n", legend="Abundance",cex=1.5)
+legend("topleft", bty="n", legend=as.expression(bquote(bold("b"))),cex=1.5)
 
 count_sign_mw <- movav1[which(movav1$response=='abundance'),]
 plot(0,0, ylim=c(0.3,0.8),xlim= c(1994,2016), ylab="", xlab="",las=1)
@@ -115,7 +118,9 @@ polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_s
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, pch=21,bg=1,cex=1.8)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, type="l", lwd=2)
 title(xlab="Mean year of moving window", line=2.5,cex.lab=1.1)
-legend("topright", bty="n", legend="f, Abundance",cex=1.5)
+legend("bottomright", bty="n", legend="Abundance",cex=1.5)
+legend("topleft", bty="n", legend=as.expression(bquote(bold("f"))),cex=1.5)
+
 
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 title(xlab="Mean year of moving window", line=-2,cex.lab=1.3)
@@ -139,7 +144,8 @@ polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q5,rev(SRs$Q95)), col ="#00
 polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q10,rev(SRs$Q90)), col ="#00000020", border = NA)
 points(SRs$Estimate~SRs$meanYr, pch=21,bg=1,cex=1.8)
 points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
-legend("topright", bty="n", legend="c, Functional richness",cex=1.5)
+legend("bottomright", bty="n", legend="Functional richness",cex=1.5)
+legend("topleft", bty="n", legend=as.expression(bquote(bold("c"))),cex=1.5)
 
 count_sign_mw <- movav1[which(movav1$response=='FRic'),]
 plot(0,0, ylim=c(0.3,0.8),xlim= c(1994,2016), ylab="", xlab="",las=1)
@@ -151,7 +157,8 @@ polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_s
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, pch=21,bg=1,cex=1.8)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, type="l", lwd=2)
 title(xlab="Mean year of moving window", line=2.5,cex.lab=1.1)
-legend("topright", bty="n", legend="g, Functional richness",cex=1.5)
+legend("bottomright", bty="n", legend="Functional richness",cex=1.5)
+legend("topleft", bty="n", legend=as.expression(bquote(bold("g"))),cex=1.5)
 
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 title(xlab="Mean year of moving window", line=-2,cex.lab=1.3)
@@ -176,7 +183,8 @@ polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q5,rev(SRs$Q95)), col ="#00
 polygon(x = c(SRs$meanYr,rev(SRs$meanYr)), y = c(SRs$Q10,rev(SRs$Q90)), col ="#00000020", border = NA)
 points(SRs$Estimate~SRs$meanYr, pch=21,bg=1,cex=1.8)
 points(SRs$Estimate~SRs$meanYr,type="l",lwd=2)
-legend("topright", bty="n", legend="d, Functional redundancy",cex=1.5)
+legend("bottomright", bty="n", legend="Functional redundancy",cex=1.5)
+legend("topleft", bty="n", legend=as.expression(bquote(bold("d"))),cex=1.5)
 
 count_sign_mw <- movav1[which(movav1$response=='FRed'),]
 plot(0,0, ylim=c(0.3,0.8),xlim= c(1994,2016), ylab="", xlab="",las=1)
@@ -188,7 +196,8 @@ polygon(x = c(count_sign_mw$MeanYear,rev(count_sign_mw$MeanYear)), y = c(count_s
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, pch=21,bg=1,cex=1.8)
 points (count_sign_mw$meanProp ~count_sign_mw$MeanYear, type="l", lwd=2)
 title(xlab="Mean year of moving window", line=2.5,cex.lab=1.1)
-legend("topright", bty="n", legend="h, Functional redundancy",cex=1.5)
+legend("bottomright", bty="n", legend="Functional redundancy",cex=1.5)
+legend("topleft", bty="n", legend=as.expression(bquote(bold("h"))),cex=1.5)
 
 plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
 title(xlab="Mean year of moving window", line=-2,cex.lab=1.3)
